@@ -1,0 +1,33 @@
+.heading {
+  position: relative;
+}
+.heading-left {
+  left: 0rem;
+}
+
+.heading-right {
+  position: absolute;
+  right: 0;
+}
+
+.heading h1 {
+  /* text-decoration: underline; */
+}
+
+
+.cursor {
+  display: inline-block;
+  width: 1rem;           /* circle size */
+  height: 1rem;
+  background-color: var(--primary-color);
+  border-radius: 50%;    /* makes it a circle */
+  margin-left: 4px;
+  animation: blink 1s infinite;
+  vertical-align: middle;
+}
+
+/* Blinking animation */
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0; }
+}

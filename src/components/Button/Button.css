@@ -1,0 +1,33 @@
+/* Base button styling */
+.btn {
+  border: none;
+  padding: 12px 24px; /* Increased padding for better aesthetics */
+  border-radius: 2rem; /* Rounded corners */
+  font-size: 1rem;
+  font-weight: 600; /* Make the text bold for prominence */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  transition: all 0.3s ease-in-out; /* Smooth transition for all states */
+}
+
+/* Hover effects */
+.btn:hover {
+  transform: scale(1.05); /* Slight scale-up effect */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+  transition: all 0.3s ease-in-out; /* Ensure smooth transition */
+}
+
+/* Focus state for accessibility */
+.btn:focus {
+  outline: none; /* Remove the default focus outline */
+  
+}
+
+/* Active state for clicks */
+.btn:active {
+  transform: scale(0.98); /* Shrink on click to give feedback */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Light shadow on click */
+}
