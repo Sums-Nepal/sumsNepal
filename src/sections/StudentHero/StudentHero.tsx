@@ -60,8 +60,8 @@ const StudentHero = () => {
 
             <div className="mt-12 grid grid-cols-2 gap-6">
               {[
-                { number: "5000+", label: "Students Placed" },
-                { number: "500+", label: "Partner Companies" },
+                { number: "100+", label: "Students Placed" },
+                { number: "70+", label: "Partner Companies" },
               ].map((stat, idx) => (
                 <div
                   key={idx}

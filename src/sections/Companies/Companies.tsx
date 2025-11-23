@@ -12,7 +12,7 @@ const Companies = () => {
             {/* Left Image */}
             <div className="flex-1 w-full max-w-lg lg:max-w-none">
               <img
-                src="./images/companies.jpg"
+                src="./images/companies.jpeg"
                 alt="Team collaborating in office"
                 className="w-full h-[250px] sm:h-[300px] lg:h-[400px] object-cover rounded-2xl shadow-2xl"
               />

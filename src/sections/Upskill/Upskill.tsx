@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Globe, Users } from "lucide-react";
 import { Button } from "../../components";
 
 import { useHowItWorks } from "../../context/HowItWorksContext";
@@ -107,42 +107,42 @@ import { BookOpen, Code, Briefcase, Brain } from "lucide-react";
 export const upskillData = [
   {
     id: 1,
-    title: "Full Stack Web Development",
-    description: "Master React, Node.js, and MongoDB to build powerful web apps.",
-    image: "/images/webdev.jpg",
-    alt: "Web Development",
+    title: "Digital & Tech Skills",
+    description: "AI, Data, Cloud, Cyber, Digital Marketing.",
+    image: "/images/up-skills-1.png",
+    alt: "Digital & Tech Skills",
     icon: BookOpen,
   },
   {
     id: 2,
-    title: "Data Science Bootcamp",
-    description: "Learn Python, Pandas, and ML to extract insights from data.",
-    image: "/images/data-science.jpg",
-    alt: "Data Science",
+    title: "Cognitive & Problem-Solving Skills",
+    description: "Cognitive & Problem-Solving Skills Critical thinking, Design Thinking, Systems thinking.",
+    image: "/images/up-skills-2.jpg",
+    alt: "Cognitive & Problem-Solving Skills",
     icon: Brain,
   },
   {
     id: 3,
-    title: "Business Communication",
-    description: "Improve your presentation, writing, and negotiation skills.",
-    image: "/images/communication.jpg",
-    alt: "Communication Skills",
+    title: "Business & Leadership Skills",
+    description: "Project management, Sales, Strategy, Financial literacy.",
+    image: "/images/up-skills-3.jpg",
+    alt: "Business & Leadership Skills",
     icon: Briefcase,
   },
   {
     id: 4,
-    title: "Programming Logic Mastery",
-    description: "Build a solid foundation in programming logic and problem-solving.",
-    image: "/images/programming.jpg",
-    alt: "Programming",
-    icon: Code,
+    title: "Human Skills (Soft Skills)",
+    description: "Communication, EI, Adaptability, Collaboration.",
+    image: "/images/up-skills-4.jpg",
+    alt: "Human Skills",
+    icon: Users,
   },
   {
     id: 5,
-    title: "AI & Machine Learning",
+    title: "Future-Focused Skills",
     description: "Dive deep into AI concepts with hands-on ML projects.",
-    image: "/images/ai-ml.jpg",
-    alt: "AI and ML",
-    icon: Brain,
+    image: "/images/up-skills-5.jpg",
+    alt: "Sustainability, Innovation, Global & Green skills",
+    icon: Globe,
   },
 ];

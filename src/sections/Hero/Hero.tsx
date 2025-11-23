@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Button } from "../../components";
+import { useNavigate } from "react-router-dom";
 
 const MainHero = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsVisible(true);
@@ -57,7 +59,7 @@ const MainHero = () => {
               global collaboration.
             </p>
 
-            <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-8 py-4 text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl hover:shadow-orange-500/25 transition-all duration-300 flex items-center gap-2">
+            <Button onClick={() => navigate("/academia")} className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-8 py-4 text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl hover:shadow-orange-500/25 transition-all duration-300 flex items-center gap-2">
               Get Started
               <ArrowRight size={20} />
             </Button>

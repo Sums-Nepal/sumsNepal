@@ -107,7 +107,7 @@ export const connectData = [
     title: "Find Your Mentor",
     description:
       "Connect with industry experts who guide you through real-world learning experiences.",
-    image: "/images/mentor.jpg",
+    image: "/images/connect-1.jpg",
     alt: "Mentor",
     icon: Users,
   },
@@ -116,7 +116,7 @@ export const connectData = [
     title: "Collaborate on Projects",
     description:
       "Work with like-minded peers on projects that simulate real industry challenges.",
-    image: "/images/projects.jpg",
+    image: "/images/connect-2.jpg",
     alt: "Projects",
     icon: Network,
   },
@@ -125,7 +125,7 @@ export const connectData = [
     title: "Internship Pathway",
     description:
       "Gain practical experience by joining internship programs via our platform.",
-    image: "/images/internship.jpg",
+    image: "/images/connect-3.jpg",
     alt: "Internship",
     icon: Briefcase,
   },
@@ -134,7 +134,7 @@ export const connectData = [
     title: "Networking Events",
     description:
       "Join live sessions and online meetups to build your professional network.",
-    image: "/images/networking.jpg",
+    image: "/images/connect-4.jpg",
     alt: "Networking",
     icon: Handshake,
   },
@@ -143,7 +143,7 @@ export const connectData = [
     title: "Startup Collaboration",
     description:
       "Pitch your ideas or join startups looking for tech talent and innovation.",
-    image: "/images/startup.jpg",
+    image: "/images/connect-5.jpg",
     alt: "Startup Collaboration",
     icon: Briefcase,
   },

@@ -1,15 +1,15 @@
-import { useState } from "react"
+import React, { useState } from "react";
 
 const interests = [
   { id: "entrepreneurship", label: "Entrepreneurship" },
   { id: "lms", label: "LMS - Learning Management System" },
   { id: "local-project", label: "Local Project" },
   { id: "international-project", label: "International Project" },
-]
+];
 
 interface GeneralFormProps {
-  visible: boolean
-  onClose: () => void
+  visible: boolean;
+  onClose: () => void;
 }
 
 export default function GeneralForm({ visible, onClose }: GeneralFormProps) {
@@ -18,17 +18,19 @@ export default function GeneralForm({ visible, onClose }: GeneralFormProps) {
     email: "",
     message: "",
     interests: [] as string[],
-  })
+  });
 
-  const [loading, setLoading] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
-  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-    setError("")
-  }
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setError("");
+  };
 
   const handleInterestChange = (id: string) => {
     setFormData((prev) => ({
@@ -36,51 +38,70 @@ export default function GeneralForm({ visible, onClose }: GeneralFormProps) {
       interests: prev.interests.includes(id)
         ? prev.interests.filter((i) => i !== id)
         : [...prev.interests, id],
-    }))
-  }
+    }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (formData.interests.length === 0) {
-      setError("Please select at least one area of interest.")
-      return
+      setError("Please select at least one area of interest.");
+      return;
     }
 
-    setLoading(true)
-    setError("")
+    setLoading(true);
+    setError("");
 
     try {
-      const subject = encodeURIComponent(`Inquiry from ${formData.instituteName}`)
+      const subject = encodeURIComponent(
+        `Inquiry from ${formData.instituteName}`
+      );
       const body = encodeURIComponent(
-        `Institute Name: ${formData.instituteName}\nEmail: ${formData.email}\nInterests: ${formData.interests
+        `Institute Name: ${formData.instituteName}\nEmail: ${
+          formData.email
+        }\nInterests: ${formData.interests
           .map((i) => interests.find((x) => x.id === i)?.label)
           .join(", ")}\n\nMessage:\n${formData.message}`
-      )
+      );
 
-      window.location.href = `mailto:Info@sumsnepal.com?subject=${subject}&body=${body}`
+      window.location.href = `mailto:Info@sumsnepal.com?subject=${subject}&body=${body}`;
 
-      setSubmitted(true)
+      setSubmitted(true);
       setFormData({
         instituteName: "",
         email: "",
         message: "",
         interests: [],
-      })
-      setTimeout(() => setSubmitted(false), 5000)
+      });
+      setTimeout(() => setSubmitted(false), 5000);
     } catch (err) {
-      setError("Failed to open mail client. Please try again.")
-      console.error(err)
+      setError("Failed to open mail client. Please try again.");
+      console.error(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  if (!visible) return null // Controlled by parent
+  const onCloseByScreen = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    onClose();
+  };
+
+  // Prevent the modal content close when clicked inside
+  const handleContentClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent click event from bubbling to parent div
+  };
+  if (!visible) return null; // Controlled by parent
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-6 z-50">
-      <div className="relative w-full max-w-2xl bg-gradient-to-b from-slate-800/80 to-slate-900/80 backdrop-blur-xl rounded-2xl p-8 md:p-10 border border-orange-500/20 shadow-2xl">
+    <div
+      className="fixed inset-0 bg-black/60 flex items-center justify-center p-6 z-50"
+      onClick={onCloseByScreen}
+    >
+      <div
+        onClick={handleContentClick}
+        className="relative w-full max-w-2xl  bg-gradient-to-b from-slate-800/80 to-slate-900/80 backdrop-blur-xl rounded-2xl p-8 md:p-10 border border-orange-500/20 shadow-2xl"
+      >
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -92,7 +113,8 @@ export default function GeneralForm({ visible, onClose }: GeneralFormProps) {
         {/* Success/Error Messages */}
         {submitted && (
           <div className="mb-6 p-4 bg-green-500/20 border border-green-500/50 rounded-lg text-green-300 animate-in fade-in duration-300">
-            <span className="font-semibold">✓ Success!</span> Your mail client opened. Please send your email.
+            <span className="font-semibold">✓ Success!</span> Your mail client
+            opened. Please send your email.
           </div>
         )}
         {error && (
@@ -104,7 +126,9 @@ export default function GeneralForm({ visible, onClose }: GeneralFormProps) {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-semibold text-white mb-2">Institute Name *</label>
+            <label className="block text-sm font-semibold text-white mb-2">
+              Institute Name *
+            </label>
             <input
               type="text"
               name="instituteName"
@@ -117,7 +141,9 @@ export default function GeneralForm({ visible, onClose }: GeneralFormProps) {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-white mb-2">Email Address *</label>
+            <label className="block text-sm font-semibold text-white mb-2">
+              Email Address *
+            </label>
             <input
               type="email"
               name="email"
@@ -131,7 +157,10 @@ export default function GeneralForm({ visible, onClose }: GeneralFormProps) {
 
           <div>
             <label className="block text-sm font-semibold text-white mb-4">
-              Areas of Interest * <span className="text-xs text-gray-400">(Select at least one)</span>
+              Areas of Interest *{" "}
+              <span className="text-xs text-gray-400">
+                (Select at least one)
+              </span>
             </label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {interests.map((interest) => (
@@ -154,7 +183,9 @@ export default function GeneralForm({ visible, onClose }: GeneralFormProps) {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-white mb-2">Message *</label>
+            <label className="block text-sm font-semibold text-white mb-2">
+              Message *
+            </label>
             <textarea
               name="message"
               value={formData.message}
@@ -192,5 +223,5 @@ export default function GeneralForm({ visible, onClose }: GeneralFormProps) {
         </p>
       </div>
     </div>
-  )
+  );
 }

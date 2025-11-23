@@ -1,22 +1,46 @@
-import { GalleryHorizontalEndIcon } from "lucide-react";
+import { Briefcase, Rocket, Users, BookOpen, Globe, User } from "lucide-react";
 
 export const placeData = [
   {
     id: 1,
-    title: "Software Developer",
-    description: "Join a leading tech company and help build amazing products.",
-    image: "/images/software-developer.jpg",
-    alt: "Software Developer",
-    icon: () => <GalleryHorizontalEndIcon />, // You can use any icon library
+    title: "Corporate Jobs",
+    description: "Good for business, IT, and management students.",
+    image: "/images/place-1.webp",
+    alt: "Corporate Jobs",
+    icon: Briefcase,
   },
   {
     id: 2,
-    title: "Product Manager",
-    description: "Lead product development and manage cross-functional teams.",
-    image: "/images/product-manager.jpg",
-    alt: "Product Manager",
-        icon: () => <GalleryHorizontalEndIcon />, // You can use any icon library
-
+    title: "Entrepreneurship & Startup Placement",
+    description: "For innovative and creative students.",
+    image: "images/place-2.jpg",
+    alt: "Entrepreneurship & Startup Placement",
+    icon: Rocket ,
   },
-  // Add more job data here
+  {
+    id: 3,
+    title: "Government & NGO Placements",
+    description: "High stability and meaningful work.",
+    image: "/images/place-3.jpg",
+    alt: "Government & NGO Placements",
+    icon: User,
+  },
+  {
+    id: 4,
+    title: "Research & Academic Placement",
+    description:
+      "Great for students interested in innovation or further studies.",
+    image: "/images/place-4.jpg",
+    alt: "Research & Academic Placement",
+    icon: BookOpen ,
+  },
+  {
+    id: 5,
+    title: "Freelancing & Remote Placements",
+    description:
+      "Growing rapidly.",
+    image: "/images/place-5.jpg",
+    alt: "Freelancing & Remote Placements",
+    icon: Globe ,
+  },
 ];

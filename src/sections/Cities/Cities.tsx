@@ -59,7 +59,7 @@ const Cities = () => {
             {/* Right Image */}
             <div className="flex-1 w-full max-w-lg lg:max-w-none order-first lg:order-last">
               <img
-                src="./images/city.jpg"
+                src="./images/city.jpeg"
                 alt="Young people with tablet and city skyline"
                 className="w-full h-[250px] sm:h-[300px] lg:h-[400px] object-cover rounded-2xl shadow-2xl"
               />

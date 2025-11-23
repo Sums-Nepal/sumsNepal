@@ -23,7 +23,7 @@ const problems = [
 
 export function ProblemsSection() {
   return (
-    <section className="py-20 lg:py-28 bg-gradient-to-r from-gray-50 to-gray-100">
+    <section className="py-20 lg:py-28 bg-gradient-to-r from-gray-50 to-gray-100" id="city-need-sums">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl lg:text-4xl font-bold text-center mb-16 text-gray-900">
           Why <span className="text-orange-500">Your City </span>Needs SUMS

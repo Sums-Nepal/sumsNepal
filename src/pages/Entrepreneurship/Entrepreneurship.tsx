@@ -9,7 +9,7 @@ export default function Entrepreneurship() {
      <OurProcess/>
      {/* <StartupIdeaGenerator/> */}
      <StudentSuccessStories/>
-     <CTASection/>
+     {/* <CTASection/> */}
     </main>
   )
 }

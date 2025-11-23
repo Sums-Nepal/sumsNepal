@@ -61,7 +61,7 @@ const Colleges = () => {
             {/* Right Image */}
             <div className="flex-1 w-full max-w-lg lg:max-w-none order-first lg:order-last">
               <img
-                src="./images/colleges.jpg"
+                src="./images/placement.jpg"
                 alt="Students in modern classroom"
                 className="w-full h-[250px] sm:h-[300px] lg:h-[400px] object-cover rounded-2xl shadow-2xl"
               />
