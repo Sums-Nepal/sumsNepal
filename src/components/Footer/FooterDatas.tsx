@@ -2,10 +2,10 @@ import { MapPin } from "lucide-react";
 
 // Footer Data
 export const socialLinks = [
-  { id: 1, label: "f", href: "#" },
-  { id: 2, label: "t", href: "#" },
-  { id: 3, label: "in", href: "#" },
-  { id: 4, label: "ig", href: "#" },
+  { id: 1, label: "f", href: "https://www.facebook.com/people/SUMS-Nepal/61568207048292/" },
+  { id: 2, label: "t", href: "https://x.com/sumsnepal" },
+  { id: 3, label: "in", href: "https://www.linkedin.com/company/sumsnepal/posts/?feedView=all" },
+  { id: 4, label: "ig", href: "https://www.instagram.com/sumsnepal/" },
 ];
 
 export const quickLinks = [

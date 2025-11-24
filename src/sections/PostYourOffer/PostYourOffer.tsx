@@ -64,7 +64,7 @@ Location: ${formData.location}
 Special Notes: ${formData.notes}`
     );
 
-    window.location.href = `mailto:Info@sumsnepal.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:Info@connect@sumsnepal.com?subject=${subject}&body=${body}`;
   };
 
   return (

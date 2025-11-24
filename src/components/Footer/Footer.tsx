@@ -20,12 +20,12 @@ const Footer = () => {
               {/* Brand Section */}
               <div className="lg:col-span-1 animate-fade-in">
                 <div className="flex items-center mb-6 group cursor-pointer">
-                  <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/30 group-hover:shadow-orange-500/50 transition-shadow duration-300 transform group-hover:scale-110">
-                    <LogoImage />
+                  <div className="w-36 h-28 rounded-2xl">
+                    <img src="./images/sums-logo-without-bg.png" alt="light-mode-logo" className="rounded-2xl w-36 h-28"/>
                   </div>
-                  <span className="ml-3 text-2xl sm:text-3xl font-bold bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
+                  {/* <span className="ml-3 text-2xl sm:text-3xl font-bold bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
                     SUMS
-                  </span>
+                  </span> */}
                 </div>
                 <p className="text-gray-400 text-sm sm:text-base leading-relaxed mb-8">
                   Empowering education, driving innovation, and discovering the future through strategic connections
@@ -35,6 +35,8 @@ const Footer = () => {
                   {socialLinks.map((link) => (
                     <a
                       key={link.id}
+                    target="_blank"
+
                       href={link.href}
                       className="w-12 h-12 bg-gradient-to-br from-slate-800 to-slate-900 hover:from-orange-500 hover:to-orange-600 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110 border border-slate-700 hover:border-orange-500/50 shadow-lg hover:shadow-orange-500/30"
                       title={link.label}

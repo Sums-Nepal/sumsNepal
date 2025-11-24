@@ -57,7 +57,7 @@ const EntrepreneurshipHero = () => {
             </Button>
 
             <div className="mt-12 pt-8 border-t border-orange-500/20">
-              <p className="text-2xl font-bold text-orange-500 mb-2">100+</p>
+              <p className="text-2xl font-bold text-orange-500 mb-2">30+</p>
               <p className="text-gray-400">Startups Accelerated</p>
             </div>
           </div>

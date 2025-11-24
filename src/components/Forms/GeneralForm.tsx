@@ -64,7 +64,7 @@ export default function GeneralForm({ visible, onClose }: GeneralFormProps) {
           .join(", ")}\n\nMessage:\n${formData.message}`
       );
 
-      window.location.href = `mailto:Info@sumsnepal.com?subject=${subject}&body=${body}`;
+      window.location.href = `mailto:connect@sumsnepal.com?subject=${subject}&body=${body}`;
 
       setSubmitted(true);
       setFormData({

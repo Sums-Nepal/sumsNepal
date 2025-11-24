@@ -9,7 +9,7 @@ const Innovation = () => {
       <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6  bg-gradient-to-r from-gray-50 to-orange-50">
         <div className="flex justify-center mb-10">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
-            🇫🇮 Finnish <span className="text-orange-500">Innovation</span> at
+            Finnish <span className="text-orange-500">Innovation</span> at
             Our <span className="text-orange-500"> Core</span>
           </h2>
         </div>
