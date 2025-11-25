@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Post Your Offer – Sums Nepal</title>
 
-  <!-- Open Graph / Social Meta -->
+  <!-- Open Graph Metadata -->
   <meta property="og:title" content="Post Your Offer – Sums Nepal" />
   <meta property="og:description" content="Submit your business offer through this form. Sums Nepal Business Platform." />
   <meta property="og:image" content="https://www.sumsnepal.com/images/form-preview.jpg" />
   <meta property="og:url" content="https://www.sumsnepal.com/post-your-offer" />
   <meta property="og:type" content="website" />
 
-  <!-- Twitter -->
+  <!-- Twitter Metadata -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Post Your Offer – Sums Nepal" />
   <meta name="twitter:description" content="Submit your business offer through this form." />
@@ -22,160 +21,161 @@
   <!-- SEO -->
   <meta name="description" content="Share your business offer with Sums Nepal using this quick form." />
 
-  <!-- Favicon -->
-  <link rel="icon" href="https://www.sumsnepal.com/images/logo.png" type="image/png" />
-
-  <!-- Simple CSS -->
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #ffffff;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    h1, h2, h3 {
-      color: #333;
-    }
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: bold;
-    }
-    input, select, textarea, button {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 16px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-    }
-    button {
-      background-color: #f97316; /* orange */
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 18px;
-    }
-    button:hover {
-      background-color: #ea580c;
-    }
-    .logo {
-      display: block;
-      margin: 0 auto 20px;
-      max-width: 200px;
-    }
-  </style>
+  <!-- Tailwind CDN (for same styling as React) -->
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <!-- Logo -->
-  <img src="https://www.sumsnepal.com/images/logo.png" alt="Sums Nepal Logo" class="logo">
+<body class="bg-white">
 
-  <div class="container">
-    <h1>Post Your Offer</h1>
-    <p>Share your organization's needs and connect with talented students and professionals.</p>
+  <section class="py-24 bg-white" id="business-page-form">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-black">
+          Post <span class="text-orange-500">Your</span> Offer
+        </h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Share your organization's needs and connect with talented students
+          and professionals who can help drive your mission forward.
+        </p>
+      </div>
 
-    <form id="offerForm">
-      <h3>Organization Details</h3>
-      <label for="orgName">Organization Name *</label>
-      <input type="text" id="orgName" name="orgName" placeholder="Enter organization name" required>
+      <div class="max-w-4xl mx-auto">
+        <div class="border border-gray-200 shadow-lg rounded-lg">
+          <div class="p-8">
+            <form class="space-y-8" id="offerForm">
+              <!-- Organization Details -->
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="orgName" class="text-sm font-medium text-gray-700 block">Organization Name *</label>
+                  <input id="orgName" name="orgName" type="text" placeholder="Enter organization name"
+                         class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 border-gray-300 focus:ring-orange-500 focus:border-orange-500" required />
+                  <p class="text-red-500 text-sm hidden" id="errorOrgName"></p>
+                </div>
+                <div class="space-y-2">
+                  <label for="orgType" class="text-sm font-medium text-gray-700 block">Organization Type *</label>
+                  <select id="orgType" name="orgType"
+                          class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 border-gray-300 focus:ring-orange-500 focus:border-orange-500" required>
+                    <option value="">Select organization type</option>
+                    <option value="private">Private</option>
+                    <option value="public">Public</option>
+                    <option value="ngo">NGO</option>
+                    <option value="social-enterprise">Social Enterprise</option>
+                    <option value="association">Association</option>
+                  </select>
+                  <p class="text-red-500 text-sm hidden" id="errorOrgType"></p>
+                </div>
+              </div>
 
-      <label for="orgType">Organization Type *</label>
-      <select id="orgType" name="orgType" required>
-        <option value="">Select organization type</option>
-        <option value="private">Private</option>
-        <option value="public">Public</option>
-        <option value="ngo">NGO</option>
-        <option value="social-enterprise">Social Enterprise</option>
-        <option value="association">Association</option>
-      </select>
+              <!-- Contact Information -->
+              <div>
+                <h3 class="text-lg font-semibold text-black mb-4">Contact Information</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                  <div class="space-y-2">
+                    <label for="contactName" class="text-sm font-medium text-gray-700 block">Contact Name *</label>
+                    <input id="contactName" name="contactName" type="text" placeholder="Your full name"
+                           class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 border-gray-300 focus:ring-orange-500 focus:border-orange-500" required />
+                    <p class="text-red-500 text-sm hidden" id="errorContactName"></p>
+                  </div>
+                  <div class="space-y-2">
+                    <label for="email" class="text-sm font-medium text-gray-700 block">Email *</label>
+                    <input id="email" name="email" type="email" placeholder="your.email@domain.com"
+                           class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 border-gray-300 focus:ring-orange-500 focus:border-orange-500" required />
+                    <p class="text-red-500 text-sm hidden" id="errorEmail"></p>
+                  </div>
+                  <div class="space-y-2">
+                    <label for="phone" class="text-sm font-medium text-gray-700 block">Phone *</label>
+                    <input id="phone" name="phone" type="tel" placeholder="+977-9800000000"
+                           class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 border-gray-300 focus:ring-orange-500 focus:border-orange-500" required />
+                    <p class="text-red-500 text-sm hidden" id="errorPhone"></p>
+                  </div>
+                </div>
+              </div>
 
-      <h3>Contact Information</h3>
-      <label for="contactName">Contact Name *</label>
-      <input type="text" id="contactName" name="contactName" placeholder="Your full name" required>
+              <!-- Opportunity Details -->
+              <div>
+                <h3 class="text-lg font-semibold text-black mb-4">Opportunity Details</h3>
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                  <div class="space-y-2">
+                    <label for="opportunityType" class="text-sm font-medium text-gray-700 block">Opportunity Type *</label>
+                    <select id="opportunityType" name="opportunityType"
+                            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 border-gray-300 focus:ring-orange-500 focus:border-orange-500" required>
+                      <option value="">Select opportunity type</option>
+                      <option value="internship">Internship</option>
+                      <option value="full-time">Full-time Position</option>
+                      <option value="part-time">Part-time Position</option>
+                      <option value="project">Project-based</option>
+                      <option value="volunteer">Volunteer</option>
+                    </select>
+                    <p class="text-red-500 text-sm hidden" id="errorOpportunityType"></p>
+                  </div>
+                  <div class="space-y-2">
+                    <label for="studentsWanted" class="text-sm font-medium text-gray-700 block">Number of Students Wanted</label>
+                    <input id="studentsWanted" name="studentsWanted" type="number" placeholder="e.g., 5"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" />
+                  </div>
+                </div>
+              </div>
 
-      <label for="email">Email *</label>
-      <input type="email" id="email" name="email" placeholder="your.email@domain.com" required>
+              <!-- Submit Button -->
+              <div class="text-center pt-6">
+                <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-12 py-3 rounded-full text-lg">
+                  Submit Offer
+                </button>
+              </div>
 
-      <label for="phone">Phone *</label>
-      <input type="tel" id="phone" name="phone" placeholder="+977-9800000000" required>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-      <h3>Opportunity Details</h3>
-      <label for="opportunityType">Opportunity Type *</label>
-      <select id="opportunityType" name="opportunityType" required>
-        <option value="">Select opportunity type</option>
-        <option value="internship">Internship</option>
-        <option value="full-time">Full-time Position</option>
-        <option value="part-time">Part-time Position</option>
-        <option value="project">Project-based</option>
-        <option value="volunteer">Volunteer</option>
-      </select>
-
-      <label for="studentsWanted">Number of Students Wanted</label>
-      <input type="number" id="studentsWanted" name="studentsWanted" placeholder="e.g., 5">
-
-      <label for="background">Required Background</label>
-      <input type="text" id="background" name="background">
-
-      <label for="duration">Duration</label>
-      <input type="text" id="duration" name="duration">
-
-      <label for="compensation">Compensation</label>
-      <input type="text" id="compensation" name="compensation">
-
-      <label for="location">Location</label>
-      <input type="text" id="location" name="location">
-
-      <label for="notes">Special Notes</label>
-      <textarea id="notes" name="notes" rows="4"></textarea>
-
-      <button type="submit">Submit Offer</button>
-    </form>
-  </div>
-
-  <!-- JavaScript -->
+  <!-- JS -->
   <script>
-    document.getElementById("offerForm").addEventListener("submit", function(e) {
+    const form = document.getElementById('offerForm');
+
+    form.addEventListener('submit', function(e) {
       e.preventDefault();
 
-      const orgName = encodeURIComponent(document.getElementById("orgName").value);
-      const orgType = encodeURIComponent(document.getElementById("orgType").value);
-      const contactName = encodeURIComponent(document.getElementById("contactName").value);
-      const email = encodeURIComponent(document.getElementById("email").value);
-      const phone = encodeURIComponent(document.getElementById("phone").value);
-      const opportunityType = encodeURIComponent(document.getElementById("opportunityType").value);
-      const studentsWanted = encodeURIComponent(document.getElementById("studentsWanted").value);
-      const background = encodeURIComponent(document.getElementById("background").value);
-      const duration = encodeURIComponent(document.getElementById("duration").value);
-      const compensation = encodeURIComponent(document.getElementById("compensation").value);
-      const location = encodeURIComponent(document.getElementById("location").value);
-      const notes = encodeURIComponent(document.getElementById("notes").value);
+      // Collect data
+      const formData = {
+        orgName: document.getElementById('orgName').value.trim(),
+        orgType: document.getElementById('orgType').value,
+        contactName: document.getElementById('contactName').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        opportunityType: document.getElementById('opportunityType').value,
+        studentsWanted: document.getElementById('studentsWanted').value.trim(),
+      };
 
-      const subject = `New Offer Submission from ${orgName}`;
-      const body = `Organization Name: ${orgName}
-Organization Type: ${orgType}
-Contact Name: ${contactName}
-Email: ${email}
-Phone: ${phone}
-Opportunity Type: ${opportunityType}
-Number of Students Wanted: ${studentsWanted}
-Required Background: ${background}
-Duration: ${duration}
-Compensation: ${compensation}
-Location: ${location}
-Special Notes: ${notes}`;
+      // Basic validation
+      let hasError = false;
+      ['orgName','orgType','contactName','email','phone','opportunityType'].forEach(field=>{
+        const errorEl = document.getElementById('error'+field.charAt(0).toUpperCase()+field.slice(1));
+        if(!formData[field]){
+          errorEl.textContent = field + ' is required';
+          errorEl.classList.remove('hidden');
+          hasError = true;
+        } else {
+          errorEl.textContent = '';
+          errorEl.classList.add('hidden');
+        }
+      });
 
-      window.location.href = `mailto:connect@sumsnepal.com?subject=${subject}&body=${body}`;
-      alert("Your offer form is ready to send via email!");
+      if(hasError) return;
+
+      // Prepare mailto
+      const subject = encodeURIComponent(`New Offer Submission from ${formData.orgName}`);
+      let body = `Organization Name: ${formData.orgName}
+Organization Type: ${formData.orgType}
+Contact Name: ${formData.contactName}
+Email: ${formData.email}
+Phone: ${formData.phone}
+Opportunity Type: ${formData.opportunityType}
+Number of Students Wanted: ${formData.studentsWanted}`;
+
+      window.location.href = `mailto:connect@sumsnepal.com?subject=${subject}&body=${encodeURIComponent(body)}`;
     });
   </script>
+
 </body>
 </html>
