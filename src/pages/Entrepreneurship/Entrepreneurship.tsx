@@ -1,3 +1,4 @@
+import { EntrepreneurshipFrom } from "../../components"
 import { CTASection, EntrepreneurshipHero, OurProcess, StudentSuccessStories, UltimateLaunchpad } from "../../sections"
 
 
@@ -10,6 +11,7 @@ export default function Entrepreneurship() {
      {/* <StartupIdeaGenerator/> */}
      <StudentSuccessStories/>
      {/* <CTASection/> */}
+     <EntrepreneurshipFrom />
     </main>
   )
 }

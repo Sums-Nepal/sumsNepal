@@ -49,7 +49,15 @@ const EntrepreneurshipHero = () => {
             </p>
 
             <Button
-              onClick={() => setIsOpenGeneralForm(true)}
+              onClick={() => {
+                const element = document.getElementById("en-form");
+                if (element) {
+                  element.scrollIntoView({
+                    behavior: "smooth", // Smooth scroll
+                    block: "start", // Align to the top of the container
+                  });
+                }
+              }}
               className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-8 py-4 text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl hover:shadow-orange-500/25 transition-all duration-300 flex items-center gap-2"
             >
               <Rocket size={20} />

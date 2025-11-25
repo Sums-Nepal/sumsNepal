@@ -123,7 +123,15 @@ const StudentSuccessStories = () => {
             </p>
             <Button
               className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 w-full"
-              onClick={() => setShowtheGeneralForm(true)}
+              onClick={() => {
+                const element = document.getElementById("en-form");
+                if (element) {
+                  element.scrollIntoView({
+                    behavior: "smooth", // Smooth scroll
+                    block: "start", // Align to the top of the container
+                  });
+                }
+              }}
             >
               Apply Now
               <ArrowRight className="w-4 h-4 ml-2" />
