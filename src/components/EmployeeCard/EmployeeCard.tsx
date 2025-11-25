@@ -63,13 +63,13 @@ export default function EmployeeCard({ employee }: { employee: Employee }) {
           }`}
         >
           {/* Phone */}
-          <a
+          {/* <a
             href={`tel:${employee.contact}`}
             className="flex items-center gap-3 p-2.5 rounded-lg bg-orange-50 hover:bg-orange-100 transition-all group/link"
           >
             <Phone className="w-4 h-4 text-orange-500 flex-shrink-0" />
             <span className="text-sm text-foreground truncate font-medium">{employee.contact}</span>
-          </a>
+          </a> */}
 
           {/* Email */}
           <a
