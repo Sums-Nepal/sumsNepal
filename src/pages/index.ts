@@ -7,4 +7,5 @@ import Business from "./Business/Business";
 import Entrepreneurship from "./Entrepreneurship/Entrepreneurship";
 import ProjectGallery from "./Project/ProjectGallery";
 import City from "./City/City";
-export { Home, Academia, Student, PrivacyAndPolicies, ProjectGallery,NotFoundPage, Business, Entrepreneurship, City };
+import ContactForm from "./ContactForm/ContactForm";
+export { Home, Academia, Student, PrivacyAndPolicies, ProjectGallery,NotFoundPage, Business, Entrepreneurship, City,ContactForm };

@@ -55,7 +55,7 @@ export function ContactSection() {
     );
 
     // Opens user's default mail client
-    window.location.href = `mailto:info@connect@sumsnepal.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:connect@sumsnepal.com?subject=${subject}&body=${body}`;
   };
 
   return (

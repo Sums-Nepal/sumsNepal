@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./Layout";
-import { Academia, Business, City, Entrepreneurship, Home, NotFoundPage, PrivacyAndPolicies, ProjectGallery, Student } from "./pages";
+import { Academia, Business, City, ContactForm, Entrepreneurship, Home, NotFoundPage, PrivacyAndPolicies, ProjectGallery, Student } from "./pages";
 
 
 const App = () => {
@@ -19,6 +19,7 @@ const App = () => {
             <Route path="/project" element={<ProjectGallery/>} />
             <Route path="*" element={<NotFoundPage/>} />
             <Route path="/city" element={<City/>} />
+            <Route path="/post-your-offer" element={<ContactForm/>} />
           </Route>
         </Routes>
       </BrowserRouter>
