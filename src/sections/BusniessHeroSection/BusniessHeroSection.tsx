@@ -4,7 +4,7 @@ import { Button, GeneralForm } from "../../components";
 
 const BusinessHero = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [isOpenGeneralForm, setIsOpenGeneralForm] = useState<boolean>(false);
+  // const [isOpenGeneralForm, setIsOpenGeneralForm] = useState<boolean>(false);
 
   useEffect(() => {
     setIsVisible(true);
@@ -13,7 +13,7 @@ const BusinessHero = () => {
   return (
     <section className="relative min-h-screen bg-slate-950 overflow-hidden pt-20 lg:pt-0">
       {/* Animated background */}
-    <div className="absolute inset-0">
+      <div className="absolute inset-0">
         <img
           className="object-cover w-full h-full filter blur-xs" // Add blur class here
           src="./images/business-hero.jpeg"
@@ -22,7 +22,6 @@ const BusinessHero = () => {
         {/* Optional dark overlay to further enhance text visibility */}
         <div className="absolute inset-0 bg-black opacity-50"></div>
       </div>
-
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 py-20 lg:py-32">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -52,7 +51,18 @@ const BusinessHero = () => {
               together.
             </p>
 
-            <Button onClick={() => setIsOpenGeneralForm(true)} className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-8 py-4 text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl hover:shadow-orange-500/25 transition-all duration-300">
+            <Button
+              onClick={() => {
+                const element = document.getElementById("business-page-form");
+                if (element) {
+                  element.scrollIntoView({
+                    behavior: "smooth", // Smooth scroll
+                    block: "start", // Align to the top of the container
+                  });
+                }
+              }}
+              className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-8 py-4 text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl hover:shadow-orange-500/25 transition-all duration-300"
+            >
               Join Ecosystem
             </Button>
 
@@ -109,7 +119,7 @@ const BusinessHero = () => {
         }
       `}</style>
 
-      <GeneralForm visible={isOpenGeneralForm} onClose={() => setIsOpenGeneralForm(false)}/>
+      {/* <GeneralForm visible={isOpenGeneralForm} onClose={() => setIsOpenGeneralForm(false)}/> */}
     </section>
   );
 };

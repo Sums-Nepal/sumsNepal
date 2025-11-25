@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { Button } from "../../components";
@@ -15,7 +14,11 @@ export function ContactSection() {
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: "" })); // clear error on change
@@ -27,7 +30,8 @@ export function ContactSection() {
     if (!formData.role) newErrors.role = "Role is required";
     if (!formData.city.trim()) newErrors.city = "City is required";
     if (!formData.email.trim()) newErrors.email = "Email is required";
-    if (!formData.partnerInterest) newErrors.partnerInterest = "Project type is required";
+    if (!formData.partnerInterest)
+      newErrors.partnerInterest = "Project type is required";
     if (!formData.message.trim()) newErrors.message = "Message is required";
     return newErrors;
   };
@@ -43,11 +47,11 @@ export function ContactSection() {
     const subject = encodeURIComponent(`New City Contact: ${formData.name}`);
     const body = encodeURIComponent(
       `Name: ${formData.name}\n` +
-      `Role: ${formData.role}\n` +
-      `City: ${formData.city}\n` +
-      `Email: ${formData.email}\n` +
-      `Project Type: ${formData.partnerInterest}\n` +
-      `Message: ${formData.message}`
+        `Role: ${formData.role}\n` +
+        `City: ${formData.city}\n` +
+        `Email: ${formData.email}\n` +
+        `Project Type: ${formData.partnerInterest}\n` +
+        `Message: ${formData.message}`
     );
 
     // Opens user's default mail client
@@ -59,8 +63,13 @@ export function ContactSection() {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-3">Let's Build <span className="text-orange-500">Your City's </span>Future</h2>
-          <p className="text-gray-600">Share your vision, and we'll help make it reality.</p>
+          <h2 className="text-4xl font-bold mb-3">
+            Let's Build <span className="text-orange-500">Your City's </span>
+            Future
+          </h2>
+          <p className="text-gray-600">
+            Share your vision, and we'll help make it reality.
+          </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
@@ -77,10 +86,14 @@ export function ContactSection() {
                 value={formData.name}
                 onChange={handleChange}
                 className={`w-full border rounded-lg px-4 py-3 focus:ring-2 outline-none ${
-                  errors.name ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-orange-500"
+                  errors.name
+                    ? "border-red-500 focus:ring-red-500"
+                    : "border-gray-300 focus:ring-orange-500"
                 }`}
               />
-              {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+              {errors.name && (
+                <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+              )}
             </div>
 
             <div>
@@ -89,16 +102,22 @@ export function ContactSection() {
                 value={formData.role}
                 onChange={handleChange}
                 className={`w-full border rounded-lg px-4 py-3 focus:ring-2 outline-none ${
-                  errors.role ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-orange-500"
+                  errors.role
+                    ? "border-red-500 focus:ring-red-500"
+                    : "border-gray-300 focus:ring-orange-500"
                 }`}
               >
-                <option value="" disabled>Select your role</option>
+                <option value="" disabled>
+                  Select your role
+                </option>
                 <option value="city-leader">City Leader</option>
                 <option value="innovator">Innovator</option>
                 <option value="citizen">Citizen</option>
                 <option value="business">Business Owner</option>
               </select>
-              {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role}</p>}
+              {errors.role && (
+                <p className="text-red-500 text-sm mt-1">{errors.role}</p>
+              )}
             </div>
 
             <div>
@@ -109,10 +128,14 @@ export function ContactSection() {
                 value={formData.city}
                 onChange={handleChange}
                 className={`w-full border rounded-lg px-4 py-3 focus:ring-2 outline-none ${
-                  errors.city ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-orange-500"
+                  errors.city
+                    ? "border-red-500 focus:ring-red-500"
+                    : "border-gray-300 focus:ring-orange-500"
                 }`}
               />
-              {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
+              {errors.city && (
+                <p className="text-red-500 text-sm mt-1">{errors.city}</p>
+              )}
             </div>
 
             <div>
@@ -123,10 +146,14 @@ export function ContactSection() {
                 value={formData.email}
                 onChange={handleChange}
                 className={`w-full border rounded-lg px-4 py-3 focus:ring-2 outline-none ${
-                  errors.email ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-orange-500"
+                  errors.email
+                    ? "border-red-500 focus:ring-red-500"
+                    : "border-gray-300 focus:ring-orange-500"
                 }`}
               />
-              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+              )}
             </div>
 
             <div>
@@ -135,16 +162,24 @@ export function ContactSection() {
                 value={formData.partnerInterest}
                 onChange={handleChange}
                 className={`w-full border rounded-lg px-4 py-3 focus:ring-2 outline-none ${
-                  errors.partnerInterest ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-orange-500"
+                  errors.partnerInterest
+                    ? "border-red-500 focus:ring-red-500"
+                    : "border-gray-300 focus:ring-orange-500"
                 }`}
               >
-                <option value="" disabled>Select project type</option>
+                <option value="" disabled>
+                  Select project type
+                </option>
                 <option value="smart-mobility">Smart Mobility</option>
                 <option value="green-energy">Green Energy</option>
                 <option value="digital-health">Digital Healthcare</option>
                 <option value="education">Education & Skills</option>
               </select>
-              {errors.partnerInterest && <p className="text-red-500 text-sm mt-1">{errors.partnerInterest}</p>}
+              {errors.partnerInterest && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.partnerInterest}
+                </p>
+              )}
             </div>
 
             <div>
@@ -155,10 +190,14 @@ export function ContactSection() {
                 onChange={handleChange}
                 rows={5}
                 className={`w-full border rounded-lg px-4 py-3 focus:ring-2 outline-none resize-none ${
-                  errors.message ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-orange-500"
+                  errors.message
+                    ? "border-red-500 focus:ring-red-500"
+                    : "border-gray-300 focus:ring-orange-500"
                 }`}
               />
-              {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
+              {errors.message && (
+                <p className="text-red-500 text-sm mt-1">{errors.message}</p>
+              )}
             </div>
 
             <Button
@@ -177,7 +216,9 @@ export function ContactSection() {
           <div className="space-y-8">
             {/* Map */}
             <div>
-              <h3 className="text-2xl font-bold mb-4">Partner Cities in Nepal</h3>
+              <h3 className="text-2xl font-bold mb-4">
+                Partner Cities in Nepal
+              </h3>
               <div className="relative h-64 bg-gray-200 rounded-lg overflow-hidden">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d56516.27776841053!2d85.29111107910156!3d27.70903099999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb198a307baabf%3A0xb5137c1bf18db1ea!2sKathmandu%2044600%2C%20Nepal!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus"
@@ -211,7 +252,9 @@ export function ContactSection() {
               </div>
 
               <p className="text-sm text-gray-500 pt-4 border-t">
-                <span className="text-orange-500 font-medium">Privacy Note:</span>{" "}
+                <span className="text-orange-500 font-medium">
+                  Privacy Note:
+                </span>{" "}
                 Your data is safe and used only for collaboration purposes.
               </p>
             </div>

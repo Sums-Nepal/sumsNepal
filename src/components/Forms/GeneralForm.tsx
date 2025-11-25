@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Button from "../Button/Button";
 
 const interests = [
   { id: "entrepreneurship", label: "Entrepreneurship" },
@@ -103,12 +104,12 @@ export default function GeneralForm({ visible, onClose }: GeneralFormProps) {
         className="relative w-full max-w-2xl  bg-gradient-to-b from-slate-800/80 to-slate-900/80 backdrop-blur-xl rounded-2xl p-8 md:p-10 border border-orange-500/20 shadow-2xl"
       >
         {/* Close Button */}
-        <button
+        <Button
           onClick={onClose}
           className="absolute top-4 right-4 text-white text-2xl font-bold hover:text-orange-500 transition-colors"
         >
           ×
-        </button>
+        </Button>
 
         {/* Success/Error Messages */}
         {submitted && (
@@ -198,7 +199,7 @@ export default function GeneralForm({ visible, onClose }: GeneralFormProps) {
           </div>
 
           <div>
-            <button
+            <Button
               type="submit"
               disabled={loading || formData.interests.length === 0}
               className="w-full px-6 py-3 bg-gradient-to-r from-orange-500 via-orange-600 to-orange-700 text-white font-semibold rounded-lg hover:shadow-xl hover:shadow-orange-500/50 hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0 flex items-center justify-center gap-2"
@@ -214,7 +215,7 @@ export default function GeneralForm({ visible, onClose }: GeneralFormProps) {
                   <span>→</span>
                 </>
               )}
-            </button>
+            </Button>
           </div>
         </form>
 

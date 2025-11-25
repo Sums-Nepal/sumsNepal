@@ -68,7 +68,7 @@ Special Notes: ${formData.notes}`
   };
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-24 bg-white" id="business-page-form">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl lg:text-4xl font-bold mb-4 text-black">
@@ -80,7 +80,7 @@ Special Notes: ${formData.notes}`
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto" >
           <div className="border border-gray-200 shadow-lg rounded-lg">
             <div className="p-8">
               <form className="space-y-8" onSubmit={handleSubmit}>
