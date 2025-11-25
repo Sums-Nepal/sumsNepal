@@ -8,4 +8,17 @@ import Entrepreneurship from "./Entrepreneurship/Entrepreneurship";
 import ProjectGallery from "./Project/ProjectGallery";
 import City from "./City/City";
 import ContactForm from "./ContactForm/ContactForm";
-export { Home, Academia, Student, PrivacyAndPolicies, ProjectGallery,NotFoundPage, Business, Entrepreneurship, City,ContactForm };
+import Team from "./Team/Team";
+export {
+  Home,
+  Academia,
+  Student,
+  PrivacyAndPolicies,
+  ProjectGallery,
+  NotFoundPage,
+  Business,
+  Entrepreneurship,
+  City,
+  ContactForm,
+  Team,
+};

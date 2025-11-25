@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./Layout";
-import { Academia, Business, City, ContactForm, Entrepreneurship, Home, NotFoundPage, PrivacyAndPolicies, ProjectGallery, Student } from "./pages";
+import { Academia, Business, City, ContactForm, Entrepreneurship, Home, NotFoundPage, PrivacyAndPolicies, ProjectGallery, Student, Team } from "./pages";
 
 
 const App = () => {
@@ -20,6 +20,7 @@ const App = () => {
             <Route path="*" element={<NotFoundPage/>} />
             <Route path="/city" element={<City/>} />
             <Route path="/post-your-offer" element={<ContactForm/>} />
+            <Route path="/our-teams" element={<Team/>} />
           </Route>
         </Routes>
       </BrowserRouter>
