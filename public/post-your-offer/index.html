@@ -1,27 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Post Your Offer – Sums Nepal</title>
 
-    <title>Post Your Offer – Sums Nepal</title>
+  <!-- Open Graph / Social Meta -->
+  <meta property="og:title" content="Post Your Offer – Sums Nepal" />
+  <meta property="og:description" content="Submit your business offer through this form. Sums Nepal Business Platform." />
+  <meta property="og:image" content="https://www.sumsnepal.com/images/form-preview.jpg" />
+  <meta property="og:url" content="https://www.sumsnepal.com/post-your-offer" />
+  <meta property="og:type" content="website" />
 
-    <!-- Open Graph -->
-    <meta property="og:title" content="Post Your Offer – Sums Nepal" />
-    <meta property="og:description" content="Submit your business offer through this form." />
-    <meta property="og:image" content="https://www.sumsnepal.com/images/form-preview.jpg" />
-    <meta property="og:url" content="https://www.sumsnepal.com/post-your-offer" />
-    <meta property="og:type" content="website" />
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Post Your Offer – Sums Nepal" />
+  <meta name="twitter:description" content="Submit your business offer through this form." />
+  <meta name="twitter:image" content="https://www.sumsnepal.com/images/form-preview.jpg" />
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Post Your Offer – Sums Nepal" />
-    <meta name="twitter:description" content="Submit your business offer through this form." />
-    <meta name="twitter:image" content="https://www.sumsnepal.com/images/form-preview.jpg" />
+  <!-- SEO -->
+  <meta name="description" content="Share your business offer with Sums Nepal using this quick form." />
 
-    <!-- Redirect into React app -->
-    <!-- <meta http-equiv="refresh" content="0;url=/post-your-offer" /> -->
-  </head>
-  <body>
-    gaslkdngkajlsdgnsd
-  </body>
+  <!-- Favicon -->
+  <link rel="icon" href="https://www.sumsnepal.com/images/logo.png" type="image/png" />
+
+  <!-- Simple CSS -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1, h2, h3 {
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+    input, select, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button {
+      background-color: #f97316; /* orange */
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    button:hover {
+      background-color: #ea580c;
+    }
+    .logo {
+      display: block;
+      margin: 0 auto 20px;
+      max-width: 200px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Logo -->
+  <img src="https://www.sumsnepal.com/images/logo.png" alt="Sums Nepal Logo" class="logo">
+
+  <div class="container">
+    <h1>Post Your Offer</h1>
+    <p>Share your organization's needs and connect with talented students and professionals.</p>
+
+    <form id="offerForm">
+      <h3>Organization Details</h3>
+      <label for="orgName">Organization Name *</label>
+      <input type="text" id="orgName" name="orgName" placeholder="Enter organization name" required>
+
+      <label for="orgType">Organization Type *</label>
+      <select id="orgType" name="orgType" required>
+        <option value="">Select organization type</option>
+        <option value="private">Private</option>
+        <option value="public">Public</option>
+        <option value="ngo">NGO</option>
+        <option value="social-enterprise">Social Enterprise</option>
+        <option value="association">Association</option>
+      </select>
+
+      <h3>Contact Information</h3>
+      <label for="contactName">Contact Name *</label>
+      <input type="text" id="contactName" name="contactName" placeholder="Your full name" required>
+
+      <label for="email">Email *</label>
+      <input type="email" id="email" name="email" placeholder="your.email@domain.com" required>
+
+      <label for="phone">Phone *</label>
+      <input type="tel" id="phone" name="phone" placeholder="+977-9800000000" required>
+
+      <h3>Opportunity Details</h3>
+      <label for="opportunityType">Opportunity Type *</label>
+      <select id="opportunityType" name="opportunityType" required>
+        <option value="">Select opportunity type</option>
+        <option value="internship">Internship</option>
+        <option value="full-time">Full-time Position</option>
+        <option value="part-time">Part-time Position</option>
+        <option value="project">Project-based</option>
+        <option value="volunteer">Volunteer</option>
+      </select>
+
+      <label for="studentsWanted">Number of Students Wanted</label>
+      <input type="number" id="studentsWanted" name="studentsWanted" placeholder="e.g., 5">
+
+      <label for="background">Required Background</label>
+      <input type="text" id="background" name="background">
+
+      <label for="duration">Duration</label>
+      <input type="text" id="duration" name="duration">
+
+      <label for="compensation">Compensation</label>
+      <input type="text" id="compensation" name="compensation">
+
+      <label for="location">Location</label>
+      <input type="text" id="location" name="location">
+
+      <label for="notes">Special Notes</label>
+      <textarea id="notes" name="notes" rows="4"></textarea>
+
+      <button type="submit">Submit Offer</button>
+    </form>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    document.getElementById("offerForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const orgName = encodeURIComponent(document.getElementById("orgName").value);
+      const orgType = encodeURIComponent(document.getElementById("orgType").value);
+      const contactName = encodeURIComponent(document.getElementById("contactName").value);
+      const email = encodeURIComponent(document.getElementById("email").value);
+      const phone = encodeURIComponent(document.getElementById("phone").value);
+      const opportunityType = encodeURIComponent(document.getElementById("opportunityType").value);
+      const studentsWanted = encodeURIComponent(document.getElementById("studentsWanted").value);
+      const background = encodeURIComponent(document.getElementById("background").value);
+      const duration = encodeURIComponent(document.getElementById("duration").value);
+      const compensation = encodeURIComponent(document.getElementById("compensation").value);
+      const location = encodeURIComponent(document.getElementById("location").value);
+      const notes = encodeURIComponent(document.getElementById("notes").value);
+
+      const subject = `New Offer Submission from ${orgName}`;
+      const body = `Organization Name: ${orgName}
+Organization Type: ${orgType}
+Contact Name: ${contactName}
+Email: ${email}
+Phone: ${phone}
+Opportunity Type: ${opportunityType}
+Number of Students Wanted: ${studentsWanted}
+Required Background: ${background}
+Duration: ${duration}
+Compensation: ${compensation}
+Location: ${location}
+Special Notes: ${notes}`;
+
+      window.location.href = `mailto:connect@sumsnepal.com?subject=${subject}&body=${body}`;
+      alert("Your offer form is ready to send via email!");
+    });
+  </script>
+</body>
 </html>
