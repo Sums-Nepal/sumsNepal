@@ -1,0 +1,280 @@
+import {
+  Download,
+  ExternalLink,
+  MapPin,
+  FileText,
+  Zap,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "../../components/ui/dialog";
+
+import { useState } from "react";
+
+import { Document, Page, pdfjs } from "react-pdf";
+import PdfViewer from "../../components/PDFViewer/PDFViewer";
+
+// import "react-pdf/dist/Page/TextLayer.css";
+// Set up PDF.js worker
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url,
+).toString();
+
+export default function ReferencesPage() {
+  const [selectedProject, setSelectedProject] = useState<number | null>(null);
+  const [numPages, setNumPages] = useState<number>(0);
+  const [pageNumber, setPageNumber] = useState<number>(1);
+
+  function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
+    setNumPages(numPages);
+    setPageNumber(1);
+  }
+
+  const projects = [
+    {
+      id: 1,
+      title: "International Mobility and Entrepreneurships",
+      institution: "TU Delft",
+      location: "Netherlands",
+      logo: "./images/tu-delf.png",
+      link: "https://youtu.be/1eo8AaciiGU",
+      description:
+        "Program focused on international mobility and entrepreneurial development initiatives.",
+      // pdfUrl: "./files/tu.pdf", 
+      highlights: [
+        "International Exchange",
+        "Entrepreneurship Training",
+        "Innovation Focus",
+      ],
+    },
+    {
+      id: 2,
+      title: "Workshops on Smart Metering & Net Metering",
+      institution: "Kathmandu University",
+      location: "Dhulikhel, Nepal",
+      logo: "./images/logos/kulogo.png",
+      description:
+        "Technical training workshops covering smart metering technologies and net metering systems implementation.",
+      pdfUrl: "./files/tu.pdf", 
+
+      highlights: ["Smart Metering", "Net Metering", "Technical Training"],
+    },
+    {
+      id: 3,
+      title: "Saransa Catalyst Project",
+      institution: "Research Initiative",
+      location: "National",
+      logo: "./images/c-3.jpeg",
+      description:
+        "Research and development project advancing sustainable energy solutions.",
+      pdfUrl: "./files/saransa.pdf", 
+      highlights: ["Sustainable Energy", "Research", "Innovation"],
+    },
+     {
+      id: 4,
+      title: "SINCOE Project",
+      institution: "Research Initiative",
+      location: "International",
+      link: "https://sincoe.blogs.upv.es/archives/792",
+      logo: "./images/logos/SINCOE-logo.gif",
+      description:"Erasmus+ project enhancing digital education innovation Piloted Cogknit for innovation skills assessmen",
+      // pdfUrl: "./files/saransa.pdf", 
+      highlights: ["Sustainable Energy", "Research", "Innovation"],
+    },
+  ];
+
+  return (
+    <main className="min-h-screen py-16 px-4">
+      <div className="max-w-5xl mx-auto">
+        {/* Header Section */}
+        <div className="mb-16">
+          <div className="flex items-baseline gap-2 mb-4">
+            <span className="text-orange-500 text-sm font-semibold tracking-widest uppercase">
+              SumsNepal Work
+            </span>
+            <div className="flex-1 h-px bg-gradient-to-r from-orange-500 to-transparent"></div>
+          </div>
+          <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-4 text-balance">
+            References & <span className="text-orange-500">Portfolio</span>
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl">
+            A collection of academic partnerships and professional projects
+            spanning international institutions and innovative research
+            initiatives.
+          </p>
+        </div>
+
+        {/* Projects Grid */}
+        <div className="grid gap-6 md:gap-8 mb-12">
+          {projects.map((project) => (
+            <div
+              key={project.id}
+              className="group card "
+            >
+              {/* Gradient overlay on hover */}
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/0 to-orange-500/0 group-hover:from-orange-500/5 group-hover:to-orange-500/10 transition-all duration-300"></div>
+
+              <div className="relative p-8 md:p-10">
+                {/* Top Section with Logo and Links */}
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-8">
+                  <div className="flex gap-6 flex-1">
+                    {/* University Logo */}
+                    <div className="flex-shrink-0">
+                      <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-orange-400 to-orange-600 p-1 flex items-center justify-center shadow-lg">
+                        <img
+                          src={project.logo || "/placeholder.svg"}
+                          alt={`${project.institution} logo`}
+                          className="w-full h-full object-contain rounded-md bg-white/10"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Project Info */}
+                    <div className="flex-1">
+                      <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2 group-hover:text-orange-600 transition-colors">
+                        {project.title}
+                      </h2>
+                      <div className="flex flex-col gap-2 text-sm">
+                        <div className="flex items-center gap-2">
+                          <Zap className="w-4 h-4 text-orange-500" />
+                          <span className="font-semibold text-orange-600 dark:text-orange-400">
+                            {project.institution}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 text-muted-foreground">
+                          <MapPin className="w-4 h-4 text-orange-500" />
+                          <span>{project.location}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-3 flex-wrap">
+                    {project.link && (
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-orange-500/10 hover:bg-orange-500/20 text-orange-600 dark:text-orange-400 font-medium transition-colors"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                        <span className="hidden sm:inline">View</span>
+                      </a>
+                    )}
+                    {
+                      project.pdfUrl ? <button
+                      onClick={() => setSelectedProject(project.id)}
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-medium transition-colors"
+                    >
+                      <FileText className="w-4 h-4" />
+                      <span className="hidden sm:inline">PDF</span>
+                    </button> : ""
+                    }
+                  </div>
+                </div>
+
+                {/* Description */}
+                <p className="text-muted-foreground mb-6 leading-relaxed">
+                  {project.description}
+                </p>
+
+                {/* Highlights/Tags */}
+                <div className="flex flex-wrap gap-2">
+                  {project.highlights.map((highlight) => (
+                    <span
+                      key={highlight}
+                      className="px-3 py-1 rounded-full  text-orange-500 text-xs font-medium"
+                    >
+                      {highlight}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* PDF Preview Modal with Viewer */}
+      <Dialog
+        open={selectedProject !== null}
+        onOpenChange={(open) => !open && setSelectedProject(null)}
+      >
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white border-0">
+          <DialogHeader>
+            <DialogTitle className="text-orange-600 dark:text-orange-400">
+              {projects.find((p) => p.id === selectedProject)?.title}
+            </DialogTitle>
+            <DialogDescription>
+              Document for{" "}
+              {projects.find((p) => p.id === selectedProject)?.institution}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="bg-muted/50 rounded-lg p-4 md:p-6 flex flex-col items-center gap-4">
+            <div className="w-full bg-white text-white dark:bg-slate-900 rounded-lg overflow-auto max-h-96 flex items-center justify-center">
+              {projects.find((p) => p.id === selectedProject)?.pdfUrl &&
+              projects.find((p) => p.id === selectedProject)?.pdfUrl !== "#" ? (
+             <PdfViewer pdfUrl={projects.find((p) => p.id === selectedProject)?.pdfUrl}/>
+              ) : (
+                <div className="p-8 text-center">
+                  <FileText className="w-16 h-16 text-orange-500 mx-auto mb-4" />
+                  <p className="font-semibold text-foreground mb-2">
+                    {projects.find((p) => p.id === selectedProject)?.title}.pdf
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Add a PDF URL to preview documents
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Page Navigation */}
+            {numPages > 0 && (
+              <div className="flex items-center gap-4 justify-center w-full">
+                <button
+                  onClick={() => setPageNumber(Math.max(1, pageNumber - 1))}
+                  disabled={pageNumber <= 1}
+                  className="p-2 rounded-lg hover:bg-orange-500/20 text-orange-600 dark:text-orange-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <span className="text-sm font-medium text-foreground">
+                  Page {pageNumber} of {numPages}
+                </span>
+                <button
+                  onClick={() =>
+                    setPageNumber(Math.min(numPages, pageNumber + 1))
+                  }
+                  disabled={pageNumber >= numPages}
+                  className="p-2 rounded-lg hover:bg-orange-500/20 text-orange-600 dark:text-orange-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            )}
+
+            {/* Download Button */}
+            <a
+              href={projects.find((p) => p.id === selectedProject)?.pdfUrl}
+              download
+              className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors"
+            >
+              <Download className="w-4 h-4" />
+              Download PDF
+            </a>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </main>
+  );
+}
