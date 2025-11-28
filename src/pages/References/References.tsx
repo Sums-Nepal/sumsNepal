@@ -42,12 +42,15 @@ export default function ReferencesPage() {
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [projects, setProjects] = useState<Record<string, any>[]>([...refrencesData]);
+  const [projects, setProjects] = useState<Record<string, any>[]>([
+    ...refrencesData,
+  ]);
   const [filter, setFilter] = useState<string>("All");
   const navigate = useNavigate();
 
-  const [filterProjects, setFilterProject] =
-    useState<Record<string, any>[]>([...refrencesData]);
+  const [filterProjects, setFilterProject] = useState<Record<string, any>[]>([
+    ...refrencesData,
+  ]);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);
@@ -80,43 +83,50 @@ export default function ReferencesPage() {
         {/* Projects Grid */}
         <div className="grid gap-6 md:gap-8 mb-12">
           {/* Navs filters */}
-          <div className="flex gap-10 bg-white z-50 sticky top-16 rounded-2xl">
-            {navsFilters.map((currentNav, index) => {
-              const isActive = filter === currentNav;
-              return (
-                <Button
-                style={{fontWeight: "500"}}
-                  className={`${
-                    isActive
-                      ? "bg-orange-500 text-white"
-                      : "bg-orange-100 text-orange-600 hover:bg-orange-200"
-                  } transition-colors md:font-bold h-10 w-fit`}
-                  onClick={() => {
-                    // Let's filter
-                    if (currentNav === "All") {
-                      setFilterProject(projects || []);
-                    } else if (currentNav === "International") {
-                      setFilterProject(
-                        (projects || []).filter(
-                          (currentProject) => currentProject.filter === "In"
-                        )
-                      );
-                    } else {
-                      setFilterProject(
-                        (projects || []).filter(
-                          (currentProject) => currentProject.filter === "Na"
-                        )
-                      );
-                    }
+          <div className="grid gap-6 md:gap-8 mb-12">
+            {/* Filter Navbar */}
+            <div className="sticky top-16 z-50 bg-white/80 backdrop-blur-md py-3 px-4 rounded-2xl shadow-md">
+              <div className="flex flex-wrap items-center gap-3 md:gap-5 justify-center">
+                {navsFilters.map((currentNav, index) => {
+                  const isActive = filter === currentNav;
 
-                    setFilter(currentNav);
-                  }}
-                >
-                  {currentNav}
-                </Button>
-              );
-            })}
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        if (currentNav === "All") {
+                          setFilterProject(projects || []);
+                        } else if (currentNav === "International") {
+                          setFilterProject(
+                            (projects || []).filter(
+                              (currentProject) => currentProject.filter === "In"
+                            )
+                          );
+                        } else {
+                          setFilterProject(
+                            (projects || []).filter(
+                              (currentProject) => currentProject.filter === "Na"
+                            )
+                          );
+                        }
+                        setFilter(currentNav);
+                      }}
+                      className={`px-5 py-2.5 rounded-full text-sm md:text-base font-medium transition-all 
+              ${
+                isActive
+                  ? "bg-orange-500 text-white shadow-lg scale-105"
+                  : "bg-orange-100 text-orange-600 hover:bg-orange-200 hover:scale-105"
+              }
+            `}
+                    >
+                      {currentNav}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
+
           {filterProjects.map((project: Record<string, any>, index: number) => (
             <div
               key={project.id}
