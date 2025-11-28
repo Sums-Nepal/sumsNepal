@@ -63,7 +63,7 @@ export default function ReferencesPage() {
     <main className="min-h-screen py-16 px-4">
       <div className="max-w-5xl mx-auto">
         {/* Header Section */}
-        <div className="mb-16">
+        <div className="mb-10">
           <div className="flex items-baseline gap-2 mb-4">
             <span className="text-orange-500 text-sm font-semibold tracking-widest uppercase">
               SumsNepal Work
