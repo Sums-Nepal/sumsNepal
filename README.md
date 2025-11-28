@@ -22,4 +22,4 @@ We aim to connect **students, colleges, companies, and cities** for better colla
 
 Clone the repository:  
 ```bash
-git clone https://github.com/cogknitFI/sumsNepal.git
+git clone https://github.com/Sums-Nepal/sumsNepal.git
