@@ -42,7 +42,17 @@ const PdfViewer = ({ pdfUrl, pageNumbers }: any) => {
   }, [pdfUrl, setIsLoading]);
 
   if (isLoading) {
-    return <div className="py-8 h-48">Loading PDF....</div>;
+    return <div className="flex flex-col items-center justify-center h-48 space-y-4">
+  {/* Spinner */}
+  <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+
+{/* Loading Text */}
+
+  <div className="text-gray-700 font-medium text-lg animate-pulse">
+    Loading PDF...
+  </div>
+</div>
+
   }
 
   return <div dangerouslySetInnerHTML={{ __html: htmlContent }} />;

@@ -34,6 +34,7 @@ import FeatureCards from "./FeatureCards/FeatureCards";
 import FilterAndSearchProjects from "./FilterAndSearchProjects/FilterAndSearchProjects";
 import InnovationMetrics from "./InnovationMetrics/InnovationMetrics";
 import Projects from "./Projects/Projects";
+import IncubationReports from "./IncubationReports/IncubationReports";
 export {
   Hero,
   Hub,
@@ -71,4 +72,5 @@ export {
   FilterAndSearchProjects,
   InnovationMetrics,
   Projects,
+  IncubationReports,
 };

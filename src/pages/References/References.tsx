@@ -66,7 +66,7 @@ export default function ReferencesPage() {
         <div className="mb-10">
           <div className="flex items-baseline gap-2 mb-4">
             <span className="text-orange-500 text-sm font-semibold tracking-widest uppercase">
-              SumsNepal Work
+              Sums Work
             </span>
             <div className="flex-1 h-px bg-gradient-to-r from-orange-500 to-transparent"></div>
           </div>
@@ -75,7 +75,7 @@ export default function ReferencesPage() {
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl">
             A collection of academic partnerships and professional projects
-            spanning international institutions and innovative research
+            spanning national, international institutions and innovative research
             initiatives.
           </p>
         </div>
@@ -197,7 +197,11 @@ export default function ReferencesPage() {
                   <div className="flex gap-3 flex-wrap">
                     {project.link && (
                       <a
-                        href={project.link}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          
+                          window.location.href = project.link;
+                        }}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-orange-500/10 hover:bg-orange-500/20 text-orange-600 dark:text-orange-400 font-medium transition-colors"
@@ -208,7 +212,10 @@ export default function ReferencesPage() {
                     )}
                     {project.pdfUrl ? (
                       <button
-                        onClick={() => setSelectedProject(project.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedProject(project.id)
+                        }}
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-medium transition-colors"
                       >
                         <FileText className="w-4 h-4" />
