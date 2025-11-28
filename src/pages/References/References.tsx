@@ -83,47 +83,58 @@ export default function ReferencesPage() {
         {/* Projects Grid */}
         <div className="grid gap-6 md:gap-8 mb-12">
           {/* Navs filters */}
-          <div className="grid gap-6 md:gap-8 mb-12">
-            {/* Filter Navbar */}
-            <div className="sticky top-16 z-50 bg-white/80 backdrop-blur-md py-3 px-4 rounded-2xl shadow-md">
-              <div className="flex flex-wrap items-center gap-3 md:gap-5 justify-center">
-                {navsFilters.map((currentNav, index) => {
-                  const isActive = filter === currentNav;
+          <div className="grid gap-6 md:gap-8 mb-12 sticky top-17 bg-white z-50 rounded-4xl">
+            {/* Nav Filters */}
+            <div
+              className="
+      flex gap-4 md:gap-8 
+      sticky top-16 
+      z-50 
+      rounded-2xl 
+      p-3 md:p-4 
 
-                  return (
-                    <button
-                      key={index}
-                      onClick={() => {
-                        if (currentNav === "All") {
-                          setFilterProject(projects || []);
-                        } else if (currentNav === "International") {
-                          setFilterProject(
-                            (projects || []).filter(
-                              (currentProject) => currentProject.filter === "In"
-                            )
-                          );
-                        } else {
-                          setFilterProject(
-                            (projects || []).filter(
-                              (currentProject) => currentProject.filter === "Na"
-                            )
-                          );
-                        }
-                        setFilter(currentNav);
-                      }}
-                      className={`px-5 py-2.5 rounded-full text-sm md:text-base font-medium transition-all 
-              ${
-                isActive
-                  ? "bg-orange-500 text-white shadow-lg scale-105"
-                  : "bg-orange-100 text-orange-600 hover:bg-orange-200 hover:scale-105"
-              }
-            `}
-                    >
-                      {currentNav}
-                    </button>
-                  );
-                })}
-              </div>
+    "
+            >
+              {navsFilters.map((currentNav, index) => {
+                const isActive = filter === currentNav;
+
+                return (
+                  <Button
+                    key={index}
+                    onClick={() => {
+                      if (currentNav === "All") {
+                        setFilterProject(projects || []);
+                      } else if (currentNav === "International") {
+                        setFilterProject(
+                          (projects || []).filter(
+                            (currentProject) => currentProject.filter === "In"
+                          )
+                        );
+                      } else {
+                        setFilterProject(
+                          (projects || []).filter(
+                            (currentProject) => currentProject.filter === "Na"
+                          )
+                        );
+                      }
+                      setFilter(currentNav);
+                    }}
+                    style={{ fontWeight: "500" }}
+                    className={`
+            px-5 py-2 h-10 w-fit  
+            rounded-full transition-all duration-300 
+            text-sm md:text-base
+            ${
+              isActive
+                ? "bg-orange-500 text-white shadow-md scale-105"
+                : "bg-orange-100 text-orange-600 hover:bg-orange-200 hover:shadow"
+            }
+          `}
+                  >
+                    {currentNav}
+                  </Button>
+                );
+              })}
             </div>
           </div>
 
