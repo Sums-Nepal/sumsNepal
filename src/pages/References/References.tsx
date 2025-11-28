@@ -83,7 +83,7 @@ export default function ReferencesPage() {
         {/* Projects Grid */}
         <div className="grid gap-6 md:gap-8 mb-12">
           {/* Navs filters */}
-          <div className="grid gap-6 md:gap-8 mb-12 sticky top-17 bg-white z-50 rounded-4xl">
+          <div className="grid gap-6 md:gap-8  sticky top-17 bg-white z-50 rounded-4xl">
             {/* Nav Filters */}
             <div
               className="
