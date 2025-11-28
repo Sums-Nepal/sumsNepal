@@ -21,7 +21,7 @@ const Footer = () => {
               <div className="lg:col-span-1 animate-fade-in">
                 <div className="flex items-center mb-6 group cursor-pointer">
                   <div className="w-36 h-28 rounded-2xl">
-                    <img src="./images/sums-logo-without-bg.png" alt="light-mode-logo" className="rounded-2xl w-36 h-28"/>
+                    <img src="/images/sums-logo-without-bg.png" alt="light-mode-logo" className="rounded-2xl w-36 h-28"/>
                   </div>
                   {/* <span className="ml-3 text-2xl sm:text-3xl font-bold bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
                     SUMS
