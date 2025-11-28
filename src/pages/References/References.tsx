@@ -80,16 +80,17 @@ export default function ReferencesPage() {
         {/* Projects Grid */}
         <div className="grid gap-6 md:gap-8 mb-12">
           {/* Navs filters */}
-          <div className="grid grid-cols-3 gap-10 bg-white z-50 sticky top-19 rounded-2xl">
+          <div className="flex gap-10 bg-white z-50 sticky top-16 rounded-2xl">
             {navsFilters.map((currentNav, index) => {
               const isActive = filter === currentNav;
               return (
                 <Button
+                style={{fontWeight: "500"}}
                   className={`${
                     isActive
                       ? "bg-orange-500 text-white"
                       : "bg-orange-100 text-orange-600 hover:bg-orange-200"
-                  } transition-colors`}
+                  } transition-colors md:font-bold h-10 w-fit`}
                   onClick={() => {
                     // Let's filter
                     if (currentNav === "All") {
