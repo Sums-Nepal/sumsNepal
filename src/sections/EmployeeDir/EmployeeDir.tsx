@@ -78,7 +78,7 @@ const employees: Employee[] = [
     contact: "+977 9800000000",
     department: "Engineering",
     email: "aayush.basnetjr@sumsnepal.com",
-    image: "/saarock3.webp",
+    image: "/saarock1.webp",
   },
 ]
 
