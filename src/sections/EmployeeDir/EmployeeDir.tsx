@@ -1,16 +1,8 @@
 import { useState } from "react"
-import EmployeeCard from "../../components/EmployeeCard/EmployeeCard"
+import EmployeeCard, { type Employee } from "../../components/EmployeeCard/EmployeeCard"
 import { Users, Search } from "lucide-react"
 
-interface Employee {
-  id: number
-  name: string
-  position: string
-  contact: string
-  department: string
-  email: string
-  image: string
-}
+
 
 const employees: Employee[] = [
 
@@ -78,7 +70,11 @@ const employees: Employee[] = [
     contact: "+977 9800000000",
     department: "Engineering",
     email: "aayush.basnetjr@sumsnepal.com",
-    image: "/saarock1.webp",
+    images: [
+      "/saarock1.webp",
+      "/saarock2.webp",
+      "/saarock3.webp"
+    ]
   },
 ]
 
