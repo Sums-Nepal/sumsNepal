@@ -27,7 +27,7 @@ const LogoImage: React.FC<LogoImageProps> = ({ makeClickable = false }) => {
     <>
       <img
         style={{ cursor: "pointer" }}
-        src="./images/header_logo.png"
+        src="/images/header_logo.png"
         alt="logo"
         width={60}
         height={60}
