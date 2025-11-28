@@ -21,6 +21,8 @@ import YouTube from "react-youtube";
 import { Document, Page, pdfjs } from "react-pdf";
 import PdfViewer from "../../components/PDFViewer/PDFViewer";
 import { Button } from "../../components";
+import { useNavigate } from "react-router-dom";
+import { refrencesData } from "./RefrencesData";
 
 // import "react-pdf/dist/Page/TextLayer.css";
 // Set up PDF.js worker
@@ -40,71 +42,12 @@ export default function ReferencesPage() {
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [projects, setProjects] = useState<Record<string, any>[]>([
-    {
-      id: 1,
-      title: "International Mobility and Entrepreneurships",
-      institution: "TU Delft",
-      location: "Netherlands",
-      logo: "./images/tu-delf.png",
-      video: "https://youtu.be/1eo8AaciiGU",
-      link: "https://youtu.be/1eo8AaciiGU",
-      filter: "In", // In === International
-      description:
-        "Program focused on international mobility and entrepreneurial development initiatives.",
-      // pdfUrl: "./files/tu.pdf",
-      highlights: [
-        "International Exchange",
-        "Entrepreneurship Training",
-        "Innovation Focus",
-      ],
-    },
-    {
-      id: 2,
-      title: "Workshops on Smart Metering & Net Metering",
-      institution: "Kathmandu University",
-      location: "Dhulikhel, Nepal",
-      filter: "Na", // National
-
-      logo: "./images/logos/kulogo.png",
-      description:
-        "Technical training workshops covering smart metering technologies and net metering systems implementation.",
-      pdfUrl: "./files/tu.pdf",
-
-      highlights: ["Smart Metering", "Net Metering", "Technical Training"],
-    },
-    {
-      id: 3,
-      title: "Saransa Catalyst Project",
-      institution: "Research Initiative",
-      location: "National",
-      logo: "./images/c-3.jpeg",
-      filter: "Na", // National
-
-      description:
-        "Research and development project advancing sustainable energy solutions.",
-      pdfUrl: "./files/saransa.pdf",
-      highlights: ["Sustainable Energy", "Research", "Innovation"],
-    },
-    {
-      id: 4,
-      title: "SINCOE Project",
-      institution: "Research Initiative",
-      location: "International",
-      link: "https://sincoe.blogs.upv.es/archives/792",
-      filter: "In", // InterNational
-
-      logo: "./images/logos/SINCOE-logo.gif",
-      description:
-        "Erasmus+ project enhancing digital education innovation Piloted Cogknit for innovation skills assessmen",
-      // pdfUrl: "./files/saransa.pdf",
-      highlights: ["Sustainable Energy", "Research", "Innovation"],
-    },
-  ]);
+  const [projects, setProjects] = useState<Record<string, any>[]>([...refrencesData]);
   const [filter, setFilter] = useState<string>("All");
+  const navigate = useNavigate();
 
   const [filterProjects, setFilterProject] =
-    useState<Record<string, any>[]>(projects);
+    useState<Record<string, any>[]>([...refrencesData]);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);
@@ -132,8 +75,6 @@ export default function ReferencesPage() {
             spanning international institutions and innovative research
             initiatives.
           </p>
-
-          
         </div>
 
         {/* Projects Grid */}
@@ -141,7 +82,7 @@ export default function ReferencesPage() {
           {/* Navs filters */}
           <div className="grid grid-cols-3 gap-10 bg-white z-50 sticky top-19 rounded-2xl">
             {navsFilters.map((currentNav, index) => {
-              const isActive = filter === currentNav;              
+              const isActive = filter === currentNav;
               return (
                 <Button
                   className={`${
@@ -152,22 +93,22 @@ export default function ReferencesPage() {
                   onClick={() => {
                     // Let's filter
                     if (currentNav === "All") {
-                      setFilterProject(projects);
+                      setFilterProject(projects || []);
                     } else if (currentNav === "International") {
                       setFilterProject(
-                        projects.filter(
+                        (projects || []).filter(
                           (currentProject) => currentProject.filter === "In"
                         )
                       );
                     } else {
                       setFilterProject(
-                        projects.filter(
+                        (projects || []).filter(
                           (currentProject) => currentProject.filter === "Na"
                         )
                       );
                     }
 
-                    setFilter(currentNav)
+                    setFilter(currentNav);
                   }}
                 >
                   {currentNav}
@@ -175,10 +116,13 @@ export default function ReferencesPage() {
               );
             })}
           </div>
-          {filterProjects.map((project: Record<string, any>) => (
+          {filterProjects.map((project: Record<string, any>, index: number) => (
             <div
               key={project.id}
-              className="group relative md:shadow-2xl md:shadow-black-200 rounded-2xl"
+              onClick={() => {
+                navigate(`/references/${project.title}`);
+              }}
+              className="group relative md:shadow-2xl md:shadow-black-200 rounded-2xl cursor-pointer"
             >
               {/* Gradient overlay on hover */}
               <div className="absolute inset-0 bg-gradient-to-r from-orange-500/0 to-orange-500/0 group-hover:from-orange-500/5 group-hover:to-orange-500/10 transition-all duration-300"></div>

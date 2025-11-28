@@ -9,6 +9,7 @@ import ProjectGallery from "./Project/ProjectGallery";
 import City from "./City/City";
 import ContactForm from "./ContactForm/ContactForm";
 import Team from "./Team/Team";
+import IndRefrences from "./References/IndRefrences";
 export {
   Home,
   Academia,
@@ -21,4 +22,5 @@ export {
   City,
   ContactForm,
   Team,
+  IndRefrences,
 };
