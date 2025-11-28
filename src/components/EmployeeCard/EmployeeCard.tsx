@@ -51,7 +51,7 @@ export default function EmployeeCard({ employee }: { employee: Employee }) {
 
   return (
     <div
-      className="group relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-500 hover:border-orange-500/30 transform hover:-translate-y-2"
+      className="group relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-500 hover:border-orange-500/30 transform hover:-translate-y-2 bg-gradient-to-r from-gray-50 to-orange-50"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

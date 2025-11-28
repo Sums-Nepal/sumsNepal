@@ -144,10 +144,10 @@ export default function ReferencesPage() {
               onClick={() => {
                 navigate(`/references/${project.title}`);
               }}
-              className="group relative md:shadow-2xl md:shadow-black-200 rounded-2xl cursor-pointer"
+              className="group relative md:shadow-2xl md:shadow-black-200 rounded-2xl cursor-pointer bg-gradient-to-r from-gray-50 to-orange-50"
             >
               {/* Gradient overlay on hover */}
-              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/0 to-orange-500/0 group-hover:from-orange-500/5 group-hover:to-orange-500/10 transition-all duration-300"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/0 to-orange-500/0 group-hover:from-orange-500/5 group-hover:to-orange-500/10 transition-all duration-300 rounded-2xl"></div>
 
               {project.video && (
                 <div className="absolute bottom-6 right-6 z-20 rounded-2xl overflow-hidden hidden md:block">
