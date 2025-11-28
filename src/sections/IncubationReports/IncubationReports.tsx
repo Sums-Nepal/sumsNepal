@@ -63,18 +63,19 @@ const IncubationReports = () => {
                   </h3>
                 </div>
                 <div className="flex justify-center items-center">
-                  <Button
-                    className="bg-orange-500 text-white h-10"
-                    onClick={() => setPDFURL(process.report)}
+                  <a
+                    href={process.report}
+                    download
+                    className="bg-orange-500 text-white h-10 px-4 flex items-center justify-center rounded-md hover:bg-orange-600 transition-colors"
                   >
-                    View Report
-                  </Button>
+                    Download Report{" "}
+                  </a>
                 </div>
               </div>
             ))}
           </div>
 
-          {pdfURL && pdfURL?.trim().length > 0 && (
+          {/* {pdfURL && pdfURL?.trim().length > 0 && (
             <div
               className="fixed top-0 left-0 bg-white flex justify-center items-center  h-screen w-screen z-50"
               style={{ zIndex: "999999" }}
@@ -91,7 +92,7 @@ const IncubationReports = () => {
                 <PdfViewer pdfUrl={pdfURL} />
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </section>
     </>
