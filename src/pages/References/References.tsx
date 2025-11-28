@@ -17,38 +17,42 @@ import {
 } from "../../components/ui/dialog";
 
 import { useState } from "react";
-
+import YouTube from "react-youtube";
 import { Document, Page, pdfjs } from "react-pdf";
 import PdfViewer from "../../components/PDFViewer/PDFViewer";
+import { Button } from "../../components";
 
 // import "react-pdf/dist/Page/TextLayer.css";
 // Set up PDF.js worker
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url,
+  "pdfjs-dist/build/pdf.worker.min.mjs",
+  import.meta.url
 ).toString();
+
+function getYouTubeId(url: string) {
+  const regExp =
+    /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  return match && match[2].length === 11 ? match[2] : null;
+}
 
 export default function ReferencesPage() {
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(1);
-
-  function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
-    setNumPages(numPages);
-    setPageNumber(1);
-  }
-
-  const projects = [
+  const [projects, setProjects] = useState<Record<string, any>[]>([
     {
       id: 1,
       title: "International Mobility and Entrepreneurships",
       institution: "TU Delft",
       location: "Netherlands",
       logo: "./images/tu-delf.png",
+      video: "https://youtu.be/1eo8AaciiGU",
       link: "https://youtu.be/1eo8AaciiGU",
+      filter: "In", // In === International
       description:
         "Program focused on international mobility and entrepreneurial development initiatives.",
-      // pdfUrl: "./files/tu.pdf", 
+      // pdfUrl: "./files/tu.pdf",
       highlights: [
         "International Exchange",
         "Entrepreneurship Training",
@@ -60,10 +64,12 @@ export default function ReferencesPage() {
       title: "Workshops on Smart Metering & Net Metering",
       institution: "Kathmandu University",
       location: "Dhulikhel, Nepal",
+      filter: "Na", // National
+
       logo: "./images/logos/kulogo.png",
       description:
         "Technical training workshops covering smart metering technologies and net metering systems implementation.",
-      pdfUrl: "./files/tu.pdf", 
+      pdfUrl: "./files/tu.pdf",
 
       highlights: ["Smart Metering", "Net Metering", "Technical Training"],
     },
@@ -73,23 +79,39 @@ export default function ReferencesPage() {
       institution: "Research Initiative",
       location: "National",
       logo: "./images/c-3.jpeg",
+      filter: "Na", // National
+
       description:
         "Research and development project advancing sustainable energy solutions.",
-      pdfUrl: "./files/saransa.pdf", 
+      pdfUrl: "./files/saransa.pdf",
       highlights: ["Sustainable Energy", "Research", "Innovation"],
     },
-     {
+    {
       id: 4,
       title: "SINCOE Project",
       institution: "Research Initiative",
       location: "International",
       link: "https://sincoe.blogs.upv.es/archives/792",
+      filter: "In", // InterNational
+
       logo: "./images/logos/SINCOE-logo.gif",
-      description:"Erasmus+ project enhancing digital education innovation Piloted Cogknit for innovation skills assessmen",
-      // pdfUrl: "./files/saransa.pdf", 
+      description:
+        "Erasmus+ project enhancing digital education innovation Piloted Cogknit for innovation skills assessmen",
+      // pdfUrl: "./files/saransa.pdf",
       highlights: ["Sustainable Energy", "Research", "Innovation"],
     },
-  ];
+  ]);
+  const [filter, setFilter] = useState<string>("All");
+
+  const [filterProjects, setFilterProject] =
+    useState<Record<string, any>[]>(projects);
+
+  function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
+    setNumPages(numPages);
+    setPageNumber(1);
+  }
+
+  const navsFilters = ["All", "National", "International"];
 
   return (
     <main className="min-h-screen py-16 px-4">
@@ -110,18 +132,65 @@ export default function ReferencesPage() {
             spanning international institutions and innovative research
             initiatives.
           </p>
+
+          {/* Navs filters */}
+          <div className="grid grid-cols-3 mt-6 gap-10">
+            {navsFilters.map((currentNav, index) => {
+              const isActive = filter === currentNav;              
+              return (
+                <Button
+                  className={`${
+                    isActive
+                      ? "bg-orange-500 text-white"
+                      : "bg-orange-100 text-orange-600 hover:bg-orange-200"
+                  } transition-colors`}
+                  onClick={() => {
+                    // Let's filter
+                    if (currentNav === "All") {
+                      setFilterProject(projects);
+                    } else if (currentNav === "International") {
+                      setFilterProject(
+                        projects.filter(
+                          (currentProject) => currentProject.filter === "In"
+                        )
+                      );
+                    } else {
+                      setFilterProject(
+                        projects.filter(
+                          (currentProject) => currentProject.filter === "Na"
+                        )
+                      );
+                    }
+
+                    setFilter(currentNav)
+                  }}
+                >
+                  {currentNav}
+                </Button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Projects Grid */}
         <div className="grid gap-6 md:gap-8 mb-12">
-          {projects.map((project) => (
+          {filterProjects.map((project: Record<string, any>) => (
             <div
               key={project.id}
-              className="group card "
+              className="group relative md:shadow-2xl md:shadow-black-200 rounded-2xl"
             >
               {/* Gradient overlay on hover */}
               <div className="absolute inset-0 bg-gradient-to-r from-orange-500/0 to-orange-500/0 group-hover:from-orange-500/5 group-hover:to-orange-500/10 transition-all duration-300"></div>
 
+              {project.video && (
+                <div className="absolute bottom-6 right-6 z-20 rounded-2xl overflow-hidden hidden md:block">
+                  <YouTube
+                    videoId={getYouTubeId(project.video)!}
+                    opts={{ width: "100%", height: "160" }}
+                    className="rounded-2xl"
+                  />
+                </div>
+              )}
               <div className="relative p-8 md:p-10">
                 {/* Top Section with Logo and Links */}
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-8">
@@ -170,15 +239,17 @@ export default function ReferencesPage() {
                         <span className="hidden sm:inline">View</span>
                       </a>
                     )}
-                    {
-                      project.pdfUrl ? <button
-                      onClick={() => setSelectedProject(project.id)}
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-medium transition-colors"
-                    >
-                      <FileText className="w-4 h-4" />
-                      <span className="hidden sm:inline">PDF</span>
-                    </button> : ""
-                    }
+                    {project.pdfUrl ? (
+                      <button
+                        onClick={() => setSelectedProject(project.id)}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-medium transition-colors"
+                      >
+                        <FileText className="w-4 h-4" />
+                        <span className="hidden sm:inline">PDF</span>
+                      </button>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
 
@@ -189,7 +260,7 @@ export default function ReferencesPage() {
 
                 {/* Highlights/Tags */}
                 <div className="flex flex-wrap gap-2">
-                  {project.highlights.map((highlight) => (
+                  {project.highlights.map((highlight: string) => (
                     <span
                       key={highlight}
                       className="px-3 py-1 rounded-full  text-orange-500 text-xs font-medium"
@@ -212,24 +283,47 @@ export default function ReferencesPage() {
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white border-0">
           <DialogHeader>
             <DialogTitle className="text-orange-600 dark:text-orange-400">
-              {projects.find((p) => p.id === selectedProject)?.title}
+              {
+                projects.find(
+                  (p: Record<string, any>) => p.id === selectedProject
+                )?.title
+              }
             </DialogTitle>
             <DialogDescription>
               Document for{" "}
-              {projects.find((p) => p.id === selectedProject)?.institution}
+              {
+                projects.find(
+                  (p: Record<string, any>) => p.id === selectedProject
+                )?.institution
+              }
             </DialogDescription>
           </DialogHeader>
 
           <div className="bg-muted/50 rounded-lg p-4 md:p-6 flex flex-col items-center gap-4">
             <div className="w-full bg-white text-white dark:bg-slate-900 rounded-lg overflow-auto max-h-96 flex items-center justify-center">
-              {projects.find((p) => p.id === selectedProject)?.pdfUrl &&
-              projects.find((p) => p.id === selectedProject)?.pdfUrl !== "#" ? (
-             <PdfViewer pdfUrl={projects.find((p) => p.id === selectedProject)?.pdfUrl}/>
+              {projects.find(
+                (p: Record<string, any>) => p.id === selectedProject
+              )?.pdfUrl &&
+              projects.find(
+                (p: Record<string, any>) => p.id === selectedProject
+              )?.pdfUrl !== "#" ? (
+                <PdfViewer
+                  pdfUrl={
+                    projects.find(
+                      (p: Record<string, any>) => p.id === selectedProject
+                    )?.pdfUrl
+                  }
+                />
               ) : (
                 <div className="p-8 text-center">
                   <FileText className="w-16 h-16 text-orange-500 mx-auto mb-4" />
                   <p className="font-semibold text-foreground mb-2">
-                    {projects.find((p) => p.id === selectedProject)?.title}.pdf
+                    {
+                      projects.find(
+                        (p: Record<string, any>) => p.id === selectedProject
+                      )?.title
+                    }
+                    .pdf
                   </p>
                   <p className="text-sm text-muted-foreground">
                     Add a PDF URL to preview documents
@@ -265,7 +359,11 @@ export default function ReferencesPage() {
 
             {/* Download Button */}
             <a
-              href={projects.find((p) => p.id === selectedProject)?.pdfUrl}
+              href={
+                projects.find(
+                  (p: Record<string, any>) => p.id === selectedProject
+                )?.pdfUrl
+              }
               download
               className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors"
             >
