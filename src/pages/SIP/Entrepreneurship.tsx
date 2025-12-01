@@ -1,5 +1,5 @@
 import { EntrepreneurshipFrom } from "../../components"
-import { CTASection, EntrepreneurshipHero, IncubationReports, OurProcess, StudentSuccessStories, UltimateLaunchpad } from "../../sections"
+import { CTASection, EntrepreneurshipHero, IncubationReports, OurProcess, StudentProjectShowcase, StudentSuccessStories, UltimateLaunchpad } from "../../sections"
 
 
 export default function Entrepreneurship() {
@@ -9,6 +9,7 @@ export default function Entrepreneurship() {
      <UltimateLaunchpad/>
      <OurProcess/>
      <IncubationReports/>
+     <StudentProjectShowcase/>
      {/* <StartupIdeaGenerator/> */}
      <StudentSuccessStories/>
      {/* <CTASection/> */}

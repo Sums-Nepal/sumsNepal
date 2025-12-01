@@ -66,7 +66,7 @@ export default function ReferencesPage() {
         <div className="mb-10">
           <div className="flex items-baseline gap-2 mb-4">
             <span className="text-orange-500 text-sm font-semibold tracking-widest uppercase">
-              Sums Work
+              +
             </span>
             <div className="flex-1 h-px bg-gradient-to-r from-orange-500 to-transparent"></div>
           </div>
@@ -75,8 +75,8 @@ export default function ReferencesPage() {
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl">
             A collection of academic partnerships and professional projects
-            spanning national, international institutions and innovative research
-            initiatives.
+            spanning national, international institutions and innovative
+            research initiatives.
           </p>
         </div>
 
@@ -198,8 +198,8 @@ export default function ReferencesPage() {
                     {project.link && (
                       <a
                         onClick={(e) => {
-                          e.stopPropagation()
-                          
+                          e.stopPropagation();
+
                           window.location.href = project.link;
                         }}
                         target="_blank"
@@ -214,7 +214,7 @@ export default function ReferencesPage() {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          setSelectedProject(project.id)
+                          setSelectedProject(project.id);
                         }}
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-medium transition-colors"
                       >

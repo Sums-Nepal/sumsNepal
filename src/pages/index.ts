@@ -4,7 +4,7 @@ import Student from "./Student/Student";
 import PrivacyAndPolicies from "./PrivacyAndPolicies/PrivacyAndPolicies";
 import NotFoundPage from "./NotFound404/NotFound404";
 import Business from "./Business/Business";
-import Entrepreneurship from "./Entrepreneurship/Entrepreneurship";
+import Entrepreneurship from "./SIP/Entrepreneurship";
 import ProjectGallery from "./Project/ProjectGallery";
 import City from "./City/City";
 import ContactForm from "./ContactForm/ContactForm";

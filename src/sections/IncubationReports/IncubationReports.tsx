@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button } from "../../components";
 import { X } from "lucide-react";
 import PdfViewer from "../../components/PDFViewer/PDFViewer";
@@ -64,22 +64,22 @@ const IncubationReports = () => {
 
                 {/* 3 Options Section */}
                 <div className="flex flex-col gap-2 justify-center items-center pb-4">
-                  
                   {/* View PDF (modal) */}
-                  <button
+                  <Button
                     onClick={() => {
-                      window.open(process.report, '_blank')
+                      window.open(process.report, "_blank");
                     }}
                     className="bg-orange-500 text-white h-10 px-4 rounded-md hover:bg-orange-600 transition-colors w-full max-w-[160px]"
                   >
                     View PDF
-                  </button>
+                  </Button>
 
                   {/* Download PDF */}
+
                   <a
                     href={process.report}
                     download
-                    className="bg-gray-800 flex justify-center items-center text-white h-10 px-4 rounded-md hover:bg-black transition-colors w-full max-w-[160px] text-center"
+                    className="flex-1 p-2 bg-white border border-orange-500 text-orange-500 rounded-3xl flex justify-center items-center hover transition-colors w-full max-w-[160px]"
                   >
                     Download
                   </a>
@@ -108,6 +108,7 @@ const IncubationReports = () => {
           )}
         </div>
       </section>
+      {/* <StudentProjectShowcase /> */}
     </>
   );
 };

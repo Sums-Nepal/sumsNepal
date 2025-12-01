@@ -5,7 +5,7 @@ export const navs = [
   { name: "Business", path: "/business", id: "business" },
   { name: "City", path: "/city", id: "city" },
   {
-    name: "Entrepreneurship",
+    name: "Innovators Program (SIP)",
     path: "/entrepreneurship",
     id: "entrepreneurship",
   },

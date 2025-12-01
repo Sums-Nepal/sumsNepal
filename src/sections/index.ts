@@ -35,6 +35,7 @@ import FilterAndSearchProjects from "./FilterAndSearchProjects/FilterAndSearchPr
 import InnovationMetrics from "./InnovationMetrics/InnovationMetrics";
 import Projects from "./Projects/Projects";
 import IncubationReports from "./IncubationReports/IncubationReports";
+import StudentProjectShowcase from "./StudentProjectShowCase/StudentProjectShowCase";
 export {
   Hero,
   Hub,
@@ -73,4 +74,5 @@ export {
   InnovationMetrics,
   Projects,
   IncubationReports,
+  StudentProjectShowcase,
 };
