@@ -28,22 +28,22 @@ const IncubationReports = () => {
               {
                 title: "Texas",
                 logo: "texas-mgmt-id.png",
-                report: "/files/SUMSXTexaspre-incubationReport.pdf",
+                report: "/files/ilovepdf_compressed_2/SUMS X Texas pre-incubation Public Report -2_compressed.pdf",
               },
               {
                 title: "St.Xaviers",
                 logo: "st-x.png",
-                report: "/files/St.Xaviers.pdf",
+                report: "/files/ilovepdf_compressed_2/St.Xaviers Mid Term Report-4_compressed.pdf",
               },
               {
                 title: "School of Management",
                 logo: "somtu.png",
-                report: "/files/School-of-Management.pdf",
+                report: "/files/ilovepdf_compressed/School of Management - Public  Report _compressed.pdf",
               },
               {
                 title: "Samarpan",
                 logo: "icms.jpeg",
-                report: "/files/Samarpan.pdf",
+                report: "/files/ilovepdf_compressed/Samarpan Final Public Report_compressed.pdf",
               },
             ].map((process, index) => (
               <div key={index} className="group card">
