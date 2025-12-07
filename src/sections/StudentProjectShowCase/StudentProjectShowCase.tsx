@@ -226,7 +226,7 @@ const studentProjects: Project[] = [
   {
     title: "365-plus1",
     college: "Sagarmatha Engineering College",
-        image: "/images/logos/sagarmathalogo.png",
+    image: "/images/logos/sagarmathalogo.png",
 
     description:
       "Build an AI chatbot for handling customer inquiries, with NLP and machine learning to improve over time.",
@@ -270,9 +270,9 @@ const StudentProjectShowcase = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="mb-20">
           <h2 className="text-6xl md:text-7xl font-black mb-6 tracking-tighter uppercase">
-            Ventures {" "}
+            Ventures{" "}
             <span className="bg-clip-text bg-gradient-to-r text-orange-500">
-             Incubated
+              Incubated
             </span>
           </h2>
           <p className="text-xl text-zinc-400 max-w-2xl border-l-4 border-orange-500 pl-6 italic">
@@ -283,7 +283,7 @@ const StudentProjectShowcase = () => {
 
         <div className="space-y-4">
           {Object.keys(projectsByCollege).map((college, index) => (
-            <div key={college} className="relative group">
+            <div key={college + String(index)} className="relative group">
               {/* STICKY HEADER IMPLEMENTATION */}
               {/* top-0: Sticks to the very top.
                  z-30: Ensures it slides OVER the content but stays under modals.

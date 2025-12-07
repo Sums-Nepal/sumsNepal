@@ -36,6 +36,7 @@ import InnovationMetrics from "./InnovationMetrics/InnovationMetrics";
 import Projects from "./Projects/Projects";
 import IncubationReports from "./IncubationReports/IncubationReports";
 import StudentProjectShowcase from "./StudentProjectShowCase/StudentProjectShowCase";
+import { AICCollaborations } from "./AICColloborations/AICColloborations";
 export {
   Hero,
   Hub,
@@ -75,4 +76,5 @@ export {
   Projects,
   IncubationReports,
   StudentProjectShowcase,
+  AICCollaborations,
 };
