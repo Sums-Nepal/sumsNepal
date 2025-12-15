@@ -1,95 +1,9 @@
 import { Building2, GraduationCap } from "lucide-react";
 import React, { useState } from "react";
+import { collaborations, type AICCollaborationsProps, type Collaboration } from "./coloborationData";
 
 // Dynamic collaboration data structure
-export interface Collaboration {
-  id: string;
-  companyName: string;
-  collegeName: string;
-  collegeLogoUrl: string;
-  projectTitle: string;
-  projectDescription: string;
-  duration?: string;
-  status?: "ongoing" | "completed" | "upcoming";
-}
 
-// Sample data - replace with your actual data
-const collaborations: Collaboration[] = [
-  {
-    id: "1",
-    companyName: "Sumitomo",
-    collegeName: "Texas Collage",
-    collegeLogoUrl: "/images/logos/texas-mgmt-id.png",
-    projectTitle:
-      "Improving Supply Chain Efficiency through Centralized Supplier Data",
-    projectDescription:
-      "Optimizing the supply chain process by implementing a centralized system for managing supplier data, increasing transparency and operational efficiency.",
-    duration: "6 months",
-    status: "completed",
-  },
-  {
-    id: "2",
-    companyName: "Nexport",
-    collegeName: "Texas Collage",
-    collegeLogoUrl: "/images/logos/texas-mgmt-id.png",
-    projectTitle:
-      "Sourcing the Best Cross Border Logistics Company using Blockchain Technology",
-    projectDescription:
-      "Leveraging blockchain technology to optimize cross-border logistics, ensuring transparency and improving trust in the supply chain process.",
-    duration: "6 months",
-    status: "completed",
-  },
-  {
-    id: "3",
-    companyName: "Saransa Media and Technology Group",
-    collegeName: "Texas Collage",
-    collegeLogoUrl: "/images/logos/texas-mgmt-id.png",
-    projectTitle: "Saransa Catalyst Project",
-    projectDescription:
-      "Developing cutting-edge media and technology solutions for industries like entertainment and digital marketing through the Saransa Catalyst Project.",
-    duration: "6 months",
-    status: "completed",
-  },
-  {
-    id: "4",
-    companyName: "Bimba Glass Private Limited",
-    collegeName: "Demo University",
-    collegeLogoUrl: "/images/logos/bimba-glass.jpg",
-    projectTitle:
-      "Strategic Market Expansion and Distribution Plan for Bimba Glass Across Six Provinces of Nepal",
-    projectDescription:
-      "Building a market expansion strategy for Bimba Glass to establish a strong distribution network across six provinces of Nepal.",
-    // duration: "24 months",
-    status: "upcoming",
-  },
-  {
-    id: "5",
-    companyName: "National Innovation Centre",
-    collegeName: "Demo University",
-    collegeLogoUrl: "/images/logos/national-innovation.png",
-    projectTitle: "Medical Drone Delivery",
-    projectDescription:
-      "Developing a drone-based delivery system for transporting medical supplies, ensuring quick access to remote areas.",
-    // duration: "15 months",
-    status: "upcoming",
-  },
-  {
-    id: "6",
-    companyName: "Nexport",
-    collegeName: "Kathmandu University",
-    collegeLogoUrl: "/images/logos/kulogo.png",
-    projectTitle:
-      "Building an MVP FF SaaS for the Global Supply Chain Industry",
-    projectDescription:
-      "Creating a Minimum Viable Product (MVP) for a SaaS platform tailored for the global supply chain industry, streamlining operations across borders.",
-    duration: "9 months",
-    status: "ongoing",
-  },
-];
-
-interface AICCollaborationsProps {
-  data?: Collaboration[];
-}
 
 export function AICCollaborations({
   data = collaborations,
@@ -126,45 +40,26 @@ export function AICCollaborations({
         </p>
       </div>
 
-      {/* <div className="flex max-w-[60%] gap-6 mb-9 flex-wrap justify-center items-center">
-        {[...filtersColl]
-          .filter(
-            (currentData, index, self) =>
-              index ===
-              self.findIndex((t) => t.collegeName === currentData.collegeName)
-          )
-          .map((currentData, index) => (
-            <span
-              className="bg-gray-900 text-white p-1 rounded-2xl shadow-2xl"
-              key={currentData.collegeName + String(index)}
-            >
-              #{currentData.collegeName}
-            </span>
-          ))}
-      </div> */}
 
-      <div className="flex max-w-[60%] gap-6 mb-9 flex-wrap justify-center items-center">
-        {status.map((currentData, index) => (
-            <span
-              className="bg-gray-900 text-white p-1 rounded-2xl shadow-2xl cursor-pointer"
+   {/* Filter Buttons */}
+        <div className="mb-12 flex flex-wrap justify-center items-center gap-3">
+          {status.map((currentData, index) => (
+            <button
               key={currentData + String(index)}
-              onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
+              onClick={() => {
                 if (currentData === "all") {
-                    setFiltersColl(collaborations);
-                    return;
+                  setFiltersColl(data)
+                  return
                 }
-                setFiltersColl([
-                  ...collaborations.filter(
-                    (current) => current.status === currentData
-                  ),
-                ]);
+                setFiltersColl([...data.filter((current) => current.status === currentData)])
               }}
+              className="group relative overflow-hidden rounded-full bg-white px-6 py-2.5 text-sm font-semibold capitalize text-foreground shadow-sm ring-1 ring-orange-500/20 transition-all hover:shadow-md hover:ring-orange-500/40 hover:scale-105 active:scale-95"
             >
-              #{currentData}
-            </span>
+              <span className="relative z-10">{currentData}</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-orange-600/5 opacity-0 transition-opacity group-hover:opacity-100" />
+            </button>
           ))}
-      </div>
-
+        </div>
       {/* Collaborations Grid */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {filtersColl.map((collaboration) => (
