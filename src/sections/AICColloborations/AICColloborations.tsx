@@ -1,15 +1,25 @@
 import { Building2, GraduationCap } from "lucide-react";
-import React, { useState } from "react";
-import { collaborations, type AICCollaborationsProps, type Collaboration } from "./coloborationData";
+import React, { useMemo, useState } from "react";
+import {
+  collaborations,
+  type AICCollaborationsProps,
+  type Collaboration,
+} from "./coloborationData";
 
-// Dynamic collaboration data structure
+type StatusFilter = "upcoming" | "ongoing" | "completed" | "all";
 
+export function AICCollaborations({ data = collaborations }: AICCollaborationsProps) {
+  const statusOrder: StatusFilter[] = ["upcoming", "ongoing", "completed", "all"];
 
-export function AICCollaborations({
-  data = collaborations,
-}: AICCollaborationsProps) {
-  const [filtersColl, setFiltersColl] =
-    useState<Collaboration[]>(collaborations);
+  // ✅ default is upcoming
+  const [activeStatus, setActiveStatus] = useState<StatusFilter>("upcoming");
+
+  // ✅ filtered list always derived from data + activeStatus
+  const filteredCollabs = useMemo(() => {
+    if (activeStatus === "all") return data;
+    return data.filter((c) => c.status === activeStatus);
+  }, [data, activeStatus]);
+
   const getStatusColor = (status?: string) => {
     switch (status) {
       case "ongoing":
@@ -23,69 +33,64 @@ export function AICCollaborations({
     }
   };
 
-  const status = ["all", "ongoing", "completed", "upcoming"]
   return (
     <div className="w-full py-12 px-4 flex flex-col justify-center items-center">
       {/* Header Section */}
       <div className="mb-12 text-center max-w-3xl w-full">
         <h1 className="mb-4 text-4xl font-bold text-balance text-foreground md:text-5xl">
-          AIC{" "}
-          <span className="text-orange-500">
-            Academy Industry Collaboration
-          </span>
+          AIC <span className="text-orange-500">Academy Industry Collaboration</span>
         </h1>
         <p className="mx-auto max-w-2xl text-lg text-muted-foreground text-pretty">
-          Fostering innovation through strategic partnerships between leading
-          companies and prestigious academic institutions
+          Fostering innovation through strategic partnerships between leading companies and
+          prestigious academic institutions
         </p>
       </div>
 
+      {/* Filter Buttons */}
+      <div className="mb-12 flex flex-wrap justify-center items-center gap-3">
+        {statusOrder.map((s) => {
+          const isActive = activeStatus === s;
 
-   {/* Filter Buttons */}
-        <div className="mb-12 flex flex-wrap justify-center items-center gap-3">
-          {status.map((currentData, index) => (
+          return (
             <button
-              key={currentData + String(index)}
-              onClick={() => {
-                if (currentData === "all") {
-                  setFiltersColl(data)
-                  return
-                }
-                setFiltersColl([...data.filter((current) => current.status === currentData)])
-              }}
-              className="group relative overflow-hidden rounded-full bg-white px-6 py-2.5 text-sm font-semibold capitalize text-foreground shadow-sm ring-1 ring-orange-500/20 transition-all hover:shadow-md hover:ring-orange-500/40 hover:scale-105 active:scale-95"
+              key={s}
+              onClick={() => setActiveStatus(s)}
+              className={[
+                "group relative overflow-hidden rounded-full px-6 py-2.5 text-sm font-semibold capitalize shadow-sm ring-1 transition-all hover:shadow-md hover:scale-105 active:scale-95",
+                isActive
+                  ? "bg-orange-500 text-white ring-orange-500"
+                  : "bg-white text-foreground ring-orange-500/20 hover:ring-orange-500/40",
+              ].join(" ")}
             >
-              <span className="relative z-10">{currentData}</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-orange-600/5 opacity-0 transition-opacity group-hover:opacity-100" />
+              <span className="relative z-10">{s}</span>
+
+              {/* subtle hover bg for inactive only */}
+              {!isActive && (
+                <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-orange-600/5 opacity-0 transition-opacity group-hover:opacity-100" />
+              )}
             </button>
-          ))}
-        </div>
+          );
+        })}
+      </div>
+
       {/* Collaborations Grid */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {filtersColl.map((collaboration) => (
-          <div
-            key={collaboration.id}
-            className="group card max-w-sm mx-auto" // Set max-width and center the cards
-          >
+        {filteredCollabs.map((collaboration) => (
+          <div key={collaboration.id} className="group card max-w-sm mx-auto">
             {/* Card Header */}
             <div className="p-6 space-y-4">
-              {/* College Logo */}
               <div className="flex items-center justify-center">
-                <div className="">
-                  <img
-                    src={collaboration.collegeLogoUrl || "/placeholder.svg"}
-                    alt={`${collaboration.collegeName} logo`}
-                    className="h-40 w-40 object-contain"
-                  />
-                </div>
+                <img
+                  src={collaboration.collegeLogoUrl || "/placeholder.svg"}
+                  alt={`${collaboration.collegeName} logo`}
+                  className="h-40 w-40 object-contain"
+                />
               </div>
 
-              {/* Project Title */}
               <h3 className="text-center text-xl font-semibold text-balance text-card-foreground">
                 {collaboration.projectTitle}
               </h3>
 
-              {/* Status Badge */}
               {collaboration.status && (
                 <div className="flex justify-center">
                   <span
@@ -101,7 +106,6 @@ export function AICCollaborations({
 
             {/* Card Content */}
             <div className="p-6 pt-0 space-y-4">
-              {/* Company Name */}
               <div className="flex items-start gap-2">
                 <Building2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-orange-500" />
                 <div>
@@ -114,7 +118,6 @@ export function AICCollaborations({
                 </div>
               </div>
 
-              {/* College Name */}
               <div className="flex items-start gap-2">
                 <GraduationCap className="mt-0.5 h-5 w-5 flex-shrink-0 text-orange-500" />
                 <div>
@@ -127,14 +130,12 @@ export function AICCollaborations({
                 </div>
               </div>
 
-              {/* Project Description */}
               <div className="space-y-1 border-t border-border pt-4">
                 <p className="text-sm text-muted-foreground text-pretty">
                   {collaboration.projectDescription}
                 </p>
               </div>
 
-              {/* Duration */}
               {collaboration.duration && (
                 <div className="flex items-center justify-between rounded-lg bg-orange-50 p-3 dark:bg-orange-950/20">
                   <span className="text-xs font-medium text-muted-foreground">
