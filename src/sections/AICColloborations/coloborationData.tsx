@@ -3,7 +3,7 @@
 export interface Collaboration {
   id: string;
   companyName: string;
-  collegeName: string;
+  collegeName?: string;
   collegeLogoUrl: string;
   projectTitle: string;
   projectDescription: string;
@@ -55,7 +55,7 @@ export const collaborations: Collaboration[] = [
   {
     id: "4",
     companyName: "Bimba Glass Private Limited",
-    collegeName: "Demo University",
+    // collegeName: "Demo University",
     collegeLogoUrl: "/images/logos/bimba-glass.jpg",
     projectTitle:
       "Strategic Market Expansion and Distribution Plan for Bimba Glass Across Six Provinces of Nepal",
@@ -67,7 +67,7 @@ export const collaborations: Collaboration[] = [
   {
     id: "5",
     companyName: "National Innovation Centre",
-    collegeName: "Demo University",
+    // collegeName: "Demo University",
     collegeLogoUrl: "/images/logos/national-innovation.png",
     projectTitle: "Medical Drone Delivery",
     projectDescription:
@@ -90,8 +90,8 @@ export const collaborations: Collaboration[] = [
   {
     id: "7",
     companyName: "Aaha Nepali Enterprises Private Limited",
-    collegeName: "Demo University",
-    collegeLogoUrl: "/images/logos/aahanepal.jpeg",
+    // collegeName: "Demo University",
+    collegeLogoUrl: "/images/c-3.jpeg",
     projectTitle: "PicklePath UK – From Nepali Kitchens to the UK",
     projectDescription:
       "Introducing authentic Nepali pickles to the UK market by identifying reliable vendors, ensuring consistent product quality, optimizing costs and profit margins, and designing an efficient logistics and compliance strategy aligned with UK import and consumer standards.",
@@ -100,7 +100,7 @@ export const collaborations: Collaboration[] = [
   {
     id: "8",
     companyName: "Forefront Engineering Private Limited",
-    collegeName: "Demo University",
+    // collegeName: "Demo University",
     collegeLogoUrl: "/images/logos/coll-three.png",
     projectTitle: "Integrated BIM and Hydropower Modelling",
     projectDescription:
@@ -110,7 +110,7 @@ export const collaborations: Collaboration[] = [
   {
     id: "9",
     companyName: "Milk Art and Food Product Private Limited",
-    collegeName: "Demo University",
+    // collegeName: "Demo University",
     collegeLogoUrl: "/images/logos/coll-two.png",
     projectTitle:
       "Market Expansion and Operations Strategy: Milk Art and Food Pvt. Ltd.",
@@ -121,7 +121,7 @@ export const collaborations: Collaboration[] = [
   {
     id: "10",
     companyName: "Global Loss Adjustor Private Limited",
-    collegeName: "Demo University",
+    // collegeName: "Demo University",
     collegeLogoUrl: "/images/logos/coll-one.jpeg",
     projectTitle: "Automating Accident Reporting & Insurance Claim Processing",
     projectDescription:
@@ -131,7 +131,7 @@ export const collaborations: Collaboration[] = [
   {
     id: "11",
     companyName: "Nepvigyapan Private Limited",
-    collegeName: "Demo University",
+    // collegeName: "Demo University",
     collegeLogoUrl: "/images/logos/neplogo.png",
     projectTitle: "Rental Platform",
     projectDescription:
