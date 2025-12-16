@@ -158,4 +158,25 @@ export const collaborations: Collaboration[] = [
       "Storytelling is at the heart of Nama. Each bag carries a story of craftsmanship, circularity, and empowerment. In this project, the intern will help translate Nama’s story into a clear, consistent, and engaging social media and marketing strategy, grounded in real stories from Nepal.",
     status: "upcoming",
   },
+     {
+    id: "14",
+    companyName: "Nepbigyapan Private Limited",
+    // collegeName: "Demo University",
+    collegeLogoUrl: "/images/logos/neplogo.png",
+    projectTitle: "A Location-Based Hostel Discovery Platform for Students in Kathmandu Valley",
+    projectDescription:
+      "This project aims to design a Hostel Finder Mobile App that helps students and parents easily find, compare, and choose hostels based on location, room size, hygiene, safety, facilities, and price.",
+    status: "upcoming",
+  },
+  {
+    id: "15",
+    companyName: "smart builders and light weight solution private Limited.",
+    // collegeName: "Demo University",
+    collegeLogoUrl: "/images/c-7.jpeg",
+    projectTitle: "Impact of Upstream Hydropower Infrastructure on Downstream Hydropower Potential",
+    projectDescription:
+      "This project aims to analyze how upstream hydropower developments affect downstream hydropower potential, focusing on changes in water flow, sediment transport, seasonal variability, power generation efficiency, and long-term sustainability. The study will support better hydropower planning, policy decisions, and coordinated river basin management.",
+      status: "upcoming"
+ 
+    },
 ];

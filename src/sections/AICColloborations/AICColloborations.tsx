@@ -7,18 +7,84 @@ import {
 } from "./coloborationData";
 
 type StatusFilter = "upcoming" | "ongoing" | "completed" | "all";
+type DomainFilter = "all" | "engineering" | "it management";
+
+function inferDomain(c: Collaboration): Exclude<DomainFilter, "all"> | "other" {
+  const text = `${c.projectTitle} ${c.projectDescription} ${c.companyName} ${c.collegeName ?? ""}`.toLowerCase();
+
+  // Engineering-ish keywords
+  const engineeringKeywords = [
+    "engineering",
+    "hydropower",
+    "hydrological",
+    "bim",
+    "modelling",
+    "modeling",
+    "infrastructure",
+    "drone",
+    "medical drone",
+    "river basin",
+    "sediment",
+    "power generation",
+    "glass",
+    "builders",
+    "construction",
+  ];
+
+  // IT / product / platform / systems-ish keywords
+  const itKeywords = [
+    "saas",
+    "mvp",
+    "platform",
+    "application",
+    "mobile",
+    "system",
+    "automating",
+    "automation",
+    "data",
+    "blockchain",
+    "digital",
+    "software",
+    "reporting",
+    "processing",
+    "rental",
+    "hostel finder",
+    "centralized",
+    "supplier",
+  ];
+
+  const engineeringHit = engineeringKeywords.some((k) => text.includes(k));
+  const itHit = itKeywords.some((k) => text.includes(k));
+
+  // If both hit, prefer IT Management (since many engineering projects also mention "digital workflows")
+  if (engineeringHit && !itHit) return "engineering";
+  if (itHit) return "it management";
+
+  return "other";
+}
 
 export function AICCollaborations({ data = collaborations }: AICCollaborationsProps) {
   const statusOrder: StatusFilter[] = ["upcoming", "ongoing", "completed", "all"];
+  const domainOrder: DomainFilter[] = ["all", "engineering", "it management"];
 
-  // ✅ default is upcoming
+
   const [activeStatus, setActiveStatus] = useState<StatusFilter>("upcoming");
+  const [activeDomain, setActiveDomain] = useState<DomainFilter>("all");
 
-  // ✅ filtered list always derived from data + activeStatus
+
   const filteredCollabs = useMemo(() => {
-    if (activeStatus === "all") return data;
-    return data.filter((c) => c.status === activeStatus);
-  }, [data, activeStatus]);
+    let list = data;
+
+    if (activeStatus !== "all") {
+      list = list.filter((c) => c.status === activeStatus);
+    }
+
+    if (activeDomain !== "all") {
+      list = list.filter((c) => inferDomain(c) === activeDomain);
+    }
+
+    return list;
+  }, [data, activeStatus, activeDomain]);
 
   const getStatusColor = (status?: string) => {
     switch (status) {
@@ -46,31 +112,57 @@ export function AICCollaborations({ data = collaborations }: AICCollaborationsPr
         </p>
       </div>
 
-      {/* Filter Buttons */}
-      <div className="mb-12 flex flex-wrap justify-center items-center gap-3">
-        {statusOrder.map((s) => {
-          const isActive = activeStatus === s;
+      {/* Filters */}
+      <div className="mb-10 flex flex-col items-center gap-4">
+        {/* Status Filter Buttons */}
+        <div className="flex flex-wrap justify-center items-center gap-3">
+          {statusOrder.map((s) => {
+            const isActive = activeStatus === s;
 
-          return (
-            <button
-              key={s}
-              onClick={() => setActiveStatus(s)}
-              className={[
-                "group relative overflow-hidden rounded-full px-6 py-2.5 text-sm font-semibold capitalize shadow-sm ring-1 transition-all hover:shadow-md hover:scale-105 active:scale-95",
-                isActive
-                  ? "bg-orange-500 text-white ring-orange-500"
-                  : "bg-white text-foreground ring-orange-500/20 hover:ring-orange-500/40",
-              ].join(" ")}
-            >
-              <span className="relative z-10">{s}</span>
+            return (
+              <button
+                key={s}
+                onClick={() => setActiveStatus(s)}
+                className={[
+                  "group relative overflow-hidden rounded-full px-6 py-2.5 text-sm font-semibold capitalize shadow-sm ring-1 transition-all hover:shadow-md hover:scale-105 active:scale-95",
+                  isActive
+                    ? "bg-orange-500 text-white ring-orange-500"
+                    : "bg-white text-foreground ring-orange-500/20 hover:ring-orange-500/40",
+                ].join(" ")}
+              >
+                <span className="relative z-10">{s}</span>
+                {!isActive && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-orange-600/5 opacity-0 transition-opacity group-hover:opacity-100" />
+                )}
+              </button>
+            );
+          })}
+        </div>
 
-              {/* subtle hover bg for inactive only */}
-              {!isActive && (
-                <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-orange-600/5 opacity-0 transition-opacity group-hover:opacity-100" />
-              )}
-            </button>
-          );
-        })}
+        {/* Domain Filter Buttons (Engineering / IT Management) */}
+        <div className="flex flex-wrap justify-center items-center gap-3">
+          {domainOrder.map((d) => {
+            const isActive = activeDomain === d;
+
+            return (
+              <button
+                key={d}
+                onClick={() => setActiveDomain(d)}
+                className={[
+                  "group relative overflow-hidden rounded-full px-6 py-2.5 text-sm font-semibold capitalize shadow-sm ring-1 transition-all hover:shadow-md hover:scale-105 active:scale-95",
+                  isActive
+                    ? "bg-orange-500 text-white ring-orange-500"
+                    : "bg-white text-foreground ring-orange-500/20 hover:ring-orange-500/40",
+                ].join(" ")}
+              >
+                <span className="relative z-10">{d}</span>
+                {!isActive && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-orange-600/5 opacity-0 transition-opacity group-hover:opacity-100" />
+                )}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Collaborations Grid */}
