@@ -91,7 +91,7 @@ export const collaborations: Collaboration[] = [
     id: "7",
     companyName: "Aaha Nepali Enterprises Private Limited",
     // collegeName: "Demo University",
-    collegeLogoUrl: "/images/c-3.jpeg",
+    collegeLogoUrl: "/images/logos/aahan.png",
     projectTitle: "PicklePath UK – From Nepali Kitchens to the UK",
     projectDescription:
       "Introducing authentic Nepali pickles to the UK market by identifying reliable vendors, ensuring consistent product quality, optimizing costs and profit margins, and designing an efficient logistics and compliance strategy aligned with UK import and consumer standards.",
@@ -136,6 +136,26 @@ export const collaborations: Collaboration[] = [
     projectTitle: "Rental Platform",
     projectDescription:
       "A community-based rental platform that allows neighbors to safely lend or rent specialized equipment such as high-end camera lenses, home repair tools, and party supplies within a city or local community.",
+    status: "upcoming",
+  },
+    {
+    id: "12",
+    companyName: "Nama",
+    // collegeName: "Demo University",
+    collegeLogoUrl: "/images/logos/nama.png",
+    projectTitle: "Field & Market Research Makers, Materials & Competition",
+    projectDescription:
+      "To build a strong, ethical, and competitive brand, deep understanding of the local production landscape is essential. In this project, the students will conduct hands-on field research in Nepal, focusing on makers, materials, and competitors.",
+    status: "upcoming",
+  },
+     {
+    id: "13",
+    companyName: "Nama",
+    // collegeName: "Demo University",
+    collegeLogoUrl: "/images/logos/nama.png",
+    projectTitle: "Social Media & Marketing Strategy",
+    projectDescription:
+      "Storytelling is at the heart of Nama. Each bag carries a story of craftsmanship, circularity, and empowerment. In this project, the intern will help translate Nama’s story into a clear, consistent, and engaging social media and marketing strategy, grounded in real stories from Nepal.",
     status: "upcoming",
   },
 ];
