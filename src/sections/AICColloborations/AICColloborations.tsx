@@ -7,12 +7,12 @@ import {
 } from "./coloborationData";
 
 type StatusFilter = "upcoming" | "ongoing" | "completed" | "all";
-type DomainFilter = "all" | "engineering" | "it management";
+type DomainFilter = "management" | "engineering" | "it";
 
-function inferDomain(c: Collaboration): Exclude<DomainFilter, "all"> | "other" {
+
+function inferDomain(c: Collaboration): DomainFilter {
   const text = `${c.projectTitle} ${c.projectDescription} ${c.companyName} ${c.collegeName ?? ""}`.toLowerCase();
 
-  // Engineering-ish keywords
   const engineeringKeywords = [
     "engineering",
     "hydropower",
@@ -22,16 +22,13 @@ function inferDomain(c: Collaboration): Exclude<DomainFilter, "all"> | "other" {
     "modeling",
     "infrastructure",
     "drone",
-    "medical drone",
     "river basin",
     "sediment",
     "power generation",
-    "glass",
-    "builders",
     "construction",
+    "builders",
   ];
 
-  // IT / product / platform / systems-ish keywords
   const itKeywords = [
     "saas",
     "mvp",
@@ -41,50 +38,53 @@ function inferDomain(c: Collaboration): Exclude<DomainFilter, "all"> | "other" {
     "system",
     "automating",
     "automation",
+    "software",
     "data",
     "blockchain",
     "digital",
-    "software",
-    "reporting",
-    "processing",
     "rental",
-    "hostel finder",
-    "centralized",
-    "supplier",
+    "hostel",
   ];
 
-  const engineeringHit = engineeringKeywords.some((k) => text.includes(k));
-  const itHit = itKeywords.some((k) => text.includes(k));
+  const managementKeywords = [
+    "strategy",
+    "market",
+    "operations",
+    "supply chain",
+    "distribution",
+    "business",
+    "planning",
+    "expansion",
+    "logistics",
+  ];
 
-  // If both hit, prefer IT Management (since many engineering projects also mention "digital workflows")
-  if (engineeringHit && !itHit) return "engineering";
-  if (itHit) return "it management";
-
-  return "other";
+  if (engineeringKeywords.some(k => text.includes(k))) return "engineering";
+  if (itKeywords.some(k => text.includes(k))) return "it";
+  return "management"; // default fallback
 }
+
 
 export function AICCollaborations({ data = collaborations }: AICCollaborationsProps) {
   const statusOrder: StatusFilter[] = ["upcoming", "ongoing", "completed", "all"];
-  const domainOrder: DomainFilter[] = ["all", "engineering", "it management"];
+  const domainOrder: DomainFilter[] = ["management", "engineering", "it"];
 
 
   const [activeStatus, setActiveStatus] = useState<StatusFilter>("upcoming");
-  const [activeDomain, setActiveDomain] = useState<DomainFilter>("all");
+  const [activeDomain, setActiveDomain] = useState<DomainFilter>("management");
 
 
-  const filteredCollabs = useMemo(() => {
-    let list = data;
+const filteredCollabs = useMemo(() => {
+  let list = data;
 
-    if (activeStatus !== "all") {
-      list = list.filter((c) => c.status === activeStatus);
-    }
+  if (activeStatus !== "all") {
+    list = list.filter((c) => c.status === activeStatus);
+  }
 
-    if (activeDomain !== "all") {
-      list = list.filter((c) => inferDomain(c) === activeDomain);
-    }
+  list = list.filter((c) => inferDomain(c) === activeDomain);
 
-    return list;
-  }, [data, activeStatus, activeDomain]);
+  return list;
+}, [data, activeStatus, activeDomain]);
+
 
   const getStatusColor = (status?: string) => {
     switch (status) {
