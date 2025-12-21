@@ -7,5 +7,19 @@ import Contact from "./Contact/Contact";
 import LogoImage from "./LogoImage/LogoImage";
 import GeneralForm from "./Forms/GeneralForm";
 import EntrepreneurshipFrom from "./Forms/Entrepreneurship";
+import LoginComponent from "./auth/LoginComponent";
+import RegisterComponent from "./auth/RegsiterComponent";
 
-export { Header, Footer,   Button, Stars, Heading, Contact, LogoImage, GeneralForm, EntrepreneurshipFrom };
+export {
+  Header,
+  Footer,
+  Button,
+  Stars,
+  Heading,
+  Contact,
+  LogoImage,
+  GeneralForm,
+  EntrepreneurshipFrom,
+  LoginComponent,
+  RegisterComponent,
+};

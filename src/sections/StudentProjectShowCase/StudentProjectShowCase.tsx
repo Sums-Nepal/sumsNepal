@@ -1,427 +1,644 @@
-import { ChevronDown, ChevronRight, X } from "lucide-react";
-import { useState } from "react";
+"use client";
 
-interface Project {
-  title: string;
-  college: string;
-  image: string;
-  description: string;
-  report: string;
-}
+import { useEffect, useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+  Search,
+  Rocket,
+  GraduationCap,
+  Calendar,
+  X,
+  ChevronDown,
+  Filter,
+  ExternalLink,
+  Users,
+  Sparkles,
+  Mail,
+  UserCircle,
+} from "lucide-react";
 
-const studentProjects: Project[] = [
-  // Texas College Teams
-  {
-    title: "HOVIUS",
-    college: "Texas College",
-    image: "/images/logos/texas-mgmt-id.png",
-    description:
-      "Hospital Management System focusing on digitizing hospital operations.",
-    report: "/files/Texas_HOVIUS.pdf",
-  },
-  {
-    title: "UTOPIA",
-    college: "Texas College",
-    image: "/images/logos/texas-mgmt-id.png",
-    description:
-      "Modernizing gold and silver jewelry to make it more affordable.",
-    report: "/files/Texas_UTOPIA.pdf",
-  },
-  {
-    title: "AUTUMN",
-    college: "Texas College",
-    image: "/images/logos/texas-mgmt-id.png",
-    description:
-      "Developing travel, study, and hygiene kits targeted for girls in communities.",
-    report: "/files/Texas_AUTUMN.pdf",
-  },
-  {
-    title: "GEN-Z",
-    college: "Texas College",
-    image: "/images/logos/texas-mgmt-id.png",
-    description:
-      "Energy & water solution for hiking with a smart bottle design.",
-    report: "/files/Texas_GENZ.pdf",
-  },
-  {
-    title: "FLOAT",
-    college: "Texas College",
-    image: "/images/logos/texas-mgmt-id.png",
-    description: "Collaborative platform for learners to study and socialize.",
-    report: "/files/Texas_FLOAT.pdf",
-  },
-  {
-    title: "GIRLY GIRLZ",
-    college: "Texas College",
-    image: "/images/logos/texas-mgmt-id.png",
-    description:
-      "Jewelry segment connecting fashion with lightweight solutions.",
-    report: "/files/Texas_GIRLYGIRLZ.pdf",
-  },
-  {
-    title: "TREBLE",
-    college: "Texas College",
-    image: "/images/logos/texas-mgmt-id.png",
-    description: "Providing home services nationwide in the future.",
-    report: "/files/Texas_TREBLE.pdf",
-  },
-  {
-    title: "SKILLWAVE",
-    college: "Texas College",
-    image: "/images/logos/texas-mgmt-id.png",
-    description:
-      "SOS system embedded in school bags to send alerts and live location to parents.",
-    report: "/files/Texas_SKILLWAVE.pdf",
-  },
-  {
-    title: "BACK ARROW",
-    college: "Texas College",
-    image: "/images/logos/texas-mgmt-id.png",
-    description:
-      "OTT platform promoting Nepali movies and culture internationally.",
-    report: "/files/Texas_BACKARROW.pdf",
-  },
-  {
-    title: "REACTOR",
-    college: "Texas College",
-    image: "/images/logos/texas-mgmt-id.png",
-    description: "Multipurpose and interchangeable jewelry designs.",
-    report: "/files/Texas_REACTOR.pdf",
-  },
+import { useGetProjectsQuery } from "../../services/projects";
+import { projectsData, stages } from "./studentProjectStatic";
+import type { Project } from "../../types/componentsType/projectTypes";
 
-  // Other colleges remain as before
-  {
-    title: "Eco-friendly Robot",
-    college: "St. Xaviers",
-    image: "/images/logos/st-x.png",
-    description:
-      "A robot prototype designed for sustainable waste management and recycling.",
-    report: "/files/St.Xaviers.pdf",
-  },
-  {
-    title: "Management Dashboard",
-    college: "School of Management",
-    image: "/images/logos/somtu.png",
-    description:
-      "A web-based dashboard for visualizing KPIs and team productivity metrics.",
-    report: "/files/School-of-Management.pdf",
-  },
-  {
-    title: "Community Help Platform",
-    college: "Samarpan",
-    image: "/images/logos/icms.jpeg",
-    description:
-      "A platform connecting volunteers with community service projects efficiently.",
-    report: "/files/Samarpan.pdf",
-  },
-  {
-    title: "The Plot Twist Trio",
-    college: "Samarpan",
-    image: "/images/logos/icms.jpeg",
+// ✅ helper: backend "year" is datetime string, static "year" is number
+const toYearNumber = (value: any): number => {
+  if (typeof value === "number") return value;
+  const d = new Date(value);
+  const y = d.getFullYear();
+  return Number.isFinite(y) ? y : new Date().getFullYear();
+};
 
-    description:
-      "Develop a mental wellness chatbot that provides students with 24/7 emotional support and resources.",
-    report: "/files/Samarpan_PlotTwistTrio.pdf",
-  },
-  {
-    title: "APPS",
-    college: "Samarpan",
-    image: "/images/logos/icms.jpeg",
+// ✅ helper: backend -> same UI shape as your static list
+const normalizeBackendProject = (p: any): Project => {
+  const safeId =
+    (p?.id ?? p?.$id ?? p?._id ?? "")?.toString?.() || crypto.randomUUID();
 
-    description:
-      "Design a peer-to-peer book exchange platform to reduce textbook costs for students.",
-    report: "/files/Samarpan_APPS.pdf",
-  },
-  // st
-  {
-    title: "BAZINGA",
-    college: "St. Xaviers",
-    image: "/images/logos/st-x.png",
-    description:
-      "Bazinga Bites is a protein and meat bite, designed to target university students who want to fuel their bodies and minds during university struggles.",
-    report: "/files/StXaviers_BAZINGA.pdf",
-  },
-  {
-    title: "APPLE",
-    college: "St. Xaviers",
-    image: "/images/logos/st-x.png",
-    description: "Clothing - Have your hoodie haven.",
-    report: "/files/StXaviers_APPLE.pdf",
-  },
-  {
-    title: "DIVERSE",
-    college: "St. Xaviers",
-    image: "/images/logos/st-x.png",
-    description: "Bio kit backpack.",
-    report: "/files/StXaviers_DIVERSE.pdf",
-  },
-  {
-    title: "Aroma",
-    college: "St. Xaviers",
-    image: "/images/logos/st-x.png",
-    description: "Aroma Bags/Tote/Backpacks.",
-    report: "/files/StXaviers_AROMA.pdf",
-  },
-  {
-    title: "Team B",
-    college: "St. Xaviers",
-    image: "/images/logos/st-x.png",
-    description:
-      "Find Your Tribe app platform connecting fellow college students.",
-    report: "/files/StXaviers_TeamB.pdf",
-  },
-  {
-    title: "Innovators’ Hive",
-    college: "School of Management",
-    image: "/images/logos/somtu.png",
-    description:
-      "A mentoring platform where students can teach and learn from each other based on nearby locations.",
-    report: "/files/SchoolOfManagement_InnovatorsHive.pdf",
-  },
-  // Sagarmatha Engineering College teams
-  {
-    title: "Tech Ninja",
-    college: "Sagarmatha Engineering College",
-    image: "/images/logos/sagarmathalogo.png",
-    description:
-      "Revamp an e-commerce site for better UX, improved navigation, and a streamlined checkout.",
-    report: "/files/Sagarmatha_TechNinja.pdf",
-  },
-  {
-    title: "S-quad",
-    college: "Sagarmatha Engineering College",
-    image: "/images/logos/sagarmathalogo.png",
+  return {
+    id: safeId,
+    title: p?.title ?? "",
+    description: p?.description ?? "",
+    stage: p?.stage ?? "idea",
+    team: p?.team ?? "",
+    college: p?.college ?? "",
+    year: toYearNumber(p?.year),
+    image: p?.image ?? "",
+    report: p?.report ?? "",
+    teamLeader: p?.teamLeader ?? { name: "", email: "" },
+    // backend uses `teams` (Person[])
+    teams: Array.isArray(p?.teams) ? p.teams : [],
+  };
+};
 
-    description:
-      "Create an app for tracking workouts, diet, sleep, and integrating with wearables.",
-    report: "/files/Sagarmatha_Squad.pdf",
-  },
-  {
-    title: "Clover",
-    college: "Sagarmatha Engineering College",
-    image: "/images/logos/sagarmathalogo.png",
+// ✅ merge + dedupe by id
+const mergeUniqueById = (base: Project[], incoming: Project[]) => {
+  const map = new Map<string, Project>();
+  for (const p of base) map.set(String(p.id), p);
+  for (const p of incoming) map.set(String(p.id), p);
+  return Array.from(map.values());
+};
 
-    description:
-      "Build a system to control home devices via an app with voice recognition and AI learning.",
-    report: "/files/Sagarmatha_Clover.pdf",
-  },
-  {
-    title: "Pichai",
-    college: "Sagarmatha Engineering College",
-    image: "/images/logos/sagarmathalogo.png",
+export default function ProjectsPage() {
+  // ✅ start with your static projects, then append backend projects
+  const [allProjects, setAllProjects] = useState<Project[]>(projectsData);
 
-    description:
-      "Develop a platform for video lessons, quizzes, and live sessions, with student-teacher interaction.",
-    report: "/files/Sagarmatha_Pichai.pdf",
-  },
-  {
-    title: "Code Crafter",
-    college: "Sagarmatha Engineering College",
-    image: "/images/logos/sagarmathalogo.png",
+  const [selectedStage, setSelectedStage] = useState<string | null>(null);
+  const [selectedColleges, setSelectedColleges] = useState<string[]>([]);
+  const [selectedYears, setSelectedYears] = useState<number[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showFilters, setShowFilters] = useState(true);
 
-    description:
-      "Design an IoT-based system to optimize water usage and provide real-time farming insights.",
-    report: "/files/Sagarmatha_CodeCrafter.pdf",
-  },
-  {
-    title: "365-plus1",
-    college: "Sagarmatha Engineering College",
-    image: "/images/logos/sagarmathalogo.png",
+  const { data: backendProjects, isLoading } = useGetProjectsQuery();
 
-    description:
-      "Build an AI chatbot for handling customer inquiries, with NLP and machine learning to improve over time.",
-    report: "/files/Sagarmatha_365plus1.pdf",
-  },
-];
+  useEffect(() => {
+    const backendNormalized = (backendProjects ?? []).map(normalizeBackendProject);
+    setAllProjects((prev) => mergeUniqueById(prev, backendNormalized));
+  }, [backendProjects]);
 
-// Mock Data for visualization (Keep your own props/data)
-// interface Project { ... }
-// const studentProjects = [ ... ];
+  // ✅ build filter options from ALL projects (static + backend)
+  const colleges = useMemo(() => {
+    return Array.from(new Set(allProjects.map((p) => p.college).filter(Boolean))).sort();
+  }, [allProjects]);
 
-const StudentProjectShowcase = () => {
-  const [pdfURL, setPDFURL] = useState<string>("");
-  // Default all expanded to make the sticky effect immediately obvious,
-  // or keep [] to start closed.
-  const [expandedColleges, setExpandedColleges] = useState<string[]>([]);
+  const years = useMemo(() => {
+    return Array.from(new Set(allProjects.map((p) => toYearNumber(p.year))))
+      .filter((y) => Number.isFinite(y))
+      .sort((a, b) => b - a);
+  }, [allProjects]);
 
-  // Group projects logic remains the same...
-  const projectsByCollege = studentProjects.reduce((acc, project) => {
-    if (!acc[project.college]) acc[project.college] = [];
-    acc[project.college].push(project);
-    return acc;
-  }, {} as Record<string, typeof studentProjects>);
+  const teams = useMemo(() => {
+    return Array.from(new Set(allProjects.map((p) => p.team).filter(Boolean))).sort();
+  }, [allProjects]);
+
+  // ✅ FILTERED PROJECTS FROM allProjects (NOT projectsData)
+  const filteredProjects = useMemo(() => {
+    return allProjects.filter((project) => {
+      const matchesStage = selectedStage ? project.stage === selectedStage : true;
+
+      const matchesCollege =
+        selectedColleges.length > 0
+          ? selectedColleges.includes(project.college)
+          : true;
+
+      const matchesYear =
+        selectedYears.length > 0
+          ? selectedYears.includes(toYearNumber(project.year))
+          : true;
+
+      const q = searchQuery.trim().toLowerCase();
+      const matchesSearch = q
+        ? (project.title ?? "").toLowerCase().includes(q) ||
+          (project.description ?? "").toLowerCase().includes(q) ||
+          (project.team ?? "").toLowerCase().includes(q) ||
+          (project.college ?? "").toLowerCase().includes(q)
+        : true;
+
+      return matchesStage && matchesCollege && matchesYear && matchesSearch;
+    });
+  }, [allProjects, selectedStage, selectedColleges, selectedYears, searchQuery]);
+
+  // ✅ stage counts from ALL projects
+  const stageCounts = useMemo(() => {
+    return stages.map((stage) => ({
+      ...stage,
+      count: allProjects.filter((p) => p.stage === stage.id).length,
+    }));
+  }, [allProjects]);
 
   const toggleCollege = (college: string) => {
-    setExpandedColleges((prev) =>
-      prev.includes(college)
-        ? prev.filter((c) => c !== college)
-        : [...prev, college]
+    setSelectedColleges((prev) =>
+      prev.includes(college) ? prev.filter((c) => c !== college) : [...prev, college]
     );
   };
 
+  const toggleYear = (year: number) => {
+    setSelectedYears((prev) =>
+      prev.includes(year) ? prev.filter((y) => y !== year) : [...prev, year]
+    );
+  };
+
+  const clearAllFilters = () => {
+    setSelectedStage(null);
+    setSelectedColleges([]);
+    setSelectedYears([]);
+    setSearchQuery("");
+  };
+
+  const hasActiveFilters =
+    !!selectedStage ||
+    selectedColleges.length > 0 ||
+    selectedYears.length > 0 ||
+    !!searchQuery;
+
   return (
-    <section className="py-24 bg-gray-900 relative min-h-screen text-zinc-100 selection:bg-orange-500 selection:text-white">
-      {/* Background decoration */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20">
-        <div className="absolute top-[-10%] right-[-5%] w-96 h-96 bg-orange-600 rounded-full blur-[128px]" />
-        <div className="absolute bottom-[-10%] left-[-5%] w-96 h-96 bg-purple-900 rounded-full blur-[128px]" />
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-orange-500/5">
+      <header className="border-b border-border/40 bg-card/80 backdrop-blur-xl z-20 shadow-sm">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center justify-between gap-6">
+            <div className="flex-1">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 mb-4">
+                <Sparkles className="h-4 w-4 text-orange-500" />
+                <span className="text-sm font-medium text-orange-600 dark:text-orange-400">
+                  Student Innovation Hub
+                </span>
+              </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="mb-20">
-          <h2 className="text-6xl md:text-7xl font-black mb-6 tracking-tighter uppercase">
-            Ventures{" "}
-            <span className="bg-clip-text bg-gradient-to-r text-orange-500">
-              Incubated
-            </span>
-          </h2>
-          <p className="text-xl text-zinc-400 max-w-2xl border-l-4 border-orange-500 pl-6 italic">
-            Witness the raw innovation of the SUMS Innovator Program. Where
-            theory breaks and practical application begins.
-          </p>
+              <h1 className="text-5xl font-bold text-balance mb-3 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
+                Student Ventures Incubated
+              </h1>
+
+              <p className="text-muted-foreground text-pretty text-lg">
+                Explore{" "}
+                <span className="font-semibold text-orange-500">
+                  {allProjects.length} innovative projects
+                </span>{" "}
+                across all stages - from ideation to global expansion
+              </p>
+
+              {isLoading && (
+                <p className="text-xs text-muted-foreground mt-2">
+                  Loading more projects from server...
+                </p>
+              )}
+            </div>
+
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => setShowFilters(!showFilters)}
+              className="flex items-center gap-2 border-orange-500/30 hover:bg-orange-500/10 hover:border-orange-500"
+            >
+              <Filter className="h-4 w-4" />
+              {showFilters ? "Hide" : "Show"} Filters
+              <ChevronDown
+                className={`h-4 w-4 transition-transform ${
+                  showFilters ? "rotate-180" : ""
+                }`}
+              />
+            </Button>
+          </div>
         </div>
+      </header>
 
-        <div className="space-y-4">
-          {Object.keys(projectsByCollege).map((college, index) => (
-            <div key={college + String(index)} className="relative group">
-              {/* STICKY HEADER IMPLEMENTATION */}
-              {/* top-0: Sticks to the very top.
-                 z-30: Ensures it slides OVER the content but stays under modals.
-                 backdrop-blur: Gives it that glass effect so you see content sliding under.
-              */}
-              <div
-                className={`sticky top-0 z-30 transition-all duration-300 border-b border-zinc-800
-                  ${
-                    expandedColleges.includes(college)
-                      ? "bg-gray-900/95 backdrop-blur-md py-6"
-                      : "bg-gray-900 py-4"
-                  }
-                  flex justify-between items-center cursor-pointer px-6 border-l-4 
-                  ${
-                    expandedColleges.includes(college)
-                      ? "border-l-orange-500"
-                      : "border-l-zinc-700 hover:border-l-orange-500"
-                  }
-                `}
-                onClick={() => toggleCollege(college)}
-              >
-                <div className="flex items-center gap-4">
-                  <span className="text-zinc-500 font-mono text-sm">
-                    0{index + 1} //
-                  </span>
-                  <h3 className="text-2xl font-bold tracking-tight uppercase">
-                    {college}
-                  </h3>
-                </div>
+      <div className="container mx-auto px-4 py-10">
+        {showFilters && (
+          <div className="mb-10 p-8 rounded-2xl border border-orange-500/20 bg-card/95 backdrop-blur-sm shadow-xl shadow-orange-500/5">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="text-xl font-bold flex items-center gap-3 mb-1">
+                  <div className="p-2 rounded-lg bg-orange-500/10">
+                    <Filter className="h-5 w-5 text-orange-500" />
+                  </div>
+                  Search & Filter Projects
+                </h2>
+                <p className="text-sm text-muted-foreground ml-12">
+                  Find the perfect project using advanced filters
+                </p>
+              </div>
 
-                <div
-                  className={`transition-transform duration-300 ${
-                    expandedColleges.includes(college)
-                      ? "rotate-180 text-orange-500"
-                      : "text-zinc-500"
-                  }`}
+              {hasActiveFilters && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={clearAllFilters}
+                  className="text-orange-500 hover:text-orange-600 hover:bg-orange-500/10"
                 >
-                  {expandedColleges.includes(college) ? (
-                    <ChevronDown size={28} />
-                  ) : (
-                    <ChevronRight size={28} />
-                  )}
+                  <X className="h-4 w-4 mr-2" />
+                  Clear all filters
+                </Button>
+              )}
+            </div>
+
+            <div className="mb-8">
+              <label className="text-sm font-semibold mb-3 block text-muted-foreground uppercase tracking-wide">
+                Search Projects
+              </label>
+
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-orange-500" />
+                <Input
+                  type="text"
+                  placeholder="Search by project name, description, team, or college..."
+                  value={searchQuery}
+                  onChange={(e: any) => setSearchQuery(e.target.value)}
+                  className="pl-12 h-14 text-base border-orange-500/20 focus-visible:ring-orange-500/50 focus-visible:border-orange-500"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="space-y-4">
+                <label className="text-sm font-semibold flex items-center gap-2 text-muted-foreground uppercase tracking-wide">
+                  <div className="p-1.5 rounded bg-orange-500/10">
+                    <GraduationCap className="h-4 w-4 text-orange-500" />
+                  </div>
+                  Filter by College
+                  <Badge variant="secondary" className="ml-auto">
+                    {selectedColleges.length > 0
+                      ? `${selectedColleges.length} selected`
+                      : "All"}
+                  </Badge>
+                </label>
+
+                <div className="flex flex-wrap gap-2">
+                  {colleges.map((college) => {
+                    const count = allProjects.filter((p) => p.college === college).length;
+                    const isSelected = selectedColleges.includes(college);
+
+                    return (
+                      <Button
+                        key={college}
+                        variant={isSelected ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => toggleCollege(college)}
+                        className={`font-medium transition-all ${
+                          isSelected
+                            ? "shadow-md shadow-orange-500/20"
+                            : "hover:border-orange-500/50 hover:bg-orange-500/5"
+                        }`}
+                      >
+                        {college}
+                        <Badge
+                          variant={isSelected ? "secondary" : "outline"}
+                          className="ml-2 font-bold"
+                        >
+                          {count}
+                        </Badge>
+                      </Button>
+                    );
+                  })}
                 </div>
               </div>
 
-              {/* Accordion Content */}
-              <div
-                className={`overflow-hidden transition-all duration-500 ease-in-out
-                  ${
-                    expandedColleges.includes(college)
-                      ? "max-h-[3000px] opacity-100"
-                      : "max-h-0 opacity-0"
-                  }
-                `}
-              >
-                <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 bg-zinc-900/30">
-                  {projectsByCollege[college].map((project, idx) => (
-                    <div
-                      key={idx}
-                      className="group/card  relative bg-gray-900 border border-zinc-800 hover:border-orange-500/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(249,115,22,0.15)] overflow-hidden"
-                    >
-                      {/* Image container with overlay effect */}
-                      <div className="relative h-56 overflow-hidden flex justify-center items-center">
-                        <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 to-transparent z-10 opacity-80 flex justify-center items-center" />
-                        <img
-                          src={project.image}
-                          alt={project.title}
-                          className="w-[80%] h-[50%] object-cover transition-transform duration-700 group-hover/card:scale-100 "
-                        />
-                        <div className="absolute bottom-4 left-4 z-20">
-                          <span className="bg-orange-500 text-black text-xs font-bold px-2 py-1 uppercase tracking-widest">
-                            Project
-                          </span>
-                        </div>
+              <div className="space-y-4">
+                <label className="text-sm font-semibold flex items-center gap-2 text-muted-foreground uppercase tracking-wide">
+                  <div className="p-1.5 rounded bg-orange-500/10">
+                    <Calendar className="h-4 w-4 text-orange-500" />
+                  </div>
+                  Filter by Year
+                  <Badge variant="secondary" className="ml-auto">
+                    {selectedYears.length > 0
+                      ? `${selectedYears.length} selected`
+                      : "All"}
+                  </Badge>
+                </label>
+
+                <div className="flex flex-wrap gap-2">
+                  {years.map((year) => {
+                    const count = allProjects.filter((p) => toYearNumber(p.year) === year).length;
+                    const isSelected = selectedYears.includes(year);
+
+                    return (
+                      <Button
+                        key={year}
+                        variant={isSelected ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => toggleYear(year)}
+                        className={`font-medium transition-all ${
+                          isSelected
+                            ? "shadow-md shadow-orange-500/20"
+                            : "hover:border-orange-500/50 hover:bg-orange-500/5"
+                        }`}
+                      >
+                        {year}
+                        <Badge
+                          variant={isSelected ? "secondary" : "outline"}
+                          className="ml-2 font-bold"
+                        >
+                          {count}
+                        </Badge>
+                      </Button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* teams is computed if you want it later */}
+            {/* <pre className="text-xs text-muted-foreground mt-6">{JSON.stringify(teams, null, 2)}</pre> */}
+          </div>
+        )}
+
+        <div className="mb-10">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl font-bold mb-1">Filter by Development Stage</h2>
+              <p className="text-muted-foreground">
+                Select a stage to view related projects
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+            {stageCounts.map((stage) => {
+              const Icon = stage.icon;
+              const isSelected = selectedStage === stage.id;
+
+              return (
+                <button
+                  key={stage.id}
+                  onClick={() => setSelectedStage(isSelected ? null : stage.id)}
+                  className={`
+                    group relative overflow-hidden rounded-2xl border-2 transition-all duration-300 p-5 text-left
+                    ${
+                      isSelected
+                        ? "border-orange-500 bg-orange-500/10 shadow-2xl shadow-orange-500/25 scale-105 -translate-y-1"
+                        : "border-border bg-card/80 backdrop-blur-sm hover:border-orange-500/50 hover:shadow-lg hover:-translate-y-0.5"
+                    }
+                  `}
+                >
+                  <div
+                    className={`absolute inset-0 opacity-0 group-hover:opacity-10 bg-gradient-to-br ${stage.color} transition-opacity duration-300`}
+                  />
+
+                  <div className="relative">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className={`p-2.5 rounded-xl bg-gradient-to-br ${stage.color} shadow-lg`}>
+                        <Icon className="h-5 w-5 text-white" />
                       </div>
 
-                      <div className="p-6">
-                        <h4 className="text-xl font-bold text-white mb-3 leading-tight group-hover/card:text-orange-500 transition-colors">
-                          {project.title}
-                        </h4>
-                        <p className="text-zinc-400 text-sm mb-6 line-clamp-3">
-                          {project.description}
-                        </p>
-
-                        {/* <div className="flex gap-3 mt-auto">
-                          <button
-                            onClick={() => setPDFURL(project.report)}
-                            className="flex-1 bg-zinc-100 text-black hover:bg-orange-500 hover:text-white h-10 font-bold text-sm uppercase tracking-wide transition-colors flex items-center justify-center gap-2"
-                          >
-                            <FileText size={16} /> View Report
-                          </button>
-                          <a
-                            href={project.report}
-                            download
-                            className="w-10 h-10 flex items-center justify-center border border-zinc-700 text-zinc-400 hover:border-orange-500 hover:text-orange-500 transition-all"
-                          >
-                            <Download size={18} />
-                          </a>
-                        </div> */}
-                      </div>
+                      <Badge
+                        variant={isSelected ? "default" : "secondary"}
+                        className="font-bold text-base px-3 py-1"
+                      >
+                        {stage.count}
+                      </Badge>
                     </div>
+
+                    <h3 className="font-bold text-base mb-2">{stage.name}</h3>
+                    <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                      {stage.description}
+                    </p>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="mb-8">
+          <div className="flex items-center justify-between flex-wrap gap-4 p-4 rounded-xl bg-card/50 backdrop-blur-sm border border-orange-500/20">
+            <div>
+              <p className="text-sm text-muted-foreground mb-2">
+                Showing{" "}
+                <span className="font-bold text-orange-500 text-2xl">
+                  {filteredProjects.length}
+                </span>{" "}
+                of{" "}
+                <span className="font-bold text-foreground text-xl">
+                  {allProjects.length}
+                </span>{" "}
+                projects
+              </p>
+
+              {hasActiveFilters && (
+                <div className="flex flex-wrap gap-2 mt-3">
+                  <span className="text-xs text-muted-foreground font-medium">
+                    Active filters:
+                  </span>
+
+                  {selectedStage && (
+                    <Badge variant="default" className="gap-1.5 pl-2 shadow-sm">
+                      Stage: {stages.find((s) => s.id === selectedStage)?.name}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedStage(null);
+                        }}
+                        className="ml-1 hover:bg-orange-600 rounded-full p-0.5 transition-colors"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </Badge>
+                  )}
+
+                  {selectedColleges.map((college) => (
+                    <Badge key={college} variant="default" className="gap-1.5 pl-2 shadow-sm">
+                      {college}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleCollege(college);
+                        }}
+                        className="ml-1 hover:bg-orange-600 rounded-full p-0.5 transition-colors"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </Badge>
+                  ))}
+
+                  {selectedYears.map((year) => (
+                    <Badge key={year} variant="default" className="gap-1.5 pl-2 shadow-sm">
+                      Year: {year}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleYear(year);
+                        }}
+                        className="ml-1 hover:bg-orange-600 rounded-full p-0.5 transition-colors"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </Badge>
                   ))}
                 </div>
-              </div>
+              )}
             </div>
-          ))}
+          </div>
         </div>
 
-        {/* Cinematic PDF Viewer */}
-        {pdfURL && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div
-              className="absolute inset-0 bg-black/90 backdrop-blur-sm"
-              onClick={() => setPDFURL("")}
-            />
-            <div className="relative w-full max-w-5xl h-[85vh] bg-gray-900 border border-zinc-700 shadow-2xl flex flex-col animate-in fade-in zoom-in duration-200">
-              <div className="flex justify-between items-center p-4 border-b border-zinc-800 bg-zinc-900">
-                <span className="text-orange-500 font-mono text-sm uppercase">
-                  Secure Viewer // {pdfURL.split("/").pop()}
-                </span>
-                <button
-                  onClick={() => setPDFURL("")}
-                  className="text-zinc-400 hover:text-white hover:rotate-90 transition-transform"
-                >
-                  <X size={24} />
-                </button>
-              </div>
-              <iframe
-                src={pdfURL}
-                title="PDF Viewer"
-                className="w-full h-full bg-zinc-200"
-              />
+        {filteredProjects.length === 0 ? (
+          <div className="text-center py-20">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-orange-500/10 mb-6">
+              <Search className="h-10 w-10 text-orange-500" />
             </div>
+            <h3 className="text-2xl font-bold mb-3">No projects found</h3>
+            <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+              Try adjusting your filters or search query to find more projects.
+            </p>
+            <Button onClick={clearAllFilters} variant="default" size="lg" className="shadow-lg">
+              Clear all filters
+            </Button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProjects.map((project) => {
+              const stage = stages.find((s) => s.id === project.stage);
+              const StageIcon = stage?.icon || Rocket;
+
+              return (
+                <Card
+                  key={project.id}
+                  className="group card relative overflow-hidden border-2 border-border hover:border-orange-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-2"
+                >
+                  <div className="relative h-48 bg-gradient-to-br from-orange-500/5 to-orange-500/20 overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent z-10" />
+                    <img
+                      src={project.image || "/placeholder.svg"}
+                      alt={project.title}
+                      className="object-contain p-8 group-hover:scale-110 transition-transform duration-500"
+                    />
+
+                    <div className="absolute top-4 right-4 z-20">
+                      <Badge
+                        variant="secondary"
+                        className="backdrop-blur-sm bg-white/90 text-foreground shadow-lg"
+                      >
+                        {toYearNumber(project.year)}
+                      </Badge>
+                    </div>
+
+                    <div className="absolute bottom-4 left-4 z-20">
+                      <div
+                        className={`flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r ${stage?.color} shadow-lg`}
+                      >
+                        <StageIcon className="h-4 w-4 text-white" />
+                        <span className="text-xs font-bold text-white">
+                          {stage?.name ?? "Stage"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold mb-3 text-balance line-clamp-1 group-hover:text-orange-500 transition-colors">
+                      {project.title}
+                    </h3>
+
+                    <p className="text-muted-foreground text-sm mb-4 line-clamp-2 leading-relaxed">
+                      {project.description}
+                    </p>
+
+                    <div className="space-y-3 mb-4">
+                      <div className="flex items-center gap-2 text-sm">
+                        <div className="p-1.5 rounded bg-orange-500/10">
+                          <Users className="h-4 w-4 text-orange-500" />
+                        </div>
+                        <span className="font-medium text-muted-foreground">Team:</span>
+                        <span className="font-semibold">{project.team}</span>
+                      </div>
+
+                      <div className="flex items-center gap-2 text-sm">
+                        <div className="p-1.5 rounded bg-orange-500/10">
+                          <GraduationCap className="h-4 w-4 text-orange-500" />
+                        </div>
+                        <span className="font-medium text-muted-foreground">College:</span>
+                        <span className="font-semibold line-clamp-1">{project.college}</span>
+                      </div>
+
+                      <div className="pt-2 border-t border-border/50">
+                        <div className="flex items-start gap-2 text-sm mb-2">
+                          <div className="p-1.5 rounded bg-orange-500/10 shrink-0">
+                            <UserCircle className="h-4 w-4 text-orange-500" />
+                          </div>
+
+                          <div className="flex-1 min-w-0">
+                            <span className="font-medium text-muted-foreground block mb-1">
+                              Team Leader:
+                            </span>
+                            <p className="font-semibold text-foreground">
+                              {project.teamLeader?.name ?? ""}
+                            </p>
+                            {project.teamLeader?.email ? (
+                              <a
+                                href={`mailto:${project.teamLeader.email}`}
+                                className="text-xs text-orange-500 hover:text-orange-600 hover:underline flex items-center gap-1 mt-1"
+                              >
+                                <Mail className="h-3 w-3" />
+                                {project.teamLeader.email}
+                              </a>
+                            ) : null}
+                          </div>
+                        </div>
+
+                        <div className="mt-3">
+                          <span className="font-medium text-muted-foreground text-xs block mb-2">
+                            Team Members:
+                          </span>
+
+                          <div className="space-y-2">
+                            {(project.teams ?? []).map((member: any, idx: number) => (
+                              <div key={idx} className="text-xs bg-muted/50 rounded-lg p-2">
+                                <p className="font-semibold text-foreground mb-0.5">
+                                  {member?.name ?? ""}
+                                </p>
+                                {member?.email ? (
+                                  <a
+                                    href={`mailto:${member.email}`}
+                                    className="text-orange-500 hover:text-orange-600 hover:underline flex items-center gap-1"
+                                  >
+                                    <Mail className="h-3 w-3" />
+                                    {member.email}
+                                  </a>
+                                ) : null}
+                              </div>
+                            ))}
+
+                            {(project.teams ?? []).length === 0 && (
+                              <p className="text-xs text-muted-foreground">
+                                No team members listed.
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Button
+                      asChild
+                      className="w-full shadow-md group/btn hover:shadow-lg hover:shadow-orange-500/20"
+                      disabled={!project.report}
+                    >
+                      <a
+                        href={project.report || "#"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => {
+                          if (!project.report) e.preventDefault();
+                        }}
+                      >
+                        View Project Report
+                        <ExternalLink className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                      </a>
+                    </Button>
+                  </div>
+                </Card>
+              );
+            })}
           </div>
         )}
       </div>
-    </section>
+    </div>
   );
-};
-
-export default StudentProjectShowcase;
+}

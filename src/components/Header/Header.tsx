@@ -1,20 +1,25 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Menu, X, ChevronDown } from "lucide-react"
-import { NavLink } from "react-router-dom"
-import Button from "../Button/Button"
-import LogoImage from "../LogoImage/LogoImage"
-import { navs } from "./navs"
-import "./Header.css"
+import { useState } from "react";
+import { Menu, X, ChevronDown } from "lucide-react";
+import { NavLink, useNavigate } from "react-router-dom";
+import Button from "../Button/Button";
+import LogoImage from "../LogoImage/LogoImage";
+import { navs } from "./navs";
+import "./Header.css";
+import { useCurrentUser } from "../../hooks";
+import userService from "../../services/user";
 
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const [openDropdown, setOpenDropdown] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(false);
+  const navigate = useNavigate();
 
-  const visibleNavs = navs.slice(0, 5)
-  const hiddenNavs = navs.slice(5)
+  const { user } = useCurrentUser();
+
+  const visibleNavs = navs.slice(0, 5);
+  const hiddenNavs = navs.slice(5);
 
   // useEffect(() => {
   //   const handleScroll = () => setScrolled(window.scrollY > 10)
@@ -22,7 +27,7 @@ const Header = () => {
   //   return () => window.removeEventListener("scroll", handleScroll)
   // }, [])
 
-  const toggleMenu = () => setIsOpen(!isOpen)
+  const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
     <header
@@ -32,8 +37,8 @@ const Header = () => {
           : "bg-white/90 backdrop-blur-lg border-b border-orange-50/30 shadow-sm"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-center h-16 sm:h-20 w-[100%]">
           {/* Logo */}
           <div className="flex items-center flex-shrink-0 transition-transform duration-300 hover:scale-105 relative z-10">
             <LogoImage makeClickable={true} />
@@ -119,16 +124,38 @@ const Header = () => {
           </nav>
 
           {/* Desktop Button */}
-          <div className="hidden md:block">
+          <div className=" flex gap-6">
             <Button
               onClick={() => {
-                window.open("https://wa.me/9810446594")
+                window.open("https://wa.me/9810446594");
               }}
               className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 lg:px-8 py-2.5 lg:py-3 rounded-xl font-semibold text-sm lg:text-[15px] transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/40 hover:-translate-y-0.5 active:translate-y-0 relative overflow-hidden group"
             >
               <span className="relative z-10">Contact Us</span>
               <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </Button>
+            {!user ? (
+              <Button
+                onClick={() => {
+                  navigate("/login");
+                }}
+                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 lg:px-8 py-2.5 lg:py-3 rounded-xl font-semibold text-sm lg:text-[15px] transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/40 hover:-translate-y-0.5 active:translate-y-0 relative overflow-hidden group"
+              >
+                <span className="relative z-10">Login</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </Button>
+            ) : (
+                <Button
+                onClick={async () => {
+                  await userService.logout();
+                  window.location.reload();
+                }}
+                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 lg:px-8 py-2.5 lg:py-3 rounded-xl font-semibold text-sm lg:text-[15px] transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/40 hover:-translate-y-0.5 active:translate-y-0 relative overflow-hidden group"
+              >
+                <span className="relative z-10">Logout</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -137,7 +164,11 @@ const Header = () => {
               onClick={toggleMenu}
               className="inline-flex items-center justify-center p-2.5 rounded-xl text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-all duration-300 active:scale-95"
             >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
             </button>
           </div>
         </div>
@@ -168,19 +199,29 @@ const Header = () => {
               </div>
               <Button
                 onClick={() => {
-                  window.open("https://wa.me/9810446594")
-                  setIsOpen(false)
+                  window.open("https://wa.me/9810446594");
+                  setIsOpen(false);
                 }}
                 className="w-full mt-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-4 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/40 active:scale-[0.98]"
               >
                 Contact Us
               </Button>
+              {!user && (
+                <Button
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                  className="w-full mt-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-4 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/40 active:scale-[0.98]"
+                >
+                  Login
+                </Button>
+              )}
             </nav>
           </div>
         )}
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

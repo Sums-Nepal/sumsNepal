@@ -16,6 +16,10 @@ import {
 } from "./pages";
 import ReferencesPage from "./pages/References/References";
 import AIC from "./pages/AIC/AIC";
+import Login from "./pages/Login/Login";
+import Register from "./components/auth/RegsiterComponent";
+import ProtectedWrapper from "./components/ProtectedWrapper";
+import CreateProjectForm from "./components/createFormProject/createFormProject";
 
 const App = () => {
   return (
@@ -38,6 +42,9 @@ const App = () => {
             <Route path="/references" element={<ReferencesPage />} />
             <Route path="/references" element={<ReferencesPage />} />
             <Route path="/references/:id" element={<IndRefrences />} />
+            <Route path="/login" element={<ProtectedWrapper><Login /></ProtectedWrapper>} />
+            {/* <Route path="/register" element={<ProtectedWrapper><Register /></ProtectedWrapper>} /> */}
+            <Route path="/form" element={<ProtectedWrapper><CreateProjectForm /></ProtectedWrapper>} />
           </Route>
         </Routes>
       </BrowserRouter>
