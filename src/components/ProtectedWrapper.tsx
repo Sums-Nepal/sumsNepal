@@ -6,8 +6,8 @@ import LoadingBar from "./Loaders/LoadingBars";
 
 const ProtectedWrapper: React.FC<ProtectedWrapperProps> = ({ children }) => {
   const params = useLocation();
-  const { user, isLoading } = useCurrentUser();
-  
+  const { user, isLoading, error } = useCurrentUser();
+
   useEffect(() => {
     if (
       user &&
@@ -31,6 +31,16 @@ const ProtectedWrapper: React.FC<ProtectedWrapperProps> = ({ children }) => {
         />
       </div>
     );
+
+  if (error) {
+    return (
+      <LoadingBar
+        title="Error occurred"
+        subtitle="Something went wrong"
+        tips="Please try again."
+      />
+    );
+  }
   return <>{children}</>;
 };
 

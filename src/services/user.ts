@@ -14,6 +14,13 @@ class UserService {
         payload.email,
         payload.password
       );
+      const user = await account.get();
+
+      if (!user.emailVerification) {
+        await account.deleteSession("current");
+        return { data: null, error: "Please verify your email first." };
+      }
+
       return { data: session as unknown as ISession, error: null };
     } catch (err: any) {
       return { data: null, error: err?.message || "Login failed" };
@@ -21,9 +28,8 @@ class UserService {
   }
 
   async register(
-    payload: IRegisterPayload,
-    autoLogin: boolean = true
-  ): Promise<IServiceResult<{ user: IUser; session?: ISession }>> {
+    payload: IRegisterPayload
+  ): Promise<IServiceResult<{ user: IUser }>> {
     try {
       const created = await account.create(
         ID.unique(),
@@ -32,21 +38,17 @@ class UserService {
         payload.name
       );
 
-      let session: ISession | undefined;
+      // temp login (needed to send verification)
+      await account.createEmailPasswordSession(payload.email, payload.password);
 
-      // ✅ You MUST have a session to send verification for the "current user"
-      if (autoLogin) {
-        session = (await account.createEmailPasswordSession(
-          payload.email,
-          payload.password
-        )) as unknown as ISession;
+      // send verification email
+      await account.createVerification(`${window.location.origin}/verify`);
 
-        // ✅ Send verification email
-        await account.createVerification(`${window.location.origin}/verify`);
-      }
+      // logout immediately (so they cannot use app before verifying)
+      await account.deleteSession("current");
 
       return {
-        data: { user: created as unknown as IUser, session },
+        data: { user: created as unknown as IUser },
         error: null,
       };
     } catch (err: any) {
@@ -59,7 +61,10 @@ class UserService {
       await account.createVerification(`${window.location.origin}/verify`);
       return { data: true, error: null };
     } catch (err: any) {
-      return { data: null, error: err?.message || "Failed to resend verification" };
+      return {
+        data: null,
+        error: err?.message || "Failed to resend verification",
+      };
     }
   }
 
@@ -81,6 +86,10 @@ class UserService {
   async getCurrentUser(): Promise<IServiceResult<IUser>> {
     try {
       const user = await account.get();
+      if (!user.emailVerification) {
+        await account.deleteSession("current");
+        return { data: null, error: "Please verify your email first." };
+      }
       return { data: user as unknown as IUser, error: null };
     } catch (err: any) {
       return { data: null, error: err?.message || "Failed to get user" };
