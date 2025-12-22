@@ -7,6 +7,7 @@ import LoadingBar from "./Loaders/LoadingBars";
 const ProtectedWrapper: React.FC<ProtectedWrapperProps> = ({ children }) => {
   const params = useLocation();
   const { user, isLoading } = useCurrentUser();
+  
   useEffect(() => {
     if (
       user &&
@@ -18,7 +19,7 @@ const ProtectedWrapper: React.FC<ProtectedWrapperProps> = ({ children }) => {
     } else if (!user && params.pathname === "/project/create") {
       window.location.href = "/login";
     }
-  });
+  }, [location.pathname, user]);
 
   if (isLoading)
     return (
