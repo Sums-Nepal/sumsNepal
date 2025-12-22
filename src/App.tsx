@@ -20,6 +20,7 @@ import Login from "./pages/Login/Login";
 import Register from "./components/auth/RegsiterComponent";
 import ProtectedWrapper from "./components/ProtectedWrapper";
 import CreateProjectForm from "./components/createFormProject/createFormProject";
+import Verify from "./pages/verify/verify";
 
 const App = () => {
   return (
@@ -43,8 +44,9 @@ const App = () => {
             <Route path="/references" element={<ReferencesPage />} />
             <Route path="/references/:id" element={<IndRefrences />} />
             <Route path="/login" element={<ProtectedWrapper><Login /></ProtectedWrapper>} />
-            {/* <Route path="/register" element={<ProtectedWrapper><Register /></ProtectedWrapper>} /> */}
+            <Route path="/signup" element={<ProtectedWrapper><Register /></ProtectedWrapper>} />
             <Route path="/form" element={<ProtectedWrapper><CreateProjectForm /></ProtectedWrapper>} />
+            <Route path="/verify" element={<ProtectedWrapper><Verify/></ProtectedWrapper>} />
           </Route>
         </Routes>
       </BrowserRouter>

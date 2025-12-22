@@ -33,3 +33,7 @@ export const APPWRITE_CONFIG = {
     VITE_APPWRITE_PROJECTS_COLLECTION_ID
   ),
 } as const;
+
+
+
+export const PAGE_SIZE = 1;

@@ -1,3 +1,5 @@
+import type { off } from "node:cluster";
+
 export type ProjectStage =
   | "idea"
   | "research"
@@ -17,7 +19,7 @@ export interface Person {
 }
 
 export interface Project {
-  id: number;
+  id: string;
   title: string;
   description: string;
   stage: ProjectStage;
@@ -27,8 +29,27 @@ export interface Project {
   year: string | number;
 
   image: string;
-  report: string;
+  report?: string;
 
-  teamLeader: Person;
+  projectLeaders: Person;
   teams: Person[];
 }
+
+
+export interface  ProjectPaginationMetaData {
+  pageNumber: number;
+}
+
+export interface ProjectListResponse {
+  projects: Project[];
+  hasMore: boolean;
+  total: number;
+}
+
+export interface GetProjectsArgs {
+  page: number;
+  stage?: string | null;
+  colleges?: string[];
+  years?: number[];
+  q?: string; // search query
+};

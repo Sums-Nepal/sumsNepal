@@ -1,4 +1,11 @@
-import { Globe, Hammer, Lightbulb, Rocket, TestTube, TrendingUp } from "lucide-react";
+import {
+  Globe,
+  Hammer,
+  Lightbulb,
+  Rocket,
+  TestTube,
+  TrendingUp,
+} from "lucide-react";
 import type { Project } from "../../types/componentsType/projectTypes";
 
 export const stages = [
@@ -46,10 +53,10 @@ export const stages = [
   },
 ];
 
-export const projectsData : Project[] = [
+export const projectsData: Project[] = [
   // Texas College
   {
-    id: 1,
+    id: "1",
     title: "HOVIUS",
     description:
       "Hospital Management System focusing on digitizing hospital operations",
@@ -59,7 +66,7 @@ export const projectsData : Project[] = [
     year: 2024,
     image: "/images/logos/texas-mgmt-id.png",
     report: "/files/Texas_HOVIUS.pdf",
-    teamLeader: {
+    projectLeaders: {
       name: "Priya Sharma",
       email: "priya.sharma@texascollege.edu",
     },
@@ -69,7 +76,7 @@ export const projectsData : Project[] = [
     ],
   },
   {
-    id: 2,
+    id: "2",
     title: "UTOPIA",
     description:
       "Modernizing gold and silver jewelry to make it more affordable",
@@ -79,14 +86,17 @@ export const projectsData : Project[] = [
     year: 2024,
     image: "/images/logos/texas-mgmt-id.png",
     report: "/files/Texas_UTOPIA.pdf",
-    teamLeader: { name: "Aisha Khan", email: "aisha.khan@texascollege.edu" },
+    projectLeaders: {
+      name: "Aisha Khan",
+      email: "aisha.khan@texascollege.edu",
+    },
     teams: [
       { name: "Vikram Singh", email: "vikram.singh@texascollege.edu" },
       { name: "Neha Gupta", email: "neha.gupta@texascollege.edu" },
     ],
   },
   {
-    id: 3,
+    id: "3",
     title: "AUTUMN",
     description:
       "Developing travel, study, and hygiene kits targeted for girls in communities",
@@ -96,14 +106,17 @@ export const projectsData : Project[] = [
     year: 2024,
     image: "/images/logos/texas-mgmt-id.png",
     report: "/files/Texas_AUTUMN.pdf",
-    teamLeader: { name: "Maya Thapa", email: "maya.thapa@texascollege.edu" },
+    projectLeaders: {
+      name: "Maya Thapa",
+      email: "maya.thapa@texascollege.edu",
+    },
     teams: [
       { name: "Suman Rai", email: "suman.rai@texascollege.edu" },
       { name: "Anjali Shrestha", email: "anjali.shrestha@texascollege.edu" },
     ],
   },
   {
-    id: 4,
+    id: "4",
     title: "GEN-Z",
     description:
       "Energy & water solution for hiking with a smart bottle design",
@@ -113,14 +126,17 @@ export const projectsData : Project[] = [
     year: 2025,
     image: "/images/logos/texas-mgmt-id.png",
     report: "/files/Texas_GENZ.pdf",
-    teamLeader: { name: "Rohan Mehta", email: "rohan.mehta@texascollege.edu" },
+    projectLeaders: {
+      name: "Rohan Mehta",
+      email: "rohan.mehta@texascollege.edu",
+    },
     teams: [
       { name: "Kavya Joshi", email: "kavya.joshi@texascollege.edu" },
       { name: "Arjun Bhat", email: "arjun.bhat@texascollege.edu" },
     ],
   },
   {
-    id: 5,
+    id: "5",
     title: "FLOAT",
     description: "Collaborative platform for learners to study and socialize",
     stage: "build-mvp",
@@ -129,14 +145,17 @@ export const projectsData : Project[] = [
     year: 2025,
     image: "/images/logos/texas-mgmt-id.png",
     report: "/files/Texas_FLOAT.pdf",
-    teamLeader: { name: "Simran Kaur", email: "simran.kaur@texascollege.edu" },
+    projectLeaders: {
+      name: "Simran Kaur",
+      email: "simran.kaur@texascollege.edu",
+    },
     teams: [
       { name: "Dev Patel", email: "dev.patel@texascollege.edu" },
       { name: "Isha Reddy", email: "isha.reddy@texascollege.edu" },
     ],
   },
   {
-    id: 6,
+    id: "6",
     title: "GIRLY GIRLZ",
     description:
       "Jewelry segment connecting fashion with lightweight solutions",
@@ -146,14 +165,17 @@ export const projectsData : Project[] = [
     year: 2024,
     image: "/images/logos/texas-mgmt-id.png",
     report: "/files/Texas_GIRLYGIRLZ.pdf",
-    teamLeader: { name: "Riya Desai", email: "riya.desai@texascollege.edu" },
+    projectLeaders: {
+      name: "Riya Desai",
+      email: "riya.desai@texascollege.edu",
+    },
     teams: [
       { name: "Pooja Shah", email: "pooja.shah@texascollege.edu" },
       { name: "Tanvi Iyer", email: "tanvi.iyer@texascollege.edu" },
     ],
   },
   {
-    id: 7,
+    id: "7",
     title: "TREBLE",
     description: "Providing home services nationwide in the future",
     stage: "accelerate",
@@ -162,7 +184,7 @@ export const projectsData : Project[] = [
     year: 2025,
     image: "/images/logos/texas-mgmt-id.png",
     report: "/files/Texas_TREBLE.pdf",
-    teamLeader: {
+    projectLeaders: {
       name: "Karan Malhotra",
       email: "karan.malhotra@texascollege.edu",
     },
@@ -172,7 +194,7 @@ export const projectsData : Project[] = [
     ],
   },
   {
-    id: 8,
+    id: "8",
     title: "SKILLWAVE",
     description:
       "SOS system embedded in school bags to send alerts and live location to parents",
@@ -182,14 +204,17 @@ export const projectsData : Project[] = [
     year: 2024,
     image: "/images/logos/texas-mgmt-id.png",
     report: "/files/Texas_SKILLWAVE.pdf",
-    teamLeader: { name: "Ananya Nair", email: "ananya.nair@texascollege.edu" },
+    projectLeaders: {
+      name: "Ananya Nair",
+      email: "ananya.nair@texascollege.edu",
+    },
     teams: [
       { name: "Siddharth Rao", email: "siddharth.rao@texascollege.edu" },
       { name: "Meera Pillai", email: "meera.pillai@texascollege.edu" },
     ],
   },
   {
-    id: 9,
+    id: "9",
     title: "BACK ARROW",
     description:
       "OTT platform promoting Nepali movies and culture internationally",
@@ -199,7 +224,7 @@ export const projectsData : Project[] = [
     year: 2025,
     image: "/images/logos/texas-mgmt-id.png",
     report: "/files/Texas_BACKARROW.pdf",
-    teamLeader: {
+    projectLeaders: {
       name: "Sagar Gurung",
       email: "sagar.gurung@texascollege.edu",
     },
@@ -209,7 +234,7 @@ export const projectsData : Project[] = [
     ],
   },
   {
-    id: 10,
+    id: "10",
     title: "REACTOR",
     description: "Multipurpose and interchangeable jewelry designs",
     stage: "build-mvp",
@@ -218,7 +243,10 @@ export const projectsData : Project[] = [
     year: 2024,
     image: "/images/logos/texas-mgmt-id.png",
     report: "/files/Texas_REACTOR.pdf",
-    teamLeader: { name: "Divya Menon", email: "divya.menon@texascollege.edu" },
+    projectLeaders: {
+      name: "Divya Menon",
+      email: "divya.menon@texascollege.edu",
+    },
     teams: [
       { name: "Kunal Bansal", email: "kunal.bansal@texascollege.edu" },
       { name: "Shruti Agarwal", email: "shruti.agarwal@texascollege.edu" },
@@ -226,7 +254,7 @@ export const projectsData : Project[] = [
   },
   // St. Xaviers
   {
-    id: 11,
+    id: "11",
     title: "BAZINGA",
     description:
       "Protein and meat bites designed to fuel students during university struggles",
@@ -236,7 +264,7 @@ export const projectsData : Project[] = [
     year: 2024,
     image: "/images/logos/st-x.png",
     report: "/files/StXaviers_BAZINGA.pdf",
-    teamLeader: {
+    projectLeaders: {
       name: "Aditya Shrestha",
       email: "aditya.shrestha@stxaviers.edu",
     },
@@ -246,7 +274,7 @@ export const projectsData : Project[] = [
     ],
   },
   {
-    id: 12,
+    id: "12",
     title: "APPLE",
     description: "Clothing brand offering hoodie haven for students",
     stage: "build-mvp",
@@ -255,7 +283,7 @@ export const projectsData : Project[] = [
     year: 2025,
     image: "/images/logos/st-x.png",
     report: "/files/StXaviers_APPLE.pdf",
-    teamLeader: {
+    projectLeaders: {
       name: "Manisha Maharjan",
       email: "manisha.maharjan@stxaviers.edu",
     },
@@ -265,7 +293,7 @@ export const projectsData : Project[] = [
     ],
   },
   {
-    id: 13,
+    id: "13",
     title: "DIVERSE",
     description: "Bio kit backpack for outdoor enthusiasts",
     stage: "ideate",
@@ -274,14 +302,17 @@ export const projectsData : Project[] = [
     year: 2024,
     image: "/images/logos/st-x.png",
     report: "/files/StXaviers_DIVERSE.pdf",
-    teamLeader: { name: "Rajesh Limbu", email: "rajesh.limbu@stxaviers.edu" },
+    projectLeaders: {
+      name: "Rajesh Limbu",
+      email: "rajesh.limbu@stxaviers.edu",
+    },
     teams: [
       { name: "Priyanka Magar", email: "priyanka.magar@stxaviers.edu" },
       { name: "Sandip Gurung", email: "sandip.gurung@stxaviers.edu" },
     ],
   },
   {
-    id: 14,
+    id: "14",
     title: "Aroma",
     description: "Stylish and functional bags, totes, and backpacks",
     stage: "build-mvp",
@@ -290,7 +321,7 @@ export const projectsData : Project[] = [
     year: 2025,
     image: "/images/logos/st-x.png",
     report: "/files/StXaviers_AROMA.pdf",
-    teamLeader: {
+    projectLeaders: {
       name: "Swastika Shakya",
       email: "swastika.shakya@stxaviers.edu",
     },
@@ -300,7 +331,7 @@ export const projectsData : Project[] = [
     ],
   },
   {
-    id: 15,
+    id: "15",
     title: "Team B",
     description:
       "Find Your Tribe app platform connecting fellow college students",
@@ -310,7 +341,7 @@ export const projectsData : Project[] = [
     year: 2024,
     image: "/images/logos/st-x.png",
     report: "/files/StXaviers_TeamB.pdf",
-    teamLeader: {
+    projectLeaders: {
       name: "Nischal Dhungana",
       email: "nischal.dhungana@stxaviers.edu",
     },
@@ -320,7 +351,7 @@ export const projectsData : Project[] = [
     ],
   },
   {
-    id: 16,
+    id: "16",
     title: "Eco-friendly Robot",
     description:
       "Robot prototype designed for sustainable waste management and recycling",
@@ -330,7 +361,7 @@ export const projectsData : Project[] = [
     year: 2025,
     image: "/images/logos/st-x.png",
     report: "/files/St.Xaviers.pdf",
-    teamLeader: { name: "Binod Shahi", email: "binod.shahi@stxaviers.edu" },
+    projectLeaders: { name: "Binod Shahi", email: "binod.shahi@stxaviers.edu" },
     teams: [
       { name: "Srijana Subedi", email: "srijana.subedi@stxaviers.edu" },
       { name: "Milan Thapa", email: "milan.thapa@stxaviers.edu" },
@@ -338,7 +369,7 @@ export const projectsData : Project[] = [
   },
   // School of Management
   {
-    id: 17,
+    id: "17",
     title: "Management Dashboard",
     description:
       "Web-based dashboard for visualizing KPIs and team productivity metrics",
@@ -348,14 +379,14 @@ export const projectsData : Project[] = [
     year: 2024,
     image: "/images/logos/somtu.png",
     report: "/files/School-of-Management.pdf",
-    teamLeader: { name: "Saurav Basnet", email: "saurav.basnet@som.edu" },
+    projectLeaders: { name: "Saurav Basnet", email: "saurav.basnet@som.edu" },
     teams: [
       { name: "Reshma Koirala", email: "reshma.koirala@som.edu" },
       { name: "Dipesh Rai", email: "dipesh.rai@som.edu" },
     ],
   },
   {
-    id: 18,
+    id: "18",
     title: "Innovators' Hive",
     description:
       "Mentoring platform where students teach and learn based on nearby locations",
@@ -365,7 +396,7 @@ export const projectsData : Project[] = [
     year: 2025,
     image: "/images/logos/somtu.png",
     report: "/files/SchoolOfManagement_InnovatorsHive.pdf",
-    teamLeader: { name: "Kushal Pandey", email: "kushal.pandey@som.edu" },
+    projectLeaders: { name: "Kushal Pandey", email: "kushal.pandey@som.edu" },
     teams: [
       { name: "Alisha Maharjan", email: "alisha.maharjan@som.edu" },
       { name: "Rohit Shrestha", email: "rohit.shrestha@som.edu" },
@@ -373,7 +404,7 @@ export const projectsData : Project[] = [
   },
   // Samarpan
   {
-    id: 19,
+    id: "19",
     title: "Community Help Platform",
     description:
       "Platform connecting volunteers with community service projects efficiently",
@@ -383,7 +414,7 @@ export const projectsData : Project[] = [
     year: 2024,
     image: "/images/logos/icms.jpeg",
     report: "/files/Samarpan.pdf",
-    teamLeader: {
+    projectLeaders: {
       name: "Sarita Ghimire",
       email: "sarita.ghimire@samarpan.edu",
     },
@@ -393,7 +424,7 @@ export const projectsData : Project[] = [
     ],
   },
   {
-    id: 20,
+    id: "20",
     title: "The Plot Twist Trio",
     description:
       "Mental wellness chatbot providing students with 24/7 emotional support",
@@ -403,7 +434,7 @@ export const projectsData : Project[] = [
     year: 2025,
     image: "/images/logos/icms.jpeg",
     report: "/files/Samarpan_PlotTwistTrio.pdf",
-    teamLeader: {
+    projectLeaders: {
       name: "Aashish Upreti",
       email: "aashish.upreti@samarpan.edu",
     },
@@ -413,7 +444,7 @@ export const projectsData : Project[] = [
     ],
   },
   {
-    id: 21,
+    id: "21",
     title: "APPS",
     description: "Peer-to-peer book exchange platform to reduce textbook costs",
     stage: "test",
@@ -422,7 +453,7 @@ export const projectsData : Project[] = [
     year: 2024,
     image: "/images/logos/icms.jpeg",
     report: "/files/Samarpan_APPS.pdf",
-    teamLeader: { name: "Kiran Malla", email: "kiran.malla@samarpan.edu" },
+    projectLeaders: { name: "Kiran Malla", email: "kiran.malla@samarpan.edu" },
     teams: [
       { name: "Sunita Lama", email: "sunita.lama@samarpan.edu" },
       { name: "Deepak Rai", email: "deepak.rai@samarpan.edu" },
@@ -430,7 +461,7 @@ export const projectsData : Project[] = [
   },
   // Sagarmatha Engineering College
   {
-    id: 22,
+    id: "22",
     title: "Tech Ninja",
     description:
       "E-commerce site revamp for better UX and streamlined checkout",
@@ -440,7 +471,7 @@ export const projectsData : Project[] = [
     year: 2024,
     image: "/images/logos/sagarmathalogo.png",
     report: "/files/Sagarmatha_TechNinja.pdf",
-    teamLeader: {
+    projectLeaders: {
       name: "Nabin Chaudhary",
       email: "nabin.chaudhary@sagarmatha.edu",
     },
@@ -450,7 +481,7 @@ export const projectsData : Project[] = [
     ],
   },
   {
-    id: 23,
+    id: "23",
     title: "S-quad",
     description:
       "App for tracking workouts, diet, sleep, and integrating with wearables",
@@ -460,14 +491,17 @@ export const projectsData : Project[] = [
     year: 2025,
     image: "/images/logos/sagarmathalogo.png",
     report: "/files/Sagarmatha_Squad.pdf",
-    teamLeader: { name: "Shiva Prasad", email: "shiva.prasad@sagarmatha.edu" },
+    projectLeaders: {
+      name: "Shiva Prasad",
+      email: "shiva.prasad@sagarmatha.edu",
+    },
     teams: [
       { name: "Kamana Shrestha", email: "kamana.shrestha@sagarmatha.edu" },
       { name: "Sagar Khatri", email: "sagar.khatri@sagarmatha.edu" },
     ],
   },
   {
-    id: 24,
+    id: "24",
     title: "Clover",
     description:
       "Smart home control system with voice recognition and AI learning",
@@ -477,7 +511,7 @@ export const projectsData : Project[] = [
     year: 2024,
     image: "/images/logos/sagarmathalogo.png",
     report: "/files/Sagarmatha_Clover.pdf",
-    teamLeader: {
+    projectLeaders: {
       name: "Rakesh Adhikari",
       email: "rakesh.adhikari@sagarmatha.edu",
     },
@@ -487,7 +521,7 @@ export const projectsData : Project[] = [
     ],
   },
   {
-    id: 25,
+    id: "25",
     title: "Pichai",
     description:
       "Educational platform with video lessons, quizzes, and live sessions",
@@ -497,7 +531,7 @@ export const projectsData : Project[] = [
     year: 2025,
     image: "/images/logos/sagarmathalogo.png",
     report: "/files/Sagarmatha_Pichai.pdf",
-    teamLeader: {
+    projectLeaders: {
       name: "Santosh Kumar",
       email: "santosh.kumar@sagarmatha.edu",
     },
@@ -507,7 +541,7 @@ export const projectsData : Project[] = [
     ],
   },
   {
-    id: 26,
+    id: "26",
     title: "Code Crafter",
     description:
       "IoT-based system to optimize water usage and provide farming insights",
@@ -517,14 +551,17 @@ export const projectsData : Project[] = [
     year: 2024,
     image: "/images/logos/sagarmathalogo.png",
     report: "/files/Sagarmatha_CodeCrafter.pdf",
-    teamLeader: { name: "Bikram Karki", email: "bikram.karki@sagarmatha.edu" },
+    projectLeaders: {
+      name: "Bikram Karki",
+      email: "bikram.karki@sagarmatha.edu",
+    },
     teams: [
       { name: "Laxmi Poudel", email: "laxmi.poudel@sagarmatha.edu" },
       { name: "Suresh Thapa", email: "suresh.thapa@sagarmatha.edu" },
     ],
   },
   {
-    id: 27,
+    id: "27",
     title: "365-plus1",
     description:
       "AI chatbot for customer inquiries with NLP and machine learning",
@@ -534,7 +571,7 @@ export const projectsData : Project[] = [
     year: 2025,
     image: "/images/logos/sagarmathalogo.png",
     report: "/files/Sagarmatha_365plus1.pdf",
-    teamLeader: {
+    projectLeaders: {
       name: "Rajendra Sharma",
       email: "rajendra.sharma@sagarmatha.edu",
     },

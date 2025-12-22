@@ -9,6 +9,8 @@ import GeneralForm from "./Forms/GeneralForm";
 import EntrepreneurshipFrom from "./Forms/Entrepreneurship";
 import LoginComponent from "./auth/LoginComponent";
 import RegisterComponent from "./auth/RegsiterComponent";
+import LoadMorePagination from "./LoadMorePagination/LoadMorePagination";
+import LoadingBar from "./Loaders/LoadingBars";
 
 export {
   Header,
@@ -22,4 +24,6 @@ export {
   EntrepreneurshipFrom,
   LoginComponent,
   RegisterComponent,
+  LoadMorePagination,
+  LoadingBar,
 };

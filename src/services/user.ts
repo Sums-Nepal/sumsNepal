@@ -14,7 +14,7 @@ class UserService {
         payload.email,
         payload.password
       );
-      return { data: session, error: null };
+      return { data: session as unknown as ISession, error: null };
     } catch (err: any) {
       return { data: null, error: err?.message || "Login failed" };
     }
@@ -34,14 +34,17 @@ class UserService {
 
       let session: ISession | undefined;
 
+      // ✅ You MUST have a session to send verification for the "current user"
       if (autoLogin) {
-        session = await account.createEmailPasswordSession(
+        session = (await account.createEmailPasswordSession(
           payload.email,
           payload.password
-        );
+        )) as unknown as ISession;
+
+        // ✅ Send verification email
+        await account.createVerification(`${window.location.origin}/verify`);
       }
 
-      // created is a "User" model in Appwrite typings (may vary by SDK version)
       return {
         data: { user: created as unknown as IUser, session },
         error: null,
@@ -51,16 +54,39 @@ class UserService {
     }
   }
 
+  async resendVerification(): Promise<IServiceResult<boolean>> {
+    try {
+      await account.createVerification(`${window.location.origin}/verify`);
+      return { data: true, error: null };
+    } catch (err: any) {
+      return { data: null, error: err?.message || "Failed to resend verification" };
+    }
+  }
+
+  async confirmEmailVerification(
+    userId: string,
+    secret: string
+  ): Promise<IServiceResult<boolean>> {
+    try {
+      await account.updateVerification(userId, secret);
+      return { data: true, error: null };
+    } catch (err: any) {
+      return {
+        data: null,
+        error: err?.message || "Email verification failed",
+      };
+    }
+  }
+
   async getCurrentUser(): Promise<IServiceResult<IUser>> {
     try {
       const user = await account.get();
-      return { data: user, error: null };
+      return { data: user as unknown as IUser, error: null };
     } catch (err: any) {
       return { data: null, error: err?.message || "Failed to get user" };
     }
   }
 
-  /** Logout current session */
   async logout(): Promise<IServiceResult<boolean>> {
     try {
       await account.deleteSession("current");
