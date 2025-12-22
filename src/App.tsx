@@ -27,7 +27,13 @@ const App = () => {
     <>
       <BrowserRouter>
         <Routes>
-          <Route element={<Layout />}>
+          <Route
+            element={
+              <ProtectedWrapper>
+                <Layout />
+              </ProtectedWrapper>
+            }
+          >
             <Route index element={<Home />} />
             <Route path="/academia" element={<Academia />} />
             <Route path="/student" element={<Student />} />
@@ -43,10 +49,10 @@ const App = () => {
             <Route path="/references" element={<ReferencesPage />} />
             <Route path="/references" element={<ReferencesPage />} />
             <Route path="/references/:id" element={<IndRefrences />} />
-            <Route path="/login" element={<ProtectedWrapper><Login /></ProtectedWrapper>} />
-            <Route path="/signup" element={<ProtectedWrapper><Register /></ProtectedWrapper>} />
-            <Route path="/form" element={<ProtectedWrapper><CreateProjectForm /></ProtectedWrapper>} />
-            <Route path="/verify" element={<ProtectedWrapper><Verify/></ProtectedWrapper>} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Register />} />
+            <Route path="/project/create" element={<CreateProjectForm />} />
+            <Route path="/verify" element={<Verify />} />
           </Route>
         </Routes>
       </BrowserRouter>

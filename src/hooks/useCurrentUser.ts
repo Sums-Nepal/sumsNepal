@@ -5,16 +5,22 @@ import type { IUser } from "../types";
 
 const useCurrentUser = () => {
   const [user, setUser] = useState<IUser | null>(null);
-
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      const user = await userService.getCurrentUser();
-      setUser(user.data);
+      setLoading(true);
+      try {
+        const user = await userService.getCurrentUser();
+        setUser(user.data);
+      } catch (e) {
+      } finally {
+        setLoading(false);
+      }
     })();
   }, []);
 
-  return { user };
+  return { user, isLoading: loading };
 };
 
 export default useCurrentUser;

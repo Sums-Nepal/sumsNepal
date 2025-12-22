@@ -3,11 +3,13 @@ import React from "react";
 type LoadingBarProps = {
   title?: string;
   subtitle?: string;
+  tips?:string;
 };
 
 export default function LoadingBar({
   title = "Loading projects…",
   subtitle = "Fetching the next page, please wait.",
+  tips= "Tip: you can keep browsing while we load more."
 }: LoadingBarProps) {
   return (
     <div className="w-full max-w-xl mx-auto">
@@ -53,7 +55,7 @@ export default function LoadingBar({
 
       {/* helper text */}
       <p className="mt-3 text-center text-xs text-slate-500">
-        Tip: you can keep browsing while we load more.
+        {tips}
       </p>
 
       {/* Custom animation (Tailwind extension OR inline style below) */}
