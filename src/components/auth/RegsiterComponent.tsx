@@ -19,7 +19,7 @@ export default function Register() {
     e.preventDefault()
     setMsg("")
     setLoading(true)
-    const res = await userService.register({ name, email, password }, true)
+    const res = await userService.register({ name, email, password })
 
     if (res.error) {
       setMsg(`❌ ${res.error}`)
