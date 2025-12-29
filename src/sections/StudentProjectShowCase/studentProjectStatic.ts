@@ -10,8 +10,8 @@ import type { Project } from "../../types/componentsType/projectTypes";
 
 export const stages = [
   {
-    id: "ideate",
-    name: "Ideate",
+    id: "Pre-Incubation",
+    name: "Pre-Incubation",
     description: "Brainstorm solutions for issues like waste or traffic",
     icon: Lightbulb,
     color: "from-blue-500 to-cyan-500",
@@ -53,6 +53,7 @@ export const stages = [
   },
 ];
 
+
 export const projectsData: Project[] = [
   // Texas College
   {
@@ -60,7 +61,7 @@ export const projectsData: Project[] = [
     title: "HOVIUS",
     description:
       "Hospital Management System focusing on digitizing hospital operations",
-    stage: "incubate",
+    stage: "Pre-Incubation",
     team: "HOVIUS Team",
     college: "Texas College",
     year: 2024,
@@ -80,7 +81,7 @@ export const projectsData: Project[] = [
     title: "UTOPIA",
     description:
       "Modernizing gold and silver jewelry to make it more affordable",
-    stage: "build-mvp",
+    stage: "Pre-Incubation",
     team: "UTOPIA Team",
     college: "Texas College",
     year: 2024,
@@ -100,7 +101,7 @@ export const projectsData: Project[] = [
     title: "AUTUMN",
     description:
       "Developing travel, study, and hygiene kits targeted for girls in communities",
-    stage: "test",
+    stage: "Pre-Incubation",
     team: "AUTUMN Team",
     college: "Texas College",
     year: 2024,
@@ -120,7 +121,7 @@ export const projectsData: Project[] = [
     title: "GEN-Z",
     description:
       "Energy & water solution for hiking with a smart bottle design",
-    stage: "ideate",
+    stage: "Pre-Incubation",
     team: "GEN-Z Team",
     college: "Texas College",
     year: 2025,
@@ -139,7 +140,7 @@ export const projectsData: Project[] = [
     id: "5",
     title: "FLOAT",
     description: "Collaborative platform for learners to study and socialize",
-    stage: "build-mvp",
+    stage: "Pre-Incubation",
     team: "FLOAT Team",
     college: "Texas College",
     year: 2025,
@@ -159,7 +160,7 @@ export const projectsData: Project[] = [
     title: "GIRLY GIRLZ",
     description:
       "Jewelry segment connecting fashion with lightweight solutions",
-    stage: "ideate",
+    stage: "Pre-Incubation",
     team: "GIRLY GIRLZ Team",
     college: "Texas College",
     year: 2024,
@@ -178,7 +179,7 @@ export const projectsData: Project[] = [
     id: "7",
     title: "TREBLE",
     description: "Providing home services nationwide in the future",
-    stage: "accelerate",
+    stage: "Pre-Incubation",
     team: "TREBLE Team",
     college: "Texas College",
     year: 2025,
@@ -198,7 +199,7 @@ export const projectsData: Project[] = [
     title: "SKILLWAVE",
     description:
       "SOS system embedded in school bags to send alerts and live location to parents",
-    stage: "test",
+    stage: "Pre-Incubation",
     team: "SKILLWAVE Team",
     college: "Texas College",
     year: 2024,
@@ -218,7 +219,7 @@ export const projectsData: Project[] = [
     title: "BACK ARROW",
     description:
       "OTT platform promoting Nepali movies and culture internationally",
-    stage: "relocate",
+    stage: "Pre-Incubation",
     team: "BACK ARROW Team",
     college: "Texas College",
     year: 2025,
@@ -237,7 +238,7 @@ export const projectsData: Project[] = [
     id: "10",
     title: "REACTOR",
     description: "Multipurpose and interchangeable jewelry designs",
-    stage: "build-mvp",
+    stage: "Pre-Incubation",
     team: "REACTOR Team",
     college: "Texas College",
     year: 2024,
@@ -258,7 +259,7 @@ export const projectsData: Project[] = [
     title: "BAZINGA",
     description:
       "Protein and meat bites designed to fuel students during university struggles",
-    stage: "test",
+    stage: "Pre-Incubation",
     team: "BAZINGA Team",
     college: "St. Xaviers",
     year: 2024,
@@ -277,7 +278,7 @@ export const projectsData: Project[] = [
     id: "12",
     title: "APPLE",
     description: "Clothing brand offering hoodie haven for students",
-    stage: "build-mvp",
+    stage: "Pre-Incubation",
     team: "APPLE Team",
     college: "St. Xaviers",
     year: 2025,
@@ -296,7 +297,7 @@ export const projectsData: Project[] = [
     id: "13",
     title: "DIVERSE",
     description: "Bio kit backpack for outdoor enthusiasts",
-    stage: "ideate",
+    stage: "Pre-Incubation",
     team: "DIVERSE Team",
     college: "St. Xaviers",
     year: 2024,
@@ -315,7 +316,7 @@ export const projectsData: Project[] = [
     id: "14",
     title: "Aroma",
     description: "Stylish and functional bags, totes, and backpacks",
-    stage: "build-mvp",
+    stage: "Pre-Incubation",
     team: "Aroma Team",
     college: "St. Xaviers",
     year: 2025,
@@ -335,7 +336,7 @@ export const projectsData: Project[] = [
     title: "Team B",
     description:
       "Find Your Tribe app platform connecting fellow college students",
-    stage: "incubate",
+    stage: "Pre-Incubation",
     team: "Team B",
     college: "St. Xaviers",
     year: 2024,
@@ -355,7 +356,7 @@ export const projectsData: Project[] = [
     title: "Eco-friendly Robot",
     description:
       "Robot prototype designed for sustainable waste management and recycling",
-    stage: "accelerate",
+    stage: "Pre-Incubation",
     team: "Green Tech",
     college: "St. Xaviers",
     year: 2025,
@@ -373,7 +374,7 @@ export const projectsData: Project[] = [
     title: "Management Dashboard",
     description:
       "Web-based dashboard for visualizing KPIs and team productivity metrics",
-    stage: "test",
+    stage: "Pre-Incubation",
     team: "Dashboard Team",
     college: "School of Management",
     year: 2024,
@@ -390,7 +391,7 @@ export const projectsData: Project[] = [
     title: "Innovators' Hive",
     description:
       "Mentoring platform where students teach and learn based on nearby locations",
-    stage: "incubate",
+    stage: "Pre-Incubation",
     team: "Innovators' Hive",
     college: "School of Management",
     year: 2025,
@@ -408,7 +409,7 @@ export const projectsData: Project[] = [
     title: "Community Help Platform",
     description:
       "Platform connecting volunteers with community service projects efficiently",
-    stage: "accelerate",
+    stage: "Pre-Incubation",
     team: "Community Helpers",
     college: "Samarpan",
     year: 2024,
@@ -428,7 +429,7 @@ export const projectsData: Project[] = [
     title: "The Plot Twist Trio",
     description:
       "Mental wellness chatbot providing students with 24/7 emotional support",
-    stage: "build-mvp",
+    stage: "Pre-Incubation",
     team: "Plot Twist Trio",
     college: "Samarpan",
     year: 2025,
@@ -447,7 +448,7 @@ export const projectsData: Project[] = [
     id: "21",
     title: "APPS",
     description: "Peer-to-peer book exchange platform to reduce textbook costs",
-    stage: "test",
+    stage: "Pre-Incubation",
     team: "APPS Team",
     college: "Samarpan",
     year: 2024,
@@ -465,7 +466,7 @@ export const projectsData: Project[] = [
     title: "Tech Ninja",
     description:
       "E-commerce site revamp for better UX and streamlined checkout",
-    stage: "test",
+    stage: "Pre-Incubation",
     team: "Tech Ninja",
     college: "Sagarmatha Engineering College",
     year: 2024,
@@ -485,7 +486,7 @@ export const projectsData: Project[] = [
     title: "S-quad",
     description:
       "App for tracking workouts, diet, sleep, and integrating with wearables",
-    stage: "build-mvp",
+    stage: "Pre-Incubation",
     team: "S-quad",
     college: "Sagarmatha Engineering College",
     year: 2025,
@@ -505,7 +506,7 @@ export const projectsData: Project[] = [
     title: "Clover",
     description:
       "Smart home control system with voice recognition and AI learning",
-    stage: "incubate",
+    stage: "Pre-Incubation",
     team: "Clover",
     college: "Sagarmatha Engineering College",
     year: 2024,
@@ -525,7 +526,7 @@ export const projectsData: Project[] = [
     title: "Pichai",
     description:
       "Educational platform with video lessons, quizzes, and live sessions",
-    stage: "accelerate",
+    stage: "Pre-Incubation",
     team: "Pichai",
     college: "Sagarmatha Engineering College",
     year: 2025,
@@ -545,7 +546,7 @@ export const projectsData: Project[] = [
     title: "Code Crafter",
     description:
       "IoT-based system to optimize water usage and provide farming insights",
-    stage: "test",
+    stage: "Pre-Incubation",
     team: "Code Crafter",
     college: "Sagarmatha Engineering College",
     year: 2024,
@@ -565,7 +566,7 @@ export const projectsData: Project[] = [
     title: "365-plus1",
     description:
       "AI chatbot for customer inquiries with NLP and machine learning",
-    stage: "relocate",
+    stage: "Pre-Incubation",
     team: "365-plus1",
     college: "Sagarmatha Engineering College",
     year: 2025,

@@ -8,7 +8,7 @@ export type ProjectStage =
   | "testing"
   | "launched"
   | "incubate"
-  | "ideate"
+  | "Pre-Incubation"
   | "accelerate"
   | "relocate"
   | "test";
