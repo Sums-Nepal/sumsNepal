@@ -40,6 +40,7 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog"
 import EditProjectForm from "../../components/createFormProject/createFormProject"
+import { useCurrentUser } from "../../hooks"
 
 const toYearNumber = (value: any): number => {
   if (typeof value === "number") return value
@@ -102,6 +103,8 @@ export default function ProjectsPage() {
   const { data: backendColleges = [] } = useGetProjectCollegesQuery()
 
   const [deleteProject, { isLoading: isDeleting }] = useDeleteProjectMutation()
+  const {user} = useCurrentUser();
+
 
   useEffect(() => {
     const backendNormalized = (backendProjects?.projects ?? []).map(normalizeBackendProject)
@@ -510,8 +513,11 @@ export default function ProjectsPage() {
                     key={project.id}
                     className="group relative overflow-hidden border-2 border-border hover:border-orange-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-2"
                   >
+                    {    (user) && 
                     <div className="absolute top-3 sm:top-4 right-3 sm:right-4 z-50 flex gap-1.5 sm:gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300">
-                      <Dialog>
+                    
+                 
+                        <Dialog>
                         <DialogTrigger asChild>
                           <Button
                             variant="ghost"
@@ -547,6 +553,7 @@ export default function ProjectsPage() {
                           </div>
                         </DialogContent>
                       </Dialog>
+                    
 
                       <Button
                         variant="ghost"
@@ -563,6 +570,7 @@ export default function ProjectsPage() {
                         <Trash2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                       </Button>
                     </div>
+              }
 
                     <div className="relative h-40 sm:h-48 bg-gradient-to-br from-orange-500/5 to-orange-500/20 overflow-hidden">
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent z-10" />
