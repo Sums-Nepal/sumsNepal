@@ -583,7 +583,7 @@ export default function ProjectsPage() {
                       <div className="absolute top-3 sm:top-4 right-3 sm:right-4 z-20">
                         <Badge
                           variant="secondary"
-                          className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 text-foreground shadow-lg text-xs sm:text-sm"
+                          className="backdrop-blur-sm bg-white/90 dark:bg-white-900/90 text-foreground shadow-lg text-xs sm:text-sm text-orange-500"
                         >
                           {toYearNumber(project.year)}
                         </Badge>
