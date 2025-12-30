@@ -1,18 +1,15 @@
 import type { off } from "node:cluster";
 
 export type ProjectStage =
-  | "idea"
-  | "research"
-  | "design"
-  | "build-mvp"
-  | "testing"
-  | "launched"
-  | "incubate"
   | "Pre-Incubation"
-  | "accelerate"
-  | "relocate"
-  | "test";
+  | "Build MVP"
+  | "Test"
+  | "Incubate"
+  | "Accelerate"
+  | "Relocate"
 
+
+  
 export interface Person {
   name: string;
   email: string;

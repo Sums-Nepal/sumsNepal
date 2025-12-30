@@ -41,6 +41,7 @@ import {
 } from "../../components/ui/dialog"
 import EditProjectForm from "../../components/createFormProject/createFormProject"
 import { useCurrentUser } from "../../hooks"
+import { toast } from "react-toastify"
 
 const toYearNumber = (value: any): number => {
   if (typeof value === "number") return value
@@ -102,8 +103,9 @@ export default function ProjectsPage() {
 
   const { data: backendColleges = [] } = useGetProjectCollegesQuery()
 
-  const [deleteProject, { isLoading: isDeleting }] = useDeleteProjectMutation()
+  const [deleteProject, { isLoading: isDeleting , error: isErrorWhenDeleting  }] = useDeleteProjectMutation()
   const {user} = useCurrentUser();
+
 
 
   useEffect(() => {
@@ -173,15 +175,14 @@ export default function ProjectsPage() {
     setSearchQuery("")
   }
 
-  const handleDelete = async (projectId: string) => {
-    setAllProjects((prev) => prev.filter((p) => p.id !== projectId))
-
-    try {
-      await deleteProject(projectId).unwrap()
-    } catch (err) {
-      console.error("Delete failed:", err)
+  const handleDelete = useCallback(async (projectId: string) => {
+     try {
+       await deleteProject(projectId).unwrap();
+         setAllProjects((prev) => prev.filter((p) => p.id !== projectId))
+    } catch (err:any) {
+      toast.error(err?.message ?? "Failed to delete project");
     }
-  }
+  }, [isErrorWhenDeleting])
 
   const hasActiveFilters = !!selectedStage || selectedColleges.length > 0 || selectedYears.length > 0 || !!searchQuery
 

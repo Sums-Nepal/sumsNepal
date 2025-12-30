@@ -25,7 +25,7 @@ type ProjectFormProps = {
 const emptyState: FormState = {
   title: "",
   description: "",
-  stage: "idea",
+  stage: "Pre-Incubation",
   team: "",
   college: "",
   year: "",
@@ -85,7 +85,7 @@ export default function ProjectForm({ projectId, onSaved }: ProjectFormProps) {
   const [teamDocIds, setTeamDocIds] = useState<string[]>([]);
 
   const stageOptions = useMemo<ProjectStage[]>(
-    () => ["idea", "research", "design", "build-mvp", "testing", "launched"],
+    () => ["Accelerate", "Build MVP", "Test", "Relocate", "Incubate", "Pre-Incubation"],
     []
   );
 
