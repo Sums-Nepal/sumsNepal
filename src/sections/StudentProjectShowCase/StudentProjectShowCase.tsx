@@ -59,7 +59,7 @@ const normalizeBackendProject = (p: any): Project => {
     id: safeId,
     title: p?.title ?? "",
     description: p?.description ?? "",
-    stage: p?.stage ?? "idea",
+    stage: p?.stage.toLowerCase() ?? "idea",
     team: p?.team ?? "",
     college: p?.college ?? "",
     year: toYearNumber(p?.year),
