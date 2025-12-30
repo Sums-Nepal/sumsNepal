@@ -130,8 +130,9 @@ export default function ProjectsPage() {
   }, [allProjects])
 
   const filteredProjects = useMemo(() => {
+    
     return allProjects.filter((project) => {
-      const matchesStage = selectedStage ? project.stage === selectedStage : true
+      const matchesStage = selectedStage ? project.stage.trim().toLowerCase() === selectedStage.toLowerCase() : true
 
       const matchesCollege = selectedColleges.length > 0 ? selectedColleges.includes(project.college) : true
 
@@ -152,7 +153,7 @@ export default function ProjectsPage() {
   const stageCounts = useMemo(() => {
     return stages.map((stage) => ({
       ...stage,
-      count: allProjects.filter((p) => p.stage === stage.id).length,
+      count: allProjects.filter((p) => p.stage.toLowerCase() === stage.id.toLowerCase()).length,
     }))
   }, [allProjects])
 
@@ -376,7 +377,7 @@ export default function ProjectsPage() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
             {stageCounts.map((stage) => {
               const Icon = stage.icon
-              const isSelected = selectedStage === stage.id
+              const isSelected = selectedStage?.trim().toLowerCase() === stage.id?.trim().toLowerCase()
 
               return (
                 <button
@@ -505,8 +506,8 @@ export default function ProjectsPage() {
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {filteredProjects.map((project) => {
-                const stage = stages.find((s) => s.id === project.stage)
+              {filteredProjects.map((project:any) => {
+                const stage = stages.find((s) => s.id.trim().toLowerCase() === project.stage.trim().toLowerCase())
                 const StageIcon = stage?.icon || Rocket
 
                 return (
@@ -595,6 +596,7 @@ export default function ProjectsPage() {
                           className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-gradient-to-r ${stage?.color} shadow-lg`}
                         >
                           <StageIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
+
                           <span className="text-xs font-bold text-white">{stage?.name ?? "Stage"}</span>
                         </div>
                       </div>
