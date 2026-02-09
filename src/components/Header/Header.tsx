@@ -1,12 +1,13 @@
 "use client"
 
-import { useState } from "react"
-import { Menu, X, ChevronDown, Plus, LogIn, UserPlus } from "lucide-react"
+import { useState, useEffect } from "react"
+import { Menu, X, ChevronDown, Plus, LogIn, UserPlus, LogOut } from "lucide-react"
 import { NavLink, useNavigate } from "react-router-dom"
+import { motion, AnimatePresence } from "framer-motion"
 import Button from "../Button/Button"
 import LogoImage from "../LogoImage/LogoImage"
+import ThemeToggle from "../ThemeToggle/ThemeToggle"
 import { navs } from "./navs"
-import "./Header.css"
 import { useCurrentUser } from "../../hooks"
 import userService from "../../services/user"
 
@@ -15,241 +16,239 @@ const Header = () => {
   const [scrolled, setScrolled] = useState(false)
   const [openDropdown, setOpenDropdown] = useState(false)
   const navigate = useNavigate()
-
   const { user } = useCurrentUser()
 
-  const visibleNavs = navs.slice(0, 5)
-  const hiddenNavs = navs.slice(5)
+  const [isVisible, setIsVisible] = useState(true)
+  const [lastScrollY, setLastScrollY] = useState(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+
+      if (currentScrollY > 20) {
+        setScrolled(true)
+      } else {
+        setScrolled(false)
+      }
+
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false) // Scrolling down & past threshold -> hide
+      } else {
+        setIsVisible(true)  // Scrolling up or at top -> show
+      }
+
+      setLastScrollY(currentScrollY)
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [lastScrollY])
+
+  const visibleNavs = navs.slice(0, 4)
+  const hiddenNavs = navs.slice(4)
 
   const toggleMenu = () => setIsOpen(!isOpen)
 
+  const navVariants = {
+    hidden: { opacity: 0, y: -10 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.1,
+        duration: 0.5,
+        ease: "easeOut" as const,
+      },
+    }),
+  }
+
   return (
     <header
-      className={`w-full z-50 transition-all duration-500 sticky top-0 ${
-        scrolled
-          ? "bg-white/95 backdrop-blur-xl border-b border-orange-100/50 shadow-xl shadow-orange-500/5"
-          : "bg-white/90 backdrop-blur-lg border-b border-orange-50/30 shadow-lg shadow-orange-500/5"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-[100] transition-transform duration-300 ${isVisible ? "translate-y-0" : "-translate-y-full"} ${scrolled
+        ? "bg-white/70 dark:bg-slate-950/70 backdrop-blur-2xl border-b border-black/5 dark:border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.05)]"
+        : "bg-transparent"
+        }`}
     >
-      <div className="mx-auto px-3 sm:px-6 lg:px-8 max-w-[1900px]">
-        <div className="flex items-center justify-between h-16 sm:h-20">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <div className="flex items-center justify-between h-20 sm:h-24">
           {/* Logo */}
-          <div className="flex items-center flex-shrink-0 transition-transform duration-300 hover:scale-105 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="flex items-center flex-shrink-0 relative z-10"
+          >
             <LogoImage makeClickable={true} />
-          </div>
+          </motion.div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
-            {visibleNavs.map((currentNav) => (
-              <NavLink
+          <nav className="hidden xl:flex items-center space-x-1">
+            {visibleNavs.map((currentNav, i) => (
+              <motion.div
                 key={currentNav.id}
-                to={currentNav.path}
-                className={({ isActive }) =>
-                  `px-3 xl:px-4 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 relative group ${
-                    isActive
-                      ? "text-orange-600 bg-gradient-to-br from-orange-50 via-orange-50 to-orange-100/70 shadow-sm ring-1 ring-orange-100"
-                      : "text-gray-700 hover:text-orange-600 hover:bg-orange-50/60"
-                  }`
-                }
+                custom={i}
+                initial="hidden"
+                animate="visible"
+                variants={navVariants}
               >
-                {currentNav.name}
-                <span
-                  className={`absolute bottom-1 left-1/2 -translate-x-1/2 h-0.5 bg-gradient-to-r from-transparent via-orange-500 to-transparent rounded-full transition-all duration-300 group-hover:w-[calc(100%-1.5rem)] w-0`}
-                />
-              </NavLink>
+                <NavLink
+                  to={currentNav.path}
+                  className={({ isActive }) =>
+                    `px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-widest transition-all duration-300 relative group truncate max-w-[160px] inline-block ${isActive
+                      ? "text-primary bg-primary/10 shadow-inner"
+                      : "text-slate-600 dark:text-slate-300 hover:text-primary hover:bg-primary/5"
+                    }`
+                  }
+                  title={currentNav.name}
+                >
+                  {currentNav.name}
+                  <motion.span
+                    className="absolute bottom-0 left-0 h-0.5 bg-primary rounded-full transition-all duration-300 group-hover:w-full w-0"
+                    layoutId="underline"
+                  />
+                </NavLink>
+              </motion.div>
             ))}
 
             {hiddenNavs.length > 0 && (
               <div className="relative group">
                 <button
-                  onClick={() => setOpenDropdown(!openDropdown)}
                   onMouseEnter={() => setOpenDropdown(true)}
-                  className={`px-3 xl:px-4 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-1.5 relative ${
-                    openDropdown
-                      ? "text-orange-600 bg-gradient-to-br from-orange-50 via-orange-50 to-orange-100/70 shadow-sm ring-1 ring-orange-100"
-                      : "text-gray-700 hover:text-orange-600 hover:bg-orange-50/60"
-                  }`}
+                  className={`px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-widest transition-all duration-300 flex items-center gap-1 ${openDropdown ? "text-primary bg-primary/10 shadow-inner" : "text-slate-600 dark:text-slate-300 hover:text-primary hover:bg-primary/5"
+                    }`}
                 >
                   More
-                  <ChevronDown
-                    className={`w-4 h-4 transition-transform duration-300 ${
-                      openDropdown ? "rotate-180 text-orange-500" : ""
-                    }`}
-                  />
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-500 ${openDropdown ? "rotate-180" : ""}`} />
                 </button>
 
-                {/* Dropdown menu */}
-                <div
-                  onMouseLeave={() => setOpenDropdown(false)}
-                  className={`absolute top-full right-0 mt-2.5 w-64 rounded-2xl bg-white shadow-2xl shadow-orange-500/10 border border-orange-100/80 backdrop-blur-xl overflow-hidden transition-all duration-300 origin-top ${
-                    openDropdown
-                      ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
-                      : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
-                  }`}
-                >
-                  <div className="h-1 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-400" />
-
-                  <div className="max-h-[360px] overflow-y-auto overscroll-contain py-2 px-2">
-                    {hiddenNavs.map((currentNav, index) => (
-                      <NavLink
-                        key={currentNav.id}
-                        to={currentNav.path}
-                        onClick={() => setOpenDropdown(false)}
-                        className={({ isActive }) =>
-                          `block px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 ${
-                            isActive
-                              ? "text-orange-600 bg-gradient-to-r from-orange-50 to-orange-100/60 shadow-sm ring-1 ring-orange-100"
-                              : "text-gray-700 hover:text-orange-600 hover:bg-orange-50/80 hover:translate-x-1"
-                          } ${index !== 0 ? "mt-1" : ""}`
-                        }
-                      >
-                        <span className="flex items-center gap-2.5">
-                          <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+                <AnimatePresence>
+                  {openDropdown && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      onMouseLeave={() => setOpenDropdown(false)}
+                      className="absolute top-full right-0 mt-2 w-64 rounded-2xl bg-white dark:bg-slate-800 shadow-2xl border border-border overflow-hidden p-2"
+                    >
+                      {hiddenNavs.map((currentNav) => (
+                        <NavLink
+                          key={currentNav.id}
+                          to={currentNav.path}
+                          onClick={() => setOpenDropdown(false)}
+                          className={({ isActive }) =>
+                            `block px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 ${isActive ? "text-primary bg-primary/10" : "text-foreground hover:text-primary hover:bg-primary/5"
+                            }`
+                          }
+                        >
                           {currentNav.name}
-                        </span>
-                      </NavLink>
-                    ))}
-                  </div>
-                </div>
+                        </NavLink>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             )}
           </nav>
 
-          <div className="hidden lg:flex items-center gap-2.5">
-            <Button
-              onClick={() => {
-                window.open("https://wa.me/9810446594")
-              }}
-              className="bg-white border-2 border-orange-500 text-orange-600 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 hover:bg-orange-50 hover:shadow-md hover:shadow-orange-500/20 hover:-translate-y-0.5 active:translate-y-0"
-            >
-              Contact Us
-            </Button>
+          <div className="hidden xl:flex items-center gap-4">
+            <ThemeToggle />
+
+            <div className="h-6 w-px bg-border mx-2" />
 
             {!user ? (
-              <>
+              <div className="flex items-center gap-2">
                 <Button
-                  onClick={() => {
-                    navigate("/login")
-                  }}
-                  className="bg-white border-2 border-orange-500 text-orange-600 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 hover:bg-orange-50 hover:shadow-md hover:shadow-orange-500/20 hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2"
+                  onClick={() => navigate("/login")}
+                  className="px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-slate-600 dark:text-slate-300 hover:text-primary transition-colors"
                 >
-                  <LogIn className="w-4 h-4" />
                   Sign In
                 </Button>
                 <Button
-                  onClick={() => {
-                    navigate("/signup")
-                  }}
-                  className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/40 hover:-translate-y-0.5 active:translate-y-0 relative overflow-hidden group flex items-center gap-2"
+                  onClick={() => navigate("/signup")}
+                  className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-full font-bold text-xs uppercase tracking-widest transition-all shadow-xl shadow-primary/25 hover:-translate-y-1 active:scale-95"
                 >
-                  <UserPlus className="w-4 h-4" />
-                  <span className="relative z-10">Sign Up</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  Get Started
                 </Button>
-              </>
+              </div>
             ) : (
-              <>
+              <div className="flex items-center gap-2">
                 <Button
-                  onClick={() => {
-                    navigate("/project/create")
-                  }}
-                  className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/40 hover:-translate-y-0.5 active:translate-y-0 relative overflow-hidden group flex items-center gap-2"
+                  onClick={() => navigate("/project/create")}
+                  className="bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-full font-semibold text-sm transition-all shadow-lg shadow-primary/20 flex items-center gap-2"
                 >
                   <Plus className="w-4 h-4" />
-                  <span className="relative z-10">Create Project</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  Create
                 </Button>
-                <Button
+                <button
                   onClick={async () => {
                     await userService.logout()
                     window.location.reload()
                   }}
-                  className="bg-white border-2 border-orange-500 text-orange-600 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 hover:bg-orange-50 hover:shadow-md hover:shadow-orange-500/20 hover:-translate-y-0.5 active:translate-y-0"
+                  className="p-2 text-foreground hover:text-red-500 transition-colors"
+                  title="Logout"
                 >
-                  Logout
-                </Button>
-              </>
+                  <LogOut className="w-5 h-5" />
+                </button>
+              </div>
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="lg:hidden">
+          {/* Mobile Actions */}
+          <div className="flex xl:hidden items-center gap-4">
+            <ThemeToggle />
             <button
               onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2.5 rounded-xl text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-all duration-300 active:scale-95 ring-2 ring-transparent hover:ring-orange-100"
+              className="p-2 rounded-xl text-foreground hover:bg-secondary transition-colors"
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
+      </div>
 
+      {/* Mobile Menu */}
+      <AnimatePresence>
         {isOpen && (
-          <div className="lg:hidden border-t border-orange-100/60 bg-gradient-to-b from-white to-orange-50/30">
-            <nav className="flex flex-col px-3 py-4 sm:px-4 max-h-[calc(100vh-5rem)] overflow-y-auto overscroll-contain">
-              <div className="space-y-1.5">
-                {navs.map((currentNav) => (
-                  <NavLink
-                    key={currentNav.id}
-                    to={currentNav.path}
-                    onClick={() => setIsOpen(false)}
-                    className={({ isActive }) =>
-                      `block px-4 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 ${
-                        isActive
-                          ? "text-orange-600 bg-gradient-to-r from-orange-50 to-orange-100/60 shadow-sm translate-x-1 ring-1 ring-orange-100"
-                          : "text-gray-700 hover:bg-orange-50/70 hover:text-orange-600 hover:translate-x-1"
-                      }`
-                    }
-                  >
-                    <span className="flex items-center gap-3">
-                      <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-                      {currentNav.name}
-                    </span>
-                  </NavLink>
-                ))}
-              </div>
-
-              <div className="mt-4 space-y-2.5 pt-4 border-t border-orange-100">
-                <Button
-                  onClick={() => {
-                    window.open("https://wa.me/9810446594")
-                    setIsOpen(false)
-                  }}
-                  className="w-full bg-white border-2 border-orange-500 text-orange-600 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 hover:bg-orange-50 hover:shadow-md hover:shadow-orange-500/20 active:scale-[0.98]"
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="xl:hidden bg-white dark:bg-slate-900 border-b border-border overflow-hidden"
+          >
+            <nav className="flex flex-col p-4 space-y-2">
+              {navs.map((currentNav) => (
+                <NavLink
+                  key={currentNav.id}
+                  to={currentNav.path}
+                  onClick={() => setIsOpen(false)}
+                  className={({ isActive }) =>
+                    `px-4 py-3 rounded-xl font-medium text-sm transition-all ${isActive ? "text-primary bg-primary/10" : "text-foreground hover:bg-secondary"
+                    }`
+                  }
                 >
-                  Contact Us
-                </Button>
-
+                  {currentNav.name}
+                </NavLink>
+              ))}
+              <div className="pt-4 border-t border-border mt-2 space-y-2">
                 {!user ? (
                   <>
                     <Button
-                      onClick={() => {
-                        navigate("/login")
-                        setIsOpen(false)
-                      }}
-                      className="w-full bg-white border-2 border-orange-500 text-orange-600 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 hover:bg-orange-50 hover:shadow-md hover:shadow-orange-500/20 active:scale-[0.98] flex items-center justify-center gap-2"
+                      onClick={() => navigate("/login")}
+                      className="w-full justify-start px-4 py-3 text-foreground"
                     >
-                      <LogIn className="w-4 h-4" />
                       Sign In
                     </Button>
                     <Button
-                      onClick={() => {
-                        navigate("/signup")
-                        setIsOpen(false)
-                      }}
-                      className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-4 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/40 active:scale-[0.98] flex items-center justify-center gap-2"
+                      onClick={() => navigate("/signup")}
+                      className="w-full bg-primary text-white px-4 py-3 rounded-xl"
                     >
-                      <UserPlus className="w-4 h-4" />
                       Sign Up
                     </Button>
                   </>
                 ) : (
                   <>
                     <Button
-                      onClick={() => {
-                        navigate("/project/create")
-                        setIsOpen(false)
-                      }}
-                      className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-4 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/40 active:scale-[0.98] flex items-center justify-center gap-2"
+                      onClick={() => navigate("/project/create")}
+                      className="w-full bg-primary text-white px-4 py-3 rounded-xl flex items-center justify-center gap-2"
                     >
                       <Plus className="w-4 h-4" />
                       Create Project
@@ -259,7 +258,7 @@ const Header = () => {
                         await userService.logout()
                         window.location.reload()
                       }}
-                      className="w-full bg-white border-2 border-orange-500 text-orange-600 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 hover:bg-orange-50 hover:shadow-md hover:shadow-orange-500/20 active:scale-[0.98]"
+                      className="w-full px-4 py-3 text-red-500"
                     >
                       Logout
                     </Button>
@@ -267,9 +266,9 @@ const Header = () => {
                 )}
               </div>
             </nav>
-          </div>
+          </motion.div>
         )}
-      </div>
+      </AnimatePresence>
     </header>
   )
 }

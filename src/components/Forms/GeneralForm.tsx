@@ -58,8 +58,7 @@ export default function GeneralForm({ visible, onClose }: GeneralFormProps) {
         `Inquiry from ${formData.instituteName}`
       );
       const body = encodeURIComponent(
-        `Institute Name: ${formData.instituteName}\nEmail: ${
-          formData.email
+        `Institute Name: ${formData.instituteName}\nEmail: ${formData.email
         }\nInterests: ${formData.interests
           .map((i) => interests.find((x) => x.id === i)?.label)
           .join(", ")}\n\nMessage:\n${formData.message}`
@@ -96,7 +95,7 @@ export default function GeneralForm({ visible, onClose }: GeneralFormProps) {
 
   return (
     <div
-      className="fixed inset-0 bg-black/60 flex items-center justify-center p-6 z-50"
+      className="fixed inset-0 bg-black/60 flex items-center justify-center p-6 z-[9999]"
       onClick={onCloseByScreen}
     >
       <div

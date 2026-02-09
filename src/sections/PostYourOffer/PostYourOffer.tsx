@@ -1,5 +1,9 @@
-import React, { useState } from "react";
-import { Button } from "../../components";
+"use client"
+
+import React, { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { Send, Building2, Briefcase, Mail, Phone, Users2, MapPin, DollarSign, Clock, FileText, Sparkles, CheckCircle2 } from "lucide-react"
+import { Button } from "../../components"
 
 const PostYourOffer = () => {
   const [formData, setFormData] = useState({
@@ -15,235 +19,285 @@ const PostYourOffer = () => {
     compensation: "",
     location: "",
     notes: "",
-  });
+  })
 
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: "" })); // clear error on change
-  };
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+    setErrors((prev) => ({ ...prev, [name]: "" }))
+  }
 
   const validate = () => {
-    const newErrors: { [key: string]: string } = {};
-    if (!formData.orgName.trim()) newErrors.orgName = "Organization Name is required";
-    if (!formData.orgType) newErrors.orgType = "Organization Type is required";
-    if (!formData.contactName.trim()) newErrors.contactName = "Contact Name is required";
-    if (!formData.email.trim()) newErrors.email = "Email is required";
-    if (!formData.phone.trim()) newErrors.phone = "Phone is required";
-    if (!formData.opportunityType) newErrors.opportunityType = "Opportunity Type is required";
+    const newErrors: { [key: string]: string } = {}
+    if (!formData.orgName.trim()) newErrors.orgName = "Required"
+    if (!formData.orgType) newErrors.orgType = "Required"
+    if (!formData.contactName.trim()) newErrors.contactName = "Required"
+    if (!formData.email.trim()) newErrors.email = "Required"
+    if (!formData.phone.trim()) newErrors.phone = "Required"
+    if (!formData.opportunityType) newErrors.opportunityType = "Required"
+    return newErrors
+  }
 
-    return newErrors;
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const validationErrors = validate();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const validationErrors = validate()
     if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return; // stop submission if there are errors
+      setErrors(validationErrors)
+      return
     }
 
-    const subject = encodeURIComponent(`New Offer Submission from ${formData.orgName}`);
-    const body = encodeURIComponent(
-      `Organization Name: ${formData.orgName}
-Organization Type: ${formData.orgType}
-Contact Name: ${formData.contactName}
-Email: ${formData.email}
-Phone: ${formData.phone}
-Opportunity Type: ${formData.opportunityType}
-Number of Students Wanted: ${formData.studentsWanted}
-Required Background: ${formData.background}
-Duration: ${formData.duration}
-Compensation: ${formData.compensation}
-Location: ${formData.location}
-Special Notes: ${formData.notes}`
-    );
+    setIsSubmitting(true)
 
-    window.location.href = `mailto:Info@connect@sumsnepal.com?subject=${subject}&body=${body}`;
-  };
+    // Simulate slight delay for premium feel
+    await new Promise(r => setTimeout(r, 1500))
+
+    const subject = encodeURIComponent(`New Offer Submission: ${formData.orgName}`)
+    const body = encodeURIComponent(
+      `Organization Name: ${formData.orgName}\nType: ${formData.orgType}\nContact: ${formData.contactName}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nOpportunity: ${formData.opportunityType}\nQty: ${formData.studentsWanted}\nNotes: ${formData.notes}`
+    )
+
+    window.location.href = `mailto:Info@sumsnepal.com?subject=${subject}&body=${body}`
+
+    setIsSubmitting(false)
+    setIsSuccess(true)
+    setTimeout(() => setIsSuccess(false), 5000)
+  }
 
   return (
-    <section className="py-24 bg-white" id="business-page-form">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4 text-black">
-            Post <span className="text-orange-500">Your</span> Offer
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Share your organization's needs and connect with talented students
-            and professionals who can help drive your mission forward.
+    <section className="py-24 sm:py-32 bg-background relative overflow-hidden transition-colors duration-500" id="business-page-form">
+      {/* Dynamic Background */}
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/2 rounded-full blur-[150px] -z-10" />
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-600/2 rounded-full blur-[120px] -z-10" />
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="flex flex-col items-center mb-24 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="inline-flex px-4 py-1.5 bg-primary/10 text-primary rounded-full text-[10px] font-black uppercase tracking-widest mb-6 border border-primary/20 backdrop-blur-sm"
+          >
+            <Sparkles className="w-3 h-3 mr-2" />
+            Partnership Portal
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-5xl lg:text-8xl font-black text-foreground tracking-tighter uppercase mb-6 leading-[0.9]"
+          >
+            POST <span className="text-primary italic">YOUR</span> OFFER
+          </motion.h2>
+          <p className="text-muted-foreground text-lg lg:text-xl max-w-2xl mx-auto font-medium leading-relaxed">
+            Architect a strategic collaboration by defining your organizational needs.
+            Connect with pre-vetted elite talent across Nepal.
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto" >
-          <div className="border border-gray-200 shadow-lg rounded-lg">
-            <div className="p-8">
-              <form className="space-y-8" onSubmit={handleSubmit}>
-                {/* Organization Details */}
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label htmlFor="org-name" className="text-sm font-medium text-gray-700 block">
-                      Organization Name *
-                    </label>
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-5xl mx-auto"
+        >
+          <div className="relative bg-white dark:bg-slate-900 border border-border rounded-[4rem] p-10 lg:p-20 shadow-2xl overflow-hidden glassmorphism">
+            {/* Top accent bar */}
+            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary via-orange-500 to-primary" />
+
+            <form onSubmit={handleSubmit} className="space-y-16">
+              {/* Part 1: Identity */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+                <div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                      <Building2 className="w-5 h-5 text-primary" />
+                    </div>
+                    <h3 className="text-2xl font-black text-foreground uppercase tracking-tighter leading-none">Identity</h3>
+                  </div>
+                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest leading-relaxed">
+                    Define the organizational infrastructure and category for this collaboration.
+                  </p>
+                </div>
+
+                <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-foreground/40 uppercase tracking-[0.2em] ml-2">Organization Name</label>
                     <input
-                      id="org-name"
                       name="orgName"
                       type="text"
                       value={formData.orgName}
                       onChange={handleChange}
-                      placeholder="Enter organization name"
-                      className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
-                        errors.orgName ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-orange-500 focus:border-orange-500"
-                      }`}
+                      placeholder="e.g. SUMS International"
+                      className={`w-full bg-slate-50 dark:bg-slate-800/50 border-2 ${errors.orgName ? "border-red-500/50" : "border-transparent"} focus:border-primary/30 focus:bg-white dark:focus:bg-slate-900 rounded-2xl px-8 py-5 text-sm font-bold transition-all outline-none shadow-sm`}
                     />
-                    {errors.orgName && <p className="text-red-500 text-sm">{errors.orgName}</p>}
                   </div>
-                  <div className="space-y-2">
-                    <label htmlFor="org-type" className="text-sm font-medium text-gray-700 block">
-                      Organization Type *
-                    </label>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-foreground/40 uppercase tracking-[0.2em] ml-2">Sector Category</label>
                     <select
-                      id="org-type"
                       name="orgType"
                       value={formData.orgType}
                       onChange={handleChange}
-                      className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
-                        errors.orgType ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-orange-500 focus:border-orange-500"
-                      }`}
+                      className={`w-full bg-slate-50 dark:bg-slate-800/50 border-2 ${errors.orgType ? "border-red-500/50" : "border-transparent"} focus:border-primary/30 rounded-2xl px-8 py-5 text-sm font-bold transition-all outline-none appearance-none shadow-sm`}
                     >
-                      <option value="">Select organization type</option>
-                      <option value="private">Private</option>
-                      <option value="public">Public</option>
-                      <option value="ngo">NGO</option>
+                      <option value="">Select Category</option>
+                      <option value="private">Private Sector</option>
+                      <option value="public">Public / Government</option>
+                      <option value="ngo">NGO / Social Org</option>
                       <option value="social-enterprise">Social Enterprise</option>
-                      <option value="association">Association</option>
                     </select>
-                    {errors.orgType && <p className="text-red-500 text-sm">{errors.orgType}</p>}
                   </div>
                 </div>
+              </div>
 
-                {/* Contact Information */}
+              {/* Part 2: Contact */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start border-t border-border pt-16">
                 <div>
-                  <h3 className="text-lg font-semibold text-black mb-4">Contact Information</h3>
-                  <div className="grid md:grid-cols-3 gap-6">
-                    <div className="space-y-2">
-                      <label htmlFor="contact-name" className="text-sm font-medium text-gray-700 block">
-                        Contact Name *
-                      </label>
-                      <input
-                        id="contact-name"
-                        name="contactName"
-                        type="text"
-                        value={formData.contactName}
-                        onChange={handleChange}
-                        placeholder="Your full name"
-                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
-                          errors.contactName ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-orange-500 focus:border-orange-500"
-                        }`}
-                      />
-                      {errors.contactName && <p className="text-red-500 text-sm">{errors.contactName}</p>}
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                      <Users2 className="w-5 h-5 text-primary" />
                     </div>
-                    <div className="space-y-2">
-                      <label htmlFor="email" className="text-sm font-medium text-gray-700 block">
-                        Email *
-                      </label>
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="your.email@domain.com"
-                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
-                          errors.email ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-orange-500 focus:border-orange-500"
-                        }`}
-                      />
-                      {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-                    </div>
-                    <div className="space-y-2">
-                      <label htmlFor="phone" className="text-sm font-medium text-gray-700 block">
-                        Phone *
-                      </label>
-                      <input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        placeholder="+977-9800000000"
-                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
-                          errors.phone ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-orange-500 focus:border-orange-500"
-                        }`}
-                      />
-                      {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
-                    </div>
+                    <h3 className="text-2xl font-black text-foreground uppercase tracking-tighter leading-none">Point of Contact</h3>
                   </div>
+                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest leading-relaxed">
+                    Communication details for the designated project lead or representative.
+                  </p>
                 </div>
 
-                {/* Opportunity Details */}
+                <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-foreground/40 uppercase tracking-[0.2em] ml-2">Lead Name</label>
+                    <input
+                      name="contactName"
+                      type="text"
+                      value={formData.contactName}
+                      onChange={handleChange}
+                      className="w-full bg-slate-50 dark:bg-slate-800/50 border-2 border-transparent focus:border-primary/30 focus:bg-white dark:focus:bg-slate-900 rounded-2xl px-8 py-5 text-sm font-bold transition-all outline-none shadow-sm"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-foreground/40 uppercase tracking-[0.2em] ml-2">Official Email</label>
+                    <input
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full bg-slate-50 dark:bg-slate-800/50 border-2 border-transparent focus:border-primary/30 focus:bg-white dark:focus:bg-slate-900 rounded-2xl px-8 py-5 text-sm font-bold transition-all outline-none shadow-sm"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-foreground/40 uppercase tracking-[0.2em] ml-2">Secure Phone</label>
+                    <input
+                      name="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="w-full bg-slate-50 dark:bg-slate-800/50 border-2 border-transparent focus:border-primary/30 focus:bg-white dark:focus:bg-slate-900 rounded-2xl px-8 py-5 text-sm font-bold transition-all outline-none shadow-sm"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Part 3: Requirement */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start border-t border-border pt-16">
                 <div>
-                  <h3 className="text-lg font-semibold text-black mb-4">Opportunity Details</h3>
-                  <div className="grid md:grid-cols-2 gap-6 mb-6">
-                    <div className="space-y-2">
-                      <label htmlFor="opportunity-type" className="text-sm font-medium text-gray-700 block">
-                        Opportunity Type *
-                      </label>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                      <Sparkles className="w-5 h-5 text-primary" />
+                    </div>
+                    <h3 className="text-2xl font-black text-foreground uppercase tracking-tighter leading-none">Context</h3>
+                  </div>
+                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest leading-relaxed">
+                    Detailed specifications of the opportunity and expert requirements.
+                  </p>
+                </div>
+
+                <div className="lg:col-span-2 space-y-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-black text-foreground/40 uppercase tracking-[0.2em] ml-2">Opportunity Type</label>
                       <select
-                        id="opportunity-type"
                         name="opportunityType"
                         value={formData.opportunityType}
                         onChange={handleChange}
-                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
-                          errors.opportunityType ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-orange-500 focus:border-orange-500"
-                        }`}
+                        className="w-full bg-slate-50 dark:bg-slate-800/50 border-2 border-transparent focus:border-primary/30 rounded-2xl px-8 py-5 text-sm font-bold transition-all outline-none appearance-none shadow-sm"
                       >
-                        <option value="">Select opportunity type</option>
+                        <option value="">Select Type</option>
                         <option value="internship">Internship</option>
-                        <option value="full-time">Full-time Position</option>
-                        <option value="part-time">Part-time Position</option>
-                        <option value="project">Project-based</option>
-                        <option value="volunteer">Volunteer</option>
+                        <option value="full-time">Full-time Carrier</option>
+                        <option value="project">Project Collaboration</option>
                       </select>
-                      {errors.opportunityType && <p className="text-red-500 text-sm">{errors.opportunityType}</p>}
                     </div>
-                    <div className="space-y-2">
-                      <label htmlFor="students-wanted" className="text-sm font-medium text-gray-700 block">
-                        Number of Students Wanted
-                      </label>
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-black text-foreground/40 uppercase tracking-[0.2em] ml-2">Resources Required</label>
                       <input
-                        id="students-wanted"
                         name="studentsWanted"
                         type="number"
                         value={formData.studentsWanted}
                         onChange={handleChange}
-                        placeholder="e.g., 5"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                        className="w-full bg-slate-50 dark:bg-slate-800/50 border-2 border-transparent focus:border-primary/30 focus:bg-white dark:focus:bg-slate-900 rounded-2xl px-8 py-5 text-sm font-bold transition-all outline-none shadow-sm"
                       />
                     </div>
                   </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-foreground/40 uppercase tracking-[0.2em] ml-2">Technical Context / Requirements</label>
+                    <textarea
+                      name="notes"
+                      value={formData.notes}
+                      onChange={handleChange}
+                      rows={6}
+                      placeholder="Elaborate on the project mission and expected deliverables..."
+                      className="w-full bg-slate-50 dark:bg-slate-800/50 border-2 border-transparent focus:border-primary/30 focus:bg-white dark:focus:bg-slate-900 rounded-3xl px-8 py-6 text-sm font-bold transition-all outline-none resize-none shadow-sm"
+                    />
+                  </div>
                 </div>
+              </div>
 
-                {/* Remaining fields */}
-                {/* ... include other optional fields as in your original code */}
-
-                {/* Submit Button */}
-                <div className="text-center pt-6">
-                  <Button type="submit" className="bg-orange-500 hover:bg-orange-600 text-white px-12 py-3 rounded-full text-lg">
-                    Submit Offer
-                  </Button>
-                </div>
-              </form>
-            </div>
+              <div className="pt-10 flex flex-col items-center border-t border-border mt-16">
+                <AnimatePresence mode="wait">
+                  {isSuccess ? (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      className="bg-emerald-500/10 text-emerald-600 px-10 py-5 rounded-2xl flex items-center gap-3 border border-emerald-500/20 shadow-xl shadow-emerald-500/10"
+                    >
+                      <CheckCircle2 className="w-6 h-6" />
+                      <span className="text-sm font-black uppercase tracking-widest">Submission Initialized</span>
+                    </motion.div>
+                  ) : (
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="bg-primary hover:bg-primary/90 text-white px-20 py-10 text-2xl rounded-3xl shadow-2xl shadow-primary/30 flex items-center gap-4 transition-all hover:-translate-y-2 active:scale-95 group/btn relative overflow-hidden"
+                    >
+                      {isSubmitting ? (
+                        <div className="w-10 h-10 border-4 border-white/30 border-t-white rounded-full animate-spin" />
+                      ) : (
+                        <>
+                          <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000" />
+                          <span className="font-black uppercase tracking-tighter">INITIALIZE PARTNERSHIP</span>
+                          <Send className="w-6 h-6 group-hover/btn:translate-x-2 group-hover/btn:-translate-y-2 transition-transform" />
+                        </>
+                      )}
+                    </Button>
+                  )}
+                </AnimatePresence>
+                <p className="mt-10 text-[10px] font-black uppercase text-muted-foreground/60 tracking-[0.3em]">
+                  Secure Data Transmission Protocol Active
+                </p>
+              </div>
+            </form>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default PostYourOffer;
+export default PostYourOffer

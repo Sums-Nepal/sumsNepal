@@ -1,78 +1,114 @@
-import { Button } from "../../components";
-import { eventsData } from "./EventsData";
+"use client"
+
+import { motion, AnimatePresence } from "framer-motion"
+import { Calendar, MapPin, ArrowRight, Sparkles } from "lucide-react"
+import { Button } from "../../components"
+import { eventsData } from "./EventsData"
 
 const UpcomingEvents = () => {
   return (
-    <>
-      {/* Upcoming Events Section */}
-      <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 bg-gradient-to-r from-gray-50 to-blue-50">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
-            Upcoming Events
-          </h2>
-          <p className="text-gray-600 text-base sm:text-lg lg:text-xl leading-relaxed mb-8 sm:mb-12 max-w-4xl mx-auto">
-            Join our community events to network, learn, and contribute to
-            Nepal's development
-          </p>
+    <section className="py-24 bg-slate-50/50 dark:bg-slate-950 transition-colors duration-500 relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/2 rounded-full blur-[100px] -z-10" />
 
-          {eventsData.length > 0 ? (
-            /* Events Grid */
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
-              {eventsData.map((event) => {
-                const Icon = event.icon;
-                return (
-                  <div
-                    key={event.id}
-                    className={`bg-gradient-to-br ${event.gradient} rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group hover:transform hover:scale-105`}
-                  >
-                    <div className="flex items-center justify-between mb-4">
-                      <div
-                        className={`w-12 h-12 ${event.bgColor} rounded-xl flex items-center justify-center`}
-                      >
-                        <Icon className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="text-right">
-                        <div
-                          className={`text-sm ${event.dateColor} font-semibold`}
-                        >
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="flex flex-col items-center mb-20 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="inline-flex px-4 py-1.5 bg-primary/10 text-primary rounded-full text-[10px] font-black uppercase tracking-widest mb-6 border border-primary/20 backdrop-blur-sm"
+          >
+            <Sparkles className="w-3 h-3 mr-2" />
+            Join the Movement
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl lg:text-7xl font-black text-foreground tracking-tighter uppercase mb-6 leading-none"
+          >
+            UPCOMING <span className="text-primary italic">EVENTS</span>
+          </motion.h2>
+          <p className="text-muted-foreground text-lg lg:text-xl max-w-2xl mx-auto font-medium leading-relaxed">
+            Experience the energy of Nepal's innovation ecosystem. Network with leaders,
+            learn from experts, and discover new opportunities.
+          </p>
+        </div>
+
+        {eventsData.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            {eventsData.map((event, idx) => {
+              const Icon = event.icon || Calendar
+              return (
+                <motion.div
+                  key={event.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1, duration: 0.8 }}
+                  whileHover={{ y: -10 }}
+                  className="group relative"
+                >
+                  <div className="relative h-full bg-white dark:bg-slate-900 border border-border rounded-[3rem] p-10 shadow-sm transition-all duration-500 hover:shadow-2xl hover:border-primary/30 flex flex-col sm:flex-row gap-8 items-start overflow-hidden">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-[4rem] -z-10 group-hover:bg-primary/10 transition-colors" />
+
+                    <div className="shrink-0 w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-3xl flex items-center justify-center group-hover:bg-primary transition-all duration-500 group-hover:rotate-6 shadow-sm border border-border/50">
+                      <Icon className="w-10 h-10 text-primary group-hover:text-white transition-colors" />
+                    </div>
+
+                    <div className="flex-1 space-y-4">
+                      <div className="flex flex-wrap items-center gap-4">
+                        <div className="flex items-center gap-2 text-primary font-black uppercase tracking-widest text-[10px] bg-primary/10 px-3 py-1 rounded-lg">
+                          <Calendar className="w-3 h-3" />
                           {event.date}
                         </div>
-                        <div className={`text-xs ${event.locationColor}`}>
+                        <div className="flex items-center gap-2 text-muted-foreground font-bold uppercase tracking-tight text-[10px]">
+                          <MapPin className="w-3 h-3" />
                           {event.location}
                         </div>
                       </div>
+
+                      <h3 className="text-3xl font-black text-foreground uppercase tracking-tighter group-hover:text-primary transition-colors leading-none">
+                        {event.title}
+                      </h3>
+                      <p className="text-muted-foreground text-md leading-relaxed font-medium">
+                        {event.description}
+                      </p>
+
+                      <div className="pt-4">
+                        <button className="text-primary font-black uppercase tracking-widest text-xs flex items-center gap-2 group/btn hover:translate-x-2 transition-transform">
+                          Event Details
+                          <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                        </button>
+                      </div>
                     </div>
-                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">
-                      {event.title}
-                    </h3>
-                    <p className="text-gray-700 text-sm sm:text-base">
-                      {event.description}
-                    </p>
                   </div>
-                );
-              })}
-            </div>
-          ) : (
-            /* Fallback Message */
-            <div className="text-center py-12">
-              <p className="text-gray-600 text-lg sm:text-xl">
-                🚀 No upcoming events at the moment. Stay tuned!
-              </p>
-            </div>
-          )}
-        </div>
-
-        {/* CTA Button */}
-        {eventsData.length > 0 && (
-          <div className="flex items-center justify-center p-10">
-            <Button className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 sm:px-12 py-3 sm:py-4 text-lg sm:text-xl shadow-lg hover:shadow-xl transition-all duration-200 rounded-full">
-              Join Now
-            </Button>
+                </motion.div>
+              )
+            })}
           </div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="text-center py-20 bg-white dark:bg-slate-900 rounded-[3rem] border border-dashed border-border"
+          >
+            <p className="text-muted-foreground text-xl font-medium">
+              🚀 No upcoming events at the moment. Stay tuned!
+            </p>
+          </motion.div>
         )}
-      </section>
-    </>
-  );
-};
 
-export default UpcomingEvents;
+        <div className="flex justify-center mt-20">
+          <Button className="bg-primary text-white hover:bg-primary/90 px-12 py-6 text-xl rounded-2xl shadow-2xl shadow-primary/25 transition-all hover:-translate-y-1 active:scale-95 font-black uppercase tracking-widest flex items-center gap-3">
+            Explore All Events
+            <ArrowRight className="w-6 h-6" />
+          </Button>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default UpcomingEvents

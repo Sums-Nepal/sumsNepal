@@ -1,4 +1,9 @@
-import React, { useState } from "react";
+"use client"
+
+import React, { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { Send, Rocket, Mail, Phone, User, Lightbulb, Activity, Globe, CheckCircle2, Sparkles } from "lucide-react"
+import Button from "../Button/Button"
 
 const Entrepreneurship = () => {
   const [formData, setFormData] = useState({
@@ -10,45 +15,43 @@ const Entrepreneurship = () => {
     stage: "",
     industry: "",
     terms: false,
-  });
+  })
 
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({})
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    const { name, value, type } = e.target;
+    const { name, value, type } = e.target
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox"
-        ? (e.target as HTMLInputElement).checked
-        : value,
-    }));
-    setErrors((prev) => ({ ...prev, [name]: "" }));
-  };
+      [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
+    }))
+    setErrors((prev) => ({ ...prev, [name]: "" }))
+  }
 
   const validate = () => {
-    const newErrors: { [key: string]: string } = {};
-    if (!formData.name.trim()) newErrors.name = "Full Name is required";
-    if (!formData.email.trim()) newErrors.email = "Email is required";
-    if (!formData.phone.trim()) newErrors.phone = "Phone Number is required";
-    if (!formData.startupName.trim()) newErrors.startupName = "Startup Name is required";
-    if (!formData.ideaDescription.trim()) newErrors.ideaDescription = "Idea Description is required";
-    if (!formData.stage) newErrors.stage = "Current Stage is required";
-    if (!formData.industry) newErrors.industry = "Industry/Sector is required";
-    if (!formData.terms) newErrors.terms = "You must agree to the terms";
-    return newErrors;
-  };
+    const newErrors: { [key: string]: string } = {}
+    if (!formData.name.trim()) newErrors.name = "Full Name is required"
+    if (!formData.email.trim()) newErrors.email = "Email is required"
+    if (!formData.phone.trim()) newErrors.phone = "Phone Number is required"
+    if (!formData.startupName.trim()) newErrors.startupName = "Startup Name is required"
+    if (!formData.ideaDescription.trim()) newErrors.ideaDescription = "Idea Description is required"
+    if (!formData.stage) newErrors.stage = "Current Stage is required"
+    if (!formData.industry) newErrors.industry = "Industry/Sector is required"
+    if (!formData.terms) newErrors.terms = "You must agree to the terms"
+    return newErrors
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const validationErrors = validate();
+    e.preventDefault()
+    const validationErrors = validate()
     if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
+      setErrors(validationErrors)
+      return
     }
 
-    const subject = encodeURIComponent(`New Startup Submission from ${formData.name}`);
+    const subject = encodeURIComponent(`New Startup Submission from ${formData.name}`)
     const body = encodeURIComponent(
       `Full Name: ${formData.name}
 Email: ${formData.email}
@@ -58,195 +61,144 @@ Idea Description: ${formData.ideaDescription}
 Current Stage: ${formData.stage}
 Industry/Sector: ${formData.industry}
 Agreement: ${formData.terms ? "I have agreed to the SUMS Nepal terms" : "Not agreed"}`
-    );
+    )
 
-    window.location.href = `mailto:connect@sumsnepal.com?subject=${subject}&body=${body}`;
-  };
+    window.location.href = `mailto:connect@sumsnepal.com?subject=${subject}&body=${body}`
+  }
 
   return (
-    <section className="py-24 bg-white" id="en-form">
-      <div className="container mx-auto px-4">
+    <section className="py-24 sm:py-32 bg-slate-50 dark:bg-slate-900/30 relative overflow-hidden" id="en-form">
+      {/* Dynamic Background Accents */}
+      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10" />
+      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] -z-10" />
 
-
-        {/* Heading */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4 text-black">
-            Submit Your <span className="text-orange-500">Startup</span> Idea
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Share your startup idea and connect with SUMS Nepal for mentorship,
-            funding, and support to grow your venture.
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="flex flex-col items-center mb-12 sm:mb-20 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="inline-flex px-4 py-1.5 bg-primary/10 text-primary rounded-full text-[10px] font-black uppercase tracking-widest mb-6 border border-primary/20"
+          >
+            Venture Catalyst Portal
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl sm:text-5xl lg:text-7xl font-black text-foreground tracking-tighter uppercase mb-6 leading-none"
+          >
+            SUBMIT YOUR <span className="text-primary italic">STARTUP</span> IDEA
+          </motion.h2>
+          <p className="text-muted-foreground text-base sm:text-lg lg:text-xl max-w-2xl mx-auto font-medium px-4">
+            Share your vision and connect with SUMS Nepal for elite mentorship,
+            funding networks, and global incubation support.
           </p>
         </div>
 
-        {/* Form */}
-        <div className="max-w-4xl mx-auto border border-gray-200 shadow-lg rounded-lg p-8">
-          <form id="startupForm" className="space-y-6" onSubmit={handleSubmit}>
-            {/* Full Name */}
-            <div className="space-y-2">
-              <label htmlFor="name" className="text-sm font-medium text-gray-700 block">
-                Full Name:
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 border-gray-300 focus:ring-orange-500 focus:border-orange-500"
-              />
-              {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
-            </div>
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-4xl mx-auto"
+        >
+          <div className="relative bg-white dark:bg-slate-900 border border-border rounded-[1.5rem] sm:rounded-[2.5rem] p-6 sm:p-10 lg:p-12 shadow-2xl overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary via-emerald-500 to-primary" />
 
-            {/* Email */}
-            <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium text-gray-700 block">
-                Email Address:
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 border-gray-300 focus:ring-orange-500 focus:border-orange-500"
-              />
-              {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-            </div>
+            <form onSubmit={handleSubmit} className="space-y-8 sm:space-y-12">
+              {/* Personal Information */}
+              <div>
+                <div className="flex items-center gap-3 mb-6 sm:mb-8">
+                  <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
+                    <User className="w-5 h-5 text-primary" />
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-black text-foreground uppercase tracking-tight">Founder Details</h3>
+                </div>
 
-            {/* Phone */}
-            <div className="space-y-2">
-              <label htmlFor="phone" className="text-sm font-medium text-gray-700 block">
-                Phone Number:
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 border-gray-300 focus:ring-orange-500 focus:border-orange-500"
-              />
-              {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
-            </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-foreground/60 uppercase tracking-widest ml-1">Full Name *</label>
+                    <input name="name" type="text" value={formData.name} onChange={handleChange} placeholder="John Doe" className={`w-full bg-slate-50 dark:bg-slate-800/50 border ${errors.name ? "border-red-500" : "border-border"} focus:border-primary rounded-xl sm:rounded-2xl px-5 sm:px-6 py-3 sm:py-4 text-sm font-semibold outline-none transition-all`} />
+                    {errors.name && <p className="text-red-500 text-[10px] font-bold uppercase ml-1">{errors.name}</p>}
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-foreground/60 uppercase tracking-widest ml-1">Email *</label>
+                    <input name="email" type="email" value={formData.email} onChange={handleChange} placeholder="john@startup.com" className={`w-full bg-slate-50 dark:bg-slate-800/50 border ${errors.email ? "border-red-500" : "border-border"} focus:border-primary rounded-xl sm:rounded-2xl px-5 sm:px-6 py-3 sm:py-4 text-sm font-semibold outline-none transition-all`} />
+                    {errors.email && <p className="text-red-500 text-[10px] font-bold uppercase ml-1">{errors.email}</p>}
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-foreground/60 uppercase tracking-widest ml-1">Phone *</label>
+                    <input name="phone" type="tel" value={formData.phone} onChange={handleChange} placeholder="+977 123 4567" className={`w-full bg-slate-50 dark:bg-slate-800/50 border ${errors.phone ? "border-red-500" : "border-border"} focus:border-primary rounded-xl sm:rounded-2xl px-5 sm:px-6 py-3 sm:py-4 text-sm font-semibold outline-none transition-all`} />
+                    {errors.phone && <p className="text-red-500 text-[10px] font-bold uppercase ml-1">{errors.phone}</p>}
+                  </div>
+                </div>
+              </div>
 
-            {/* Startup Name */}
-            <div className="space-y-2">
-              <label htmlFor="startupName" className="text-sm font-medium text-gray-700 block">
-                Startup Name:
-              </label>
-              <input
-                type="text"
-                id="startupName"
-                name="startupName"
-                value={formData.startupName}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 border-gray-300 focus:ring-orange-500 focus:border-orange-500"
-              />
-              {errors.startupName && <p className="text-red-500 text-sm">{errors.startupName}</p>}
-            </div>
+              {/* Startup Information */}
+              <div className="pt-8 border-t border-border">
+                <div className="flex items-center gap-3 mb-6 sm:mb-8">
+                  <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
+                    <Sparkles className="w-5 h-5 text-primary" />
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-black text-foreground uppercase tracking-tight">Venture Bio</h3>
+                </div>
 
-            {/* Idea Description */}
-            <div className="space-y-2">
-              <label htmlFor="ideaDescription" className="text-sm font-medium text-gray-700 block">
-                Brief Description of Your Startup Idea (100-200 words):
-              </label>
-              <textarea
-                id="ideaDescription"
-                name="ideaDescription"
-                rows={5}
-                value={formData.ideaDescription}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 border-gray-300 focus:ring-orange-500 focus:border-orange-500"
-              ></textarea>
-              {errors.ideaDescription && (
-                <p className="text-red-500 text-sm">{errors.ideaDescription}</p>
-              )}
-            </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-6 sm:mb-8">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-foreground/60 uppercase tracking-widest ml-1">Startup Name *</label>
+                    <input name="startupName" type="text" value={formData.startupName} onChange={handleChange} placeholder="e.g. InnovateX" className={`w-full bg-slate-50 dark:bg-slate-800/50 border ${errors.startupName ? "border-red-500" : "border-border"} focus:border-primary rounded-xl sm:rounded-2xl px-5 sm:px-6 py-3 sm:py-4 text-sm font-semibold outline-none transition-all`} />
+                    {errors.startupName && <p className="text-red-500 text-[10px] font-bold uppercase ml-1">{errors.startupName}</p>}
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-foreground/60 uppercase tracking-widest ml-1">Current Stage *</label>
+                    <select name="stage" value={formData.stage} onChange={handleChange} className={`w-full bg-slate-50 dark:bg-slate-800/50 border ${errors.stage ? "border-red-500" : "border-border"} focus:border-primary rounded-xl sm:rounded-2xl px-5 sm:px-6 py-3 sm:py-4 text-sm font-semibold outline-none transition-all appearance-none cursor-pointer`}>
+                      <option value="">Select Stage</option>
+                      <option value="idea">Conceptual / Idea</option>
+                      <option value="mvp">MVP Developed</option>
+                      <option value="early">Early Revenue</option>
+                      <option value="growth">Scaling / Growth</option>
+                    </select>
+                  </div>
+                </div>
 
-            {/* Current Stage */}
-            <div className="space-y-2">
-              <label htmlFor="stage" className="text-sm font-medium text-gray-700 block">
-                Current Stage of Your Startup:
-              </label>
-              <select
-                id="stage"
-                name="stage"
-                value={formData.stage}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 border-gray-300 focus:ring-orange-500 focus:border-orange-500"
-              >
-                <option value="">Select an option</option>
-                <option value="idea">Idea/Conceptual</option>
-                <option value="mvp">MVP Built</option>
-                <option value="early">Early Traction</option>
-                <option value="growth">Growth Stage</option>
-              </select>
-              {errors.stage && <p className="text-red-500 text-sm">{errors.stage}</p>}
-            </div>
+                <div className="space-y-3 mb-6 sm:mb-8">
+                  <label className="text-[10px] font-black text-foreground/60 uppercase tracking-widest ml-1">Industry Sector *</label>
+                  <select name="industry" value={formData.industry} onChange={handleChange} className={`w-full bg-slate-50 dark:bg-slate-800/50 border ${errors.industry ? "border-red-500" : "border-border"} focus:border-primary rounded-xl sm:rounded-2xl px-5 sm:px-6 py-3 sm:py-4 text-sm font-semibold outline-none transition-all appearance-none cursor-pointer`}>
+                    <option value="">Select Industry</option>
+                    <option value="tech">Hardware & AI</option>
+                    <option value="fintech">FinTech / Blockchain</option>
+                    <option value="edu">EdTech</option>
+                    <option value="agri">Agriculture</option>
+                    <option value="social">Social Impact</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
 
-            {/* Industry */}
-            <div className="space-y-2">
-              <label htmlFor="industry" className="text-sm font-medium text-gray-700 block">
-                Industry/Sector:
-              </label>
-              <select
-                id="industry"
-                name="industry"
-                value={formData.industry}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 border-gray-300 focus:ring-orange-500 focus:border-orange-500"
-              >
-                <option value="">Select an option</option>
-                <option value="tech">Technology</option>
-                <option value="health">Health & Wellness</option>
-                <option value="education">Education</option>
-                <option value="finance">FinTech</option>
-                <option value="agri">Agriculture</option>
-                <option value="other">Other</option>
-              </select>
-              {errors.industry && <p className="text-red-500 text-sm">{errors.industry}</p>}
-            </div>
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-foreground/60 uppercase tracking-widest ml-1">Idea Description *</label>
+                  <textarea name="ideaDescription" rows={5} value={formData.ideaDescription} onChange={handleChange} placeholder="Tell us about the problem you are solving and your unique solution..." className={`w-full bg-slate-50 dark:bg-slate-800/50 border ${errors.ideaDescription ? "border-red-500" : "border-border"} focus:border-primary rounded-xl sm:rounded-2xl px-5 sm:px-6 py-3 sm:py-4 text-sm font-semibold outline-none transition-all resize-none font-medium leading-relaxed`} />
+                </div>
+              </div>
 
-            {/* Terms Checkbox */}
-            <div className="flex items-start space-x-2">
-              <input
-                type="checkbox"
-                id="terms"
-                name="terms"
-                checked={formData.terms}
-                onChange={handleChange}
-                className="mt-1"
-              />
-              <label htmlFor="terms" className="text-sm text-gray-700">
-                {formData.terms
-                  ? "I have agreed to the SUMS Nepal terms"
-                  : "I agree to the SUMS Nepal terms and conditions and privacy policy."}
-              </label>
-            </div>
-            {errors.terms && <p className="text-red-500 text-sm">{errors.terms}</p>}
+              <div className="pt-8 flex flex-col items-center">
+                <div className="flex items-start gap-3 mb-8 text-left group cursor-pointer">
+                  <input type="checkbox" id="terms" name="terms" checked={formData.terms} onChange={handleChange} className="mt-1 w-5 h-5 accent-primary cursor-pointer border-border rounded" />
+                  <label htmlFor="terms" className="text-[10px] sm:text-xs font-medium text-muted-foreground leading-relaxed cursor-pointer select-none">
+                    I agree to the SUMS Nepal terms and conditions and privacy policy. I understand that my data will be handled according to global data standards.
+                  </label>
+                </div>
 
-            {/* Submit */}
-            <div className="text-center pt-6">
-              <button
-                type="submit"
-                className="bg-orange-500 hover:bg-orange-600 text-white px-12 py-3 rounded-full text-lg"
-              >
-                Submit Application
-              </button>
-            </div>
-          </form>
-        </div>
+                <Button type="submit" className="bg-primary hover:bg-primary/90 text-white px-8 sm:px-12 py-5 sm:py-6 text-lg sm:text-xl rounded-xl sm:rounded-2xl shadow-2xl shadow-primary/30 flex items-center gap-3 transition-transform hover:-translate-y-1 active:scale-95 group/btn w-full sm:w-auto justify-center uppercase font-black tracking-tighter">
+                  SUBMIT YOUR VISION
+                  <Rocket className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                </Button>
+              </div>
+            </form>
+          </div>
+        </motion.div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Entrepreneurship;
+export default Entrepreneurship

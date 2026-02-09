@@ -1,6 +1,9 @@
-import { Link } from "react-router-dom";
-import { Button } from "../../components";
-import { ArrowRight, CheckCircle } from "lucide-react";
+"use client"
+
+import { Link } from "react-router-dom"
+import { Button } from "../../components"
+import { ArrowRight, CheckCircle2 } from "lucide-react"
+import { motion } from "framer-motion"
 
 const Cities = () => {
   const benefits = [
@@ -8,67 +11,89 @@ const Cities = () => {
     "Local talent for local jobs",
     "Increased employment & sustainable growth",
     "Skilled graduates for emerging industries",
-  ];
+  ]
 
   return (
-    <>
-      {/* For Cities Section */}
-      <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
-            {/* Left Content */}
-            <div className="flex-1 text-center lg:text-left">
-              <div className="inline-block px-3 sm:px-4 py-2 bg-orange-100 text-orange-600 rounded-full text-xs sm:text-sm font-semibold mb-4 sm:mb-6">
-                FOR CITIES
-              </div>
-
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
-                <span className="text-orange-600">Smarter Solutions</span>
+    <section className="py-24 sm:py-32 bg-background overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+          {/* Content Side */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="flex-1 space-y-8"
+          >
+            <div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="inline-flex px-4 py-1.5 bg-primary/10 text-primary rounded-full text-xs font-bold uppercase tracking-wider mb-6"
+              >
+                For Local Development
+              </motion.div>
+              <h2 className="text-4xl lg:text-6xl font-black tracking-tighter leading-tight mb-6">
+                SMARTER <span className="text-primary italic">SOLUTIONS</span> <br />
+                FOR FUTURE CITIES
               </h2>
-
-              <p className="text-gray-700 text-base sm:text-lg lg:text-xl leading-relaxed mb-6 sm:mb-8">
+              <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed max-w-xl">
                 Harness the energy and creativity of Nepal's youth to solve
                 urban challenges. Get innovative solutions at a fraction of
                 traditional consulting costs.
               </p>
+            </div>
 
-              {/* Benefits List */}
-              <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-                {benefits.map((benefit, index) => (
-                  <div
-                    className="flex items-center gap-3 justify-center lg:justify-start"
-                    key={index}
-                  >
-                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-orange-500 flex-shrink-0" />
-                    <span className="text-gray-800 text-base sm:text-lg">
-                      {benefit}
-                    </span>
+            <div className="grid grid-cols-1 gap-4">
+              {benefits.map((benefit, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="flex items-center gap-4 group"
+                >
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-colors">
+                    <CheckCircle2 className="w-4 h-4 text-primary group-hover:text-white" />
                   </div>
-                ))}
-              </div>
+                  <span className="text-foreground font-medium">{benefit}</span>
+                </motion.div>
+              ))}
+            </div>
 
-              {/* Build Your City Button */}
-              <Link to={"/city"}>
-                <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 sm:px-8 py-3 text-base sm:text-lg shadow-lg hover:shadow-xl transition-all duration-200 w-full sm:w-auto">
+            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.5 }}>
+              <Link to="/city">
+                <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-2xl shadow-xl shadow-primary/20 flex items-center gap-2 group">
                   Build Your City
-                  <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-            </div>
+            </motion.div>
+          </motion.div>
 
-            {/* Right Image */}
-            <div className="flex-1 w-full max-w-lg lg:max-w-none order-first lg:order-last">
+          {/* Image Side - Order First on Mobile */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, rotate: -2 }}
+            whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="flex-1 relative order-first lg:order-last"
+          >
+            <div className="relative z-10 rounded-[2.5rem] overflow-hidden shadow-2xl border-8 border-white dark:border-slate-800">
               <img
-                src="./images/city.jpeg"
-                alt="Young people with tablet and city skyline"
-                className="w-full h-[250px] sm:h-[300px] lg:h-[400px] object-cover rounded-2xl shadow-2xl"
+                src="/images/city.jpeg"
+                alt="City development"
+                className="w-full h-[350px] lg:h-[450px] object-cover"
               />
             </div>
-          </div>
+            {/* Background elements */}
+            <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full opacity-30 -z-10 translate-x-12 -translate-y-12" />
+          </motion.div>
         </div>
-      </section>
-    </>
-  );
-};
+      </div>
+    </section>
+  )
+}
 
-export default Cities;
+export default Cities

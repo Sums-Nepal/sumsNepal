@@ -3,19 +3,22 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 import { LoadingBarContainer } from "react-top-loading-bar";
-import { HowItWorksProvider } from "./context/HowItWorksContext.tsx";
+import { ThemeProvider } from "./context/theme-provider.tsx";
 import { Provider } from "react-redux";
+import { HowItWorksProvider } from "./context/HowItWorksContext.tsx";
 import { store } from "./app/store.ts";
-const rootElement = document.getElementById("root");
 
+const rootElement = document.getElementById("root");
 
 createRoot(rootElement!).render(
   <StrictMode>
     <Provider store={store}>
       <LoadingBarContainer>
-        <HowItWorksProvider>
-          <App />
-        </HowItWorksProvider>
+        <ThemeProvider defaultTheme="system" storageKey="sums-ui-theme">
+          <HowItWorksProvider>
+            <App />
+          </HowItWorksProvider>
+        </ThemeProvider>
       </LoadingBarContainer>
     </Provider>
   </StrictMode>

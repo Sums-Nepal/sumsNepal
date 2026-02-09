@@ -1,74 +1,90 @@
-import { ArrowRight, Clock, Target, Users } from "lucide-react";
-import { Button } from "../../components";
-import { Link } from "react-router-dom";
+"use client"
+
+import { ArrowRight, Target, Users, Zap } from "lucide-react"
+import { Button } from "../../components"
+import { Link } from "react-router-dom"
+import { motion } from "framer-motion"
 
 const Companies = () => {
   return (
-    <>
-      {/* For Companies Section */}
-      <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 bg-gradient-to-r from-gray-50 to-orange-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
-            {/* Left Image */}
-            <div className="flex-1 w-full max-w-lg lg:max-w-none">
+    <section className="py-24 sm:py-32 bg-secondary/20 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+          {/* Image Side - Order First on Desktop */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="flex-1 w-full relative group"
+          >
+            <div className="relative z-10 rounded-[2.5rem] overflow-hidden shadow-2xl border-8 border-white dark:border-slate-800 transform group-hover:scale-[1.02] transition-transform duration-700">
               <img
-                src="./images/companies.jpeg"
-                alt="Team collaborating in office"
-                className="w-full h-[250px] sm:h-[300px] lg:h-[400px] object-cover rounded-2xl shadow-2xl"
+                src="/images/companies.jpeg"
+                alt="Companies collaboration"
+                className="w-full h-[350px] lg:h-[450px] object-cover"
               />
             </div>
+            {/* Decorative background element */}
+            <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full opacity-30 -z-10 translate-x-12 translate-y-12" />
+          </motion.div>
 
-            {/* Right Content */}
-            <div className="flex-1 text-center lg:text-left">
-              <div className="inline-block px-3 sm:px-4 py-2 bg-orange-100 text-orange-600 rounded-full text-xs sm:text-sm font-semibold mb-4 sm:mb-6">
-                FOR COMPANIES
+          {/* Content Side */}
+          <div className="flex-1 space-y-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <div className="inline-flex px-4 py-1.5 bg-primary/10 text-primary rounded-full text-xs font-bold uppercase tracking-wider mb-6">
+                For Industry
               </div>
-
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
-                <span className="text-orange-600">Hire Smart</span>
+              <h2 className="text-4xl lg:text-6xl font-black tracking-tighter leading-tight mb-6 uppercase">
+                HIRE <span className="text-primary italic">SMARTER</span>, <br />
+                NOT HARDER
               </h2>
-
-              <p className="text-gray-700 text-base sm:text-lg lg:text-xl leading-relaxed mb-6 sm:mb-8">
+              <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
                 Access pre-vetted talent who have already proven their skills on
                 real projects. Reduce hiring time and costs while getting
-                innovative solutions that drive business growth.
+                innovative solutions.
               </p>
+            </motion.div>
 
-              {/* Benefits List */}
-              <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-                <div className="flex items-center gap-3 justify-center lg:justify-start">
-                  <Target className="w-5 h-5 sm:w-6 sm:h-6 text-orange-500 flex-shrink-0" />
-                  <span className="text-gray-800 text-base sm:text-lg">
-                    Test talent on real work
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 justify-center lg:justify-start">
-                  <Users className="w-5 h-5 sm:w-6 sm:h-6 text-orange-500 flex-shrink-0" />
-                  <span className="text-gray-800 text-base sm:text-lg">
-                    Solve problems, innovate
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 justify-center lg:justify-start">
-                  <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-orange-500 flex-shrink-0" />
-                  <span className="text-gray-800 text-base sm:text-lg">
-                    Faster hiring, lower cost
-                  </span>
-                </div>
-              </div>
-
-              {/* Call to Action Button */}
-              <Link to={'/business'}>
-              <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 sm:px-8 py-3 text-base sm:text-lg shadow-lg hover:shadow-xl transition-all duration-200 w-full sm:w-auto">
-                Hire Talent
-                <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
-              </Button>
-              </Link>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              {[
+                { icon: Target, title: "Risk-Free", desc: "Test talent on real work before you hire." },
+                { icon: Users, title: "Top Talent", desc: "Connect with the most innovative young minds." },
+                { icon: Zap, title: "Agile", desc: "Solve problems and innovate at production speed." }
+              ].map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="space-y-3"
+                >
+                  <div className="w-12 h-12 bg-white dark:bg-slate-800 rounded-xl flex items-center justify-center shadow-lg border border-border">
+                    <item.icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-bold text-lg text-foreground uppercase tracking-tight">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground">{item.desc}</p>
+                </motion.div>
+              ))}
             </div>
+
+            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.4 }}>
+              <Link to="/business">
+                <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-2xl shadow-xl shadow-primary/20 flex items-center gap-2 group">
+                  Hire Elite Talent
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </motion.div>
           </div>
         </div>
-      </section>
-    </>
-  );
-};
+      </div>
+    </section>
+  )
+}
 
-export default Companies;
+export default Companies

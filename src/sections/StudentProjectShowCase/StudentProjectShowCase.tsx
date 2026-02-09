@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useMemo, useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "../../components/ui/button"
 import { Card } from "../../components/ui/card"
 import { Badge } from "../../components/ui/badge"
@@ -19,6 +20,8 @@ import {
   UserCircle,
   Edit,
   Trash2,
+  ExternalLink,
+  FileText,
 } from "lucide-react"
 
 import {
@@ -28,7 +31,7 @@ import {
   useDeleteProjectMutation,
 } from "../../services/projects"
 import { projectsData, stages } from "./studentProjectStatic"
-import type { Project } from "../../types/componentsType/projectTypes"
+import type { Project, Person } from "../../types/componentsType/projectTypes"
 import { LoadingBar, LoadMorePagination } from "../../components"
 import {
   Dialog,
@@ -51,10 +54,7 @@ const toYearNumber = (value: any): number => {
 }
 
 const normalizeBackendProject = (p: any): Project => {
-  console.log(p.projectLeaders)
-
   const safeId = (p?.id ?? p?.$id ?? p?._id ?? "")?.toString?.() || crypto.randomUUID()
-
   return {
     id: safeId,
     title: p?.title ?? "",
@@ -76,15 +76,13 @@ const mergeUniqueById = (base: Project[], incoming: Project[]) => {
   for (const p of incoming) map.set(String(p.id), p)
   return Array.from(map.values())
 }
-
 export default function ProjectsPage() {
   const [allProjects, setAllProjects] = useState<Project[]>(projectsData)
-
   const [selectedStage, setSelectedStage] = useState<string | null>(null)
   const [selectedColleges, setSelectedColleges] = useState<string[]>([])
   const [selectedYears, setSelectedYears] = useState<number[]>([])
   const [searchQuery, setSearchQuery] = useState("")
-  const [showFilters, setShowFilters] = useState(true)
+  const [showFilters, setShowFilters] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
 
   const {
@@ -100,13 +98,9 @@ export default function ProjectsPage() {
   })
 
   const { data: backendyears = [] } = useGetProjectYearsQuery()
-
   const { data: backendColleges = [] } = useGetProjectCollegesQuery()
-
-  const [deleteProject, { isLoading: isDeleting , error: isErrorWhenDeleting  }] = useDeleteProjectMutation()
-  const {user} = useCurrentUser();
-
-
+  const [deleteProject, { isLoading: isDeleting }] = useDeleteProjectMutation()
+  const { user } = useCurrentUser()
 
   useEffect(() => {
     const backendNormalized = (backendProjects?.projects ?? []).map(normalizeBackendProject)
@@ -125,27 +119,18 @@ export default function ProjectsPage() {
 
   const hasMore = useMemo(() => backendProjects?.hasMore, [backendProjects]) || false
 
-  const teams = useMemo(() => {
-    return Array.from(new Set(allProjects.map((p) => p.team).filter(Boolean))).sort()
-  }, [allProjects])
-
   const filteredProjects = useMemo(() => {
-    
     return allProjects.filter((project) => {
       const matchesStage = selectedStage ? project.stage.trim().toLowerCase() === selectedStage.toLowerCase() : true
-
       const matchesCollege = selectedColleges.length > 0 ? selectedColleges.includes(project.college) : true
-
       const matchesYear = selectedYears.length > 0 ? selectedYears.includes(toYearNumber(project.year)) : true
-
       const q = searchQuery.trim().toLowerCase()
       const matchesSearch = q
         ? (project.title ?? "").toLowerCase().includes(q) ||
-          (project.description ?? "").toLowerCase().includes(q) ||
-          (project.team ?? "").toLowerCase().includes(q) ||
-          (project.college ?? "").toLowerCase().includes(q)
+        (project.description ?? "").toLowerCase().includes(q) ||
+        (project.team ?? "").toLowerCase().includes(q) ||
+        (project.college ?? "").toLowerCase().includes(q)
         : true
-
       return matchesStage && matchesCollege && matchesYear && matchesSearch
     })
   }, [allProjects, selectedStage, selectedColleges, selectedYears, searchQuery])
@@ -159,7 +144,7 @@ export default function ProjectsPage() {
 
   const loadMore = useCallback(() => {
     setCurrentPage((prev) => prev + 1)
-  }, [setCurrentPage])
+  }, [])
 
   const toggleCollege = (college: string) => {
     setSelectedColleges((prev) => (prev.includes(college) ? prev.filter((c) => c !== college) : [...prev, college]))
@@ -177,204 +162,161 @@ export default function ProjectsPage() {
   }
 
   const handleDelete = useCallback(async (projectId: string) => {
-     try {
-       await deleteProject(projectId).unwrap();
-         setAllProjects((prev) => prev.filter((p) => p.id !== projectId))
-    } catch (err:any) {
-      toast.error(err?.message ?? "Failed to delete project");
+    try {
+      await deleteProject(projectId).unwrap()
+      setAllProjects((prev) => prev.filter((p) => p.id !== projectId))
+      toast.success("Project deleted successfully")
+    } catch (err: any) {
+      toast.error(err?.message ?? "Failed to delete project")
     }
-  }, [isErrorWhenDeleting])
+  }, [deleteProject])
 
   const hasActiveFilters = !!selectedStage || selectedColleges.length > 0 || selectedYears.length > 0 || !!searchQuery
 
+  const [selectedProjectDetails, setSelectedProjectDetails] = useState<Project | null>(null)
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-orange-500/5">
-      <header className="border-b border-border/40 bg-card/80 backdrop-blur-xl sticky top-0 z-20 shadow-sm">
-        <div className="container mx-auto px-4 py-6 sm:py-8">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6">
-            <div className="flex-1">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 mb-3">
-                <Sparkles className="h-3.5 w-3.5 text-orange-500" />
-                <span className="text-xs sm:text-sm font-medium text-orange-600 dark:text-orange-400">
-                  Student Innovation Hub
-                </span>
-              </div>
+    <div className="min-h-screen bg-background">
+      {/* Dynamic Header Section */}
+      <section className="relative py-24 sm:py-32 overflow-hidden border-b border-border bg-slate-50 dark:bg-slate-900/40">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] -z-10" />
 
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-balance mb-2 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
-                Student Ventures Incubated
-              </h1>
-
-              <p className="text-muted-foreground text-pretty text-sm sm:text-base lg:text-lg">
-                Explore <span className="font-semibold text-orange-500">{allProjects.length} innovative projects</span>{" "}
-                across all stages
-              </p>
-
-              {(isLoading || isFetching) && (
-                <p className="text-xs text-muted-foreground mt-2">Loading more projects...</p>
-              )}
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row items-end justify-between gap-12">
+            <div className="max-w-3xl">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="inline-flex px-4 py-1.5 bg-primary/10 text-primary rounded-full text-[10px] font-black uppercase tracking-widest mb-6"
+              >
+                Innovation showcase
+              </motion.div>
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-5xl lg:text-[6.5rem] font-black tracking-tighter uppercase leading-[0.85] mb-8"
+              >
+                STUDENT <br />
+                <span className="text-primary italic">VENTURES</span>
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="text-muted-foreground text-lg lg:text-xl font-medium max-w-xl leading-relaxed"
+              >
+                Explore <span className="text-foreground font-black">{allProjects.length} innovative projects</span>
+                incubated through our global standard growth cycles.
+              </motion.p>
             </div>
 
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center gap-2 border-orange-500/30 hover:bg-orange-500/10 hover:border-orange-500 transition-all shadow-sm"
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto"
             >
-              <Filter className="h-4 w-4" />
-              {showFilters ? "Hide" : "Show"} Filters
-              <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${showFilters ? "rotate-180" : ""}`} />
-            </Button>
+              <div className="relative flex-1 sm:min-w-[300px]">
+                <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-primary" />
+                <input
+                  type="text"
+                  placeholder="Search projects..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full h-16 bg-white dark:bg-slate-900 border border-border focus:border-primary rounded-2xl pl-12 pr-6 text-sm font-semibold transition-all outline-none"
+                />
+              </div>
+              <Button
+                variant="outline"
+                onClick={() => setShowFilters(!showFilters)}
+                className="h-16 px-8 rounded-2xl border-border hover:border-primary/50 text-xs font-black uppercase tracking-widest flex items-center gap-3 bg-white dark:bg-slate-900"
+              >
+                <Filter className="w-4 h-4" />
+                Filters
+                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${showFilters ? "rotate-180" : ""}`} />
+              </Button>
+            </motion.div>
           </div>
         </div>
-      </header>
+      </section>
 
-      <div className="container mx-auto px-4 py-6 sm:py-10">
+      {/* Advanced Filter Panel */}
+      <AnimatePresence>
         {showFilters && (
-          <div className="mb-8 sm:mb-10 p-4 sm:p-6 lg:p-8 rounded-2xl border border-orange-500/20 bg-card/95 backdrop-blur-sm shadow-xl shadow-orange-500/5">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4">
-              <div>
-                <h2 className="text-lg sm:text-xl font-bold flex items-center gap-2 sm:gap-3 mb-1">
-                  <div className="p-1.5 sm:p-2 rounded-lg bg-orange-500/10">
-                    <Filter className="h-4 w-4 sm:h-5 sm:w-5 text-orange-500" />
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden bg-slate-50 dark:bg-slate-900 border-b border-border"
+          >
+            <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+              <div className="grid lg:grid-cols-2 gap-12">
+                {/* College Filter */}
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xs font-black uppercase tracking-widest text-foreground/60">Filter by College</h3>
+                    {selectedColleges.length > 0 && <Badge className="bg-primary">{selectedColleges.length}</Badge>}
                   </div>
-                  Search & Filter Projects
-                </h2>
-                <p className="text-xs sm:text-sm text-muted-foreground sm:ml-10 lg:ml-12">
-                  Find the perfect project using advanced filters
-                </p>
-              </div>
-
-              {hasActiveFilters && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={clearAllFilters}
-                  className="text-orange-500 hover:text-orange-600 hover:bg-orange-500/10 self-start sm:self-auto"
-                >
-                  <X className="h-4 w-4 mr-2" />
-                  Clear all
-                </Button>
-              )}
-            </div>
-
-            <div className="mb-6 sm:mb-8">
-              <label className="text-xs sm:text-sm font-semibold mb-3 block text-muted-foreground uppercase tracking-wide">
-                Search Projects
-              </label>
-
-              <div className="relative">
-                <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-orange-500" />
-                <Input
-                  type="text"
-                  placeholder="Search by name, description, team, or college..."
-                  value={searchQuery}
-                  onChange={(e: any) => setSearchQuery(e.target.value)}
-                  className="pl-10 sm:pl-12 h-12 sm:h-14 text-sm sm:text-base border-orange-500/20 focus-visible:ring-orange-500/50 focus-visible:border-orange-500"
-                />
-                {searchQuery && (
-                  <button
-                    onClick={() => setSearchQuery("")}
-                    className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    <X className="h-4 w-4 sm:h-5 sm:w-5" />
-                  </button>
-                )}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-              <div className="space-y-4">
-                <label className="text-xs sm:text-sm font-semibold flex items-center gap-2 text-muted-foreground uppercase tracking-wide">
-                  <div className="p-1 sm:p-1.5 rounded bg-orange-500/10">
-                    <GraduationCap className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-orange-500" />
-                  </div>
-                  Filter by College
-                  <Badge variant="secondary" className="ml-auto text-xs">
-                    {selectedColleges.length > 0 ? `${selectedColleges.length} selected` : "All"}
-                  </Badge>
-                </label>
-
-                <div className="flex flex-wrap gap-2">
-                  {colleges.map((college) => {
-                    const count = allProjects.filter((p) => p.college === college).length
-                    const isSelected = selectedColleges.includes(college)
-
-                    return (
-                      <Button
+                  <div className="flex flex-wrap gap-2">
+                    {colleges.map((college) => (
+                      <button
                         key={college}
-                        variant={isSelected ? "default" : "outline"}
-                        size="sm"
                         onClick={() => toggleCollege(college)}
-                        className={`font-medium transition-all text-xs sm:text-sm ${
-                          isSelected
-                            ? "shadow-md shadow-orange-500/20 bg-orange-500 hover:bg-orange-600"
-                            : "hover:border-orange-500/50 hover:bg-orange-500/5"
-                        }`}
+                        className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${selectedColleges.includes(college)
+                          ? "bg-primary text-white"
+                          : "bg-white dark:bg-slate-800 border border-border text-foreground hover:border-primary/50"
+                          }`}
                       >
                         {college}
-                        {isSelected && (
-                          <Badge variant="secondary" className="ml-2 font-bold text-xs">
-                            {count}
-                          </Badge>
-                        )}
-                      </Button>
-                    )
-                  })}
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <label className="text-xs sm:text-sm font-semibold flex items-center gap-2 text-muted-foreground uppercase tracking-wide">
-                  <div className="p-1 sm:p-1.5 rounded bg-orange-500/10">
-                    <Calendar className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-orange-500" />
+                      </button>
+                    ))}
                   </div>
-                  Filter by Year
-                  <Badge variant="secondary" className="ml-auto text-xs">
-                    {selectedYears.length > 0 ? `${selectedYears.length} selected` : "All"}
-                  </Badge>
-                </label>
+                </div>
 
-                <div className="flex flex-wrap gap-2">
-                  {years.map((year) => {
-                    const count = allProjects.filter((p) => toYearNumber(p.year) === year).length
-                    const isSelected = selectedYears.includes(year)
-
-                    return (
-                      <Button
+                {/* Year & Actions */}
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xs font-black uppercase tracking-widest text-foreground/60">Filter by Year</h3>
+                    {selectedYears.length > 0 && <Badge className="bg-primary">{selectedYears.length}</Badge>}
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {years.map((year) => (
+                      <button
                         key={year}
-                        variant={isSelected ? "default" : "outline"}
-                        size="sm"
                         onClick={() => toggleYear(year)}
-                        className={`font-medium transition-all text-xs sm:text-sm ${
-                          isSelected
-                            ? "shadow-md shadow-orange-500/20 bg-orange-500 hover:bg-orange-600"
-                            : "hover:border-orange-500/50 hover:bg-orange-500/5"
-                        }`}
+                        className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${selectedYears.includes(year)
+                          ? "bg-primary text-white"
+                          : "bg-white dark:bg-slate-800 border border-border text-foreground hover:border-primary/50"
+                          }`}
                       >
                         {year}
-                        {isSelected && (
-                          <Badge variant="secondary" className="ml-2 font-bold text-xs">
-                            {count}
-                          </Badge>
-                        )}
+                      </button>
+                    ))}
+                  </div>
+
+                  {hasActiveFilters && (
+                    <div className="pt-6">
+                      <Button
+                        variant="ghost"
+                        onClick={clearAllFilters}
+                        className="text-xs font-black uppercase tracking-widest text-red-500 hover:bg-red-500/10 gap-2"
+                      >
+                        <X className="w-4 h-4" />
+                        Clear All Filters
                       </Button>
-                    )
-                  })}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
+      </AnimatePresence>
 
-        <div className="mb-8 sm:mb-10">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-2">
-            <div>
-              <h2 className="text-xl sm:text-2xl font-bold mb-1">Filter by Development Stage</h2>
-              <p className="text-sm sm:text-base text-muted-foreground">Select a stage to view related projects</p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+      <main className="max-w-7xl mx-auto px-6 lg:px-8 py-20">
+        {/* Stage Selector Chips */}
+        <div className="mb-16">
+          <h3 className="text-xs font-black text-foreground/40 uppercase tracking-[0.2em] mb-8 text-center">Development Stages</h3>
+          <div className="flex flex-wrap justify-center gap-4">
             {stageCounts.map((stage) => {
               const Icon = stage.icon
               const isSelected = selectedStage?.trim().toLowerCase() === stage.id?.trim().toLowerCase()
@@ -383,327 +325,239 @@ export default function ProjectsPage() {
                 <button
                   key={stage.id}
                   onClick={() => setSelectedStage(isSelected ? null : stage.id)}
-                  className={`
-                    group relative overflow-hidden rounded-xl sm:rounded-2xl border-2 transition-all duration-300 p-3 sm:p-5 text-left
-                    ${
-                      isSelected
-                        ? "border-orange-500 bg-orange-500/10 shadow-xl sm:shadow-2xl shadow-orange-500/25 scale-105 -translate-y-1"
-                        : "border-border bg-card/80 backdrop-blur-sm hover:border-orange-500/50 hover:shadow-lg hover:-translate-y-0.5"
-                    }
-                  `}
+                  className={`group relative px-6 py-8 rounded-[2rem] border transition-all duration-500 text-center min-w-[150px] ${isSelected
+                    ? "bg-primary/5 border-primary shadow-xl shadow-primary/10"
+                    : "bg-white dark:bg-slate-900 border-border hover:border-primary/50"
+                    }`}
                 >
-                  <div
-                    className={`absolute inset-0 opacity-0 group-hover:opacity-10 bg-gradient-to-br ${stage.color} transition-opacity duration-300`}
-                  />
-
-                  <div className="relative">
-                    <div className="flex items-start justify-between mb-3 sm:mb-4">
-                      <div
-                        className={`p-1.5 sm:p-2.5 rounded-lg sm:rounded-xl bg-gradient-to-br ${stage.color} shadow-lg`}
-                      >
-                        <Icon className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
-                      </div>
-
-                      <Badge
-                        variant={isSelected ? "default" : "secondary"}
-                        className="font-bold text-xs sm:text-sm px-2 sm:px-3 py-0.5 sm:py-1"
-                      >
-                        {stage.count}
-                      </Badge>
-                    </div>
-
-                    <h3 className="font-bold text-sm sm:text-base mb-1 sm:mb-2 line-clamp-1">{stage.name}</h3>
-                    <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed hidden sm:block">
-                      {stage.description}
-                    </p>
+                  <div className={`w-12 h-12 mx-auto rounded-2xl flex items-center justify-center mb-4 transition-all duration-500 ${isSelected ? "bg-primary text-white" : "bg-slate-100 dark:bg-slate-800 text-primary group-hover:rotate-6"
+                    }`}>
+                    <Icon className="w-6 h-6" />
                   </div>
+                  <div className="text-xs font-black uppercase tracking-tighter mb-1">{stage.name}</div>
+                  <div className={`text-[10px] font-bold ${isSelected ? "text-primary" : "text-muted-foreground"}`}>{stage.count} Projects</div>
                 </button>
               )
             })}
           </div>
         </div>
 
-        <div className="mb-6 sm:mb-8">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between flex-wrap gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-card/50 backdrop-blur-sm border border-orange-500/20">
-            <div>
-              <p className="text-sm text-muted-foreground mb-2">
-                Showing <span className="font-bold text-orange-500 text-xl sm:text-2xl">{filteredProjects.length}</span>{" "}
-                of <span className="font-bold text-foreground text-lg sm:text-xl">{allProjects.length}</span> projects
-              </p>
+        {/* Project Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project: any) => {
+              const stage = stages.find((s) => s.id.trim().toLowerCase() === project.stage.trim().toLowerCase())
+              const StageIcon = stage?.icon || Rocket
 
-              {hasActiveFilters && (
-                <div className="flex flex-wrap gap-2 mt-3">
-                  <span className="text-xs text-muted-foreground font-medium">Active filters:</span>
-
-                  {selectedStage && (
-                    <Badge variant="default" className="gap-1.5 pl-2 shadow-sm text-xs">
-                      Stage: {stages.find((s) => s.id === selectedStage)?.name}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          setSelectedStage(null)
-                        }}
-                        className="ml-1 hover:bg-orange-600 rounded-full p-0.5 transition-colors"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </Badge>
-                  )}
-
-                  {selectedColleges.map((college) => (
-                    <Badge key={college} variant="default" className="gap-1.5 pl-2 shadow-sm text-xs">
-                      {college}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          toggleCollege(college)
-                        }}
-                        className="ml-1 hover:bg-orange-600 rounded-full p-0.5 transition-colors"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </Badge>
-                  ))}
-
-                  {selectedYears.map((year) => (
-                    <Badge key={year} variant="default" className="gap-1.5 pl-2 shadow-sm text-xs">
-                      Year: {year}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          toggleYear(year)
-                        }}
-                        className="ml-1 hover:bg-orange-600 rounded-full p-0.5 transition-colors"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </Badge>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {filteredProjects.length === 0 ? (
-          <div className="text-center py-16 sm:py-20">
-            <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-orange-500/10 mb-4 sm:mb-6">
-              <Search className="h-8 w-8 sm:h-10 sm:w-10 text-orange-500" />
-            </div>
-            <h3 className="text-xl sm:text-2xl font-bold mb-2 sm:mb-3">No projects found</h3>
-            <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6 max-w-md mx-auto px-4">
-              Try adjusting your filters or search query to find more projects.
-            </p>
-            <Button
-              onClick={clearAllFilters}
-              variant="default"
-              size="lg"
-              className="shadow-lg bg-orange-500 hover:bg-orange-600"
-            >
-              Clear all filters
-            </Button>
-          </div>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {filteredProjects.map((project:any) => {
-                const stage = stages.find((s) => s.id.trim().toLowerCase() === project.stage.trim().toLowerCase())
-                const StageIcon = stage?.icon || Rocket
-
-                return (
-                  <Card
-                    key={project.id}
-                    className="group relative overflow-hidden border-2 border-border hover:border-orange-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-2"
-                  >
-                    {    (user) && 
-                    <div className="absolute top-3 sm:top-4 right-3 sm:right-4 z-50 flex gap-1.5 sm:gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300">
-                    
-                 
+              return (
+                <motion.div
+                  key={project.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="group"
+                >
+                  <div className="relative h-full bg-white dark:bg-slate-900 border border-border rounded-[2.5rem] overflow-hidden shadow-sm transition-all duration-500 hover:shadow-2xl hover:border-primary/50 flex flex-col">
+                    {/* Admin Actions */}
+                    {user && (
+                      <div className="absolute top-6 right-6 z-30 flex gap-2">
                         <Dialog>
-                        <DialogTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 w-8 sm:h-9 sm:w-9 p-0 bg-card/80 backdrop-blur-sm hover:bg-orange-500/10 border border-orange-500/20"
-                          >
-                            <Edit className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-orange-500" />
-                          </Button>
-                        </DialogTrigger>
-
-                        <DialogContent className="!fixed !inset-0 !w-screen !h-screen !max-w-none !m-0 !p-0 !left-0 !top-0 !translate-x-0 !translate-y-0 rounded-none overflow-hidden">
-                          <DialogHeader className="sticky top-0 z-20 bg-white dark:bg-gray-950 border-b px-4 sm:px-6 py-4 flex flex-row items-center justify-between">
-                            <div>
-                              <DialogTitle className="text-base sm:text-lg lg:text-xl font-semibold">
-                                Edit Project
-                              </DialogTitle>
-                              <DialogDescription className="text-xs sm:text-sm text-muted-foreground">
-                                Update project details, leader, and team members
-                              </DialogDescription>
+                          <DialogTrigger asChild>
+                            <Button
+                              size="sm"
+                              className="h-10 w-10 bg-white dark:bg-slate-800 text-primary hover:bg-primary hover:text-white rounded-xl shadow-lg border border-border transition-all"
+                            >
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="!fixed !inset-0 !max-w-none !m-0 !p-0 rounded-none overflow-hidden">
+                            <div className="h-full flex flex-col">
+                              <div className="p-6 border-b flex justify-between items-center bg-white dark:bg-slate-950">
+                                <h2 className="text-xl font-black uppercase tracking-tighter">Edit Project</h2>
+                                <DialogClose asChild><Button variant="ghost"><X className="w-5 h-5" /></Button></DialogClose>
+                              </div>
+                              <div className="flex-1 overflow-auto"><EditProjectForm projectId={project.id} /></div>
                             </div>
+                          </DialogContent>
+                        </Dialog>
+                        <Button
+                          size="sm"
+                          onClick={() => { if (confirm("Confirm deletion?")) handleDelete(project.id) }}
+                          className="h-10 w-10 bg-white dark:bg-slate-800 text-red-500 hover:bg-red-500 hover:text-white rounded-xl shadow-lg border border-border transition-all"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    )}
 
-                            <DialogClose asChild className="fixed right-10 top-10 bg-white">
-                              <Button variant="ghost" size="icon">
-                                <X className="h-5 w-5" />
-                              </Button>
-                            </DialogClose>
-                          </DialogHeader>
-
-                          <div className="h-[calc(100vh-80px)] overflow-y-auto">
-                            <div className="w-full p-0">
-                              <EditProjectForm projectId={project.id} />
-                            </div>
-                          </div>
-                        </DialogContent>
-                      </Dialog>
-                    
-
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        disabled={isDeleting}
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          if (confirm("Are you sure you want to delete this project?")) {
-                            handleDelete(project.id)
-                          }
-                        }}
-                        className="h-8 w-8 sm:h-9 sm:w-9 p-0 text-red-600 hover:text-red-700 hover:bg-red-500/10 bg-card/80 backdrop-blur-sm border border-red-500/20"
-                      >
-                        <Trash2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                      </Button>
-                    </div>
-              }
-
-                    <div className="relative h-40 sm:h-48 bg-gradient-to-br from-orange-500/5 to-orange-500/20 overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent z-10" />
+                    {/* Project Header/Image */}
+                    <div className="relative h-64 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center p-8 overflow-hidden">
+                      <div className="absolute text-[120px] font-black text-black/5 dark:text-white/5 whitespace-nowrap -rotate-12 translate-x-12 select-none group-hover:scale-110 transition-transform duration-1000">PROJECT</div>
                       <img
                         src={project.image || "/placeholder.svg"}
                         alt={project.title}
-                        className="object-contain p-6 sm:p-8 group-hover:scale-110 transition-transform duration-500"
+                        className="relative z-10 w-2/3 h-2/3 object-contain drop-shadow-2xl group-hover:scale-110 transition-transform duration-500"
                       />
-
-                      <div className="absolute top-3 sm:top-4 right-3 sm:right-4 z-20">
-                        <Badge
-                          variant="secondary"
-                          className="backdrop-blur-sm bg-white/90 dark:bg-white-900/90 text-foreground shadow-lg text-xs sm:text-sm text-orange-500"
-                        >
-                          {toYearNumber(project.year)}
+                      <div className="absolute bottom-6 left-6 flex items-center gap-2">
+                        <Badge className={`bg-gradient-to-r ${stage?.color} text-white border-0 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg`}>
+                          <StageIcon className="w-3 h-3 mr-2" />
+                          {stage?.name}
+                        </Badge>
+                        <Badge className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md text-foreground border border-border px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">
+                          {project.year}
                         </Badge>
                       </div>
+                    </div>
 
-                      <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 z-20">
-                        <div
-                          className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-gradient-to-r ${stage?.color} shadow-lg`}
+                    {/* Project Info */}
+                    <div className="p-8 space-y-6 flex-1 flex flex-col">
+                      <div>
+                        <h3 className="text-2xl font-black uppercase tracking-tighter mb-4 group-hover:text-primary transition-colors line-clamp-1">{project.title}</h3>
+                        <p className="text-muted-foreground text-sm font-medium leading-relaxed line-clamp-3">{project.description}</p>
+                      </div>
+
+                      <div className="space-y-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary"><GraduationCap className="w-4 h-4" /></div>
+                          <span className="text-xs font-black uppercase tracking-widest text-foreground/40 shrink-0">College</span>
+                          <span className="text-xs font-bold text-foreground truncate">{project.college}</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary"><Users className="w-4 h-4" /></div>
+                          <span className="text-xs font-black uppercase tracking-widest text-foreground/40 shrink-0">Team</span>
+                          <span className="text-xs font-bold text-foreground truncate">{project.team}</span>
+                        </div>
+                      </div>
+
+                      <div className="pt-auto mt-6">
+                        <button
+                          onClick={() => setSelectedProjectDetails(project)}
+                          className="w-full h-14 rounded-2xl bg-slate-900 dark:bg-slate-800 text-white text-xs font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-primary transition-all group/btn"
                         >
-                          <StageIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
-
-                          <span className="text-xs font-bold text-white">{stage?.name ?? "Stage"}</span>
-                        </div>
+                          VIEW DETAILS
+                          <ExternalLink className="w-4 h-4 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                        </button>
                       </div>
                     </div>
+                  </div>
+                </motion.div>
+              )
+            })}
+          </AnimatePresence>
+        </div>
 
-                    <div className="p-4 sm:p-6">
-                      <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 text-balance line-clamp-1 group-hover:text-orange-500 transition-colors">
-                        {project.title}
-                      </h3>
-
-                      <p className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2 leading-relaxed">
-                        {project.description}
-                      </p>
-
-                      <div className="space-y-2 sm:space-y-3 mb-3 sm:mb-4">
-                        <div className="flex items-center gap-2 text-xs sm:text-sm">
-                          <div className="p-1 sm:p-1.5 rounded bg-orange-500/10 shrink-0">
-                            <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-orange-500" />
-                          </div>
-                          <span className="font-medium text-muted-foreground">Team:</span>
-                          <span className="font-semibold truncate">{project.team}</span>
-                        </div>
-
-                        <div className="flex items-center gap-2 text-xs sm:text-sm">
-                          <div className="p-1 sm:p-1.5 rounded bg-orange-500/10 shrink-0">
-                            <GraduationCap className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-orange-500" />
-                          </div>
-                          <span className="font-medium text-muted-foreground">College:</span>
-                          <span className="font-semibold line-clamp-1">{project.college}</span>
-                        </div>
-
-                        <div className="pt-2 border-t border-border/50">
-                          <div className="flex items-start gap-2 text-xs sm:text-sm mb-2">
-                            <div className="p-1 sm:p-1.5 rounded bg-orange-500/10 shrink-0">
-                              <UserCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-orange-500" />
-                            </div>
-
-                            <div className="flex-1 min-w-0">
-                              <span className="font-medium text-muted-foreground block mb-1">Team Leader:</span>
-                              <p className="font-semibold text-foreground truncate">
-                                {project.projectLeaders?.name ?? ""}
-                              </p>
-                              {project.projectLeaders?.email ? (
-                                <a
-                                  href={`mailto:${project.projectLeaders.email}`}
-                                  className="text-xs text-orange-500 hover:text-orange-600 hover:underline flex items-center gap-1 mt-1"
-                                >
-                                  <Mail className="h-3 w-3 shrink-0" />
-                                  <span className="truncate">{project.projectLeaders.email}</span>
-                                </a>
-                              ) : null}
-                            </div>
-                          </div>
-
-                          <div className="mt-3">
-                            <span className="font-medium text-muted-foreground text-xs block mb-2">Team Members:</span>
-
-                            <div className="space-y-2 max-h-40 overflow-y-auto">
-                              {(project.teams ?? []).map((member: any, idx: number) => (
-                                <div key={idx} className="text-xs bg-muted/50 rounded-lg p-2">
-                                  <p className="font-semibold text-foreground mb-0.5 truncate">{member?.name ?? ""}</p>
-                                  {member?.email ? (
-                                    <a
-                                      href={`mailto:${member.email}`}
-                                      className="text-orange-500 hover:text-orange-600 hover:underline flex items-center gap-1"
-                                    >
-                                      <Mail className="h-3 w-3 shrink-0" />
-                                      <span className="truncate">{member.email}</span>
-                                    </a>
-                                  ) : null}
-                                </div>
-                              ))}
-
-                              {(project.teams ?? []).length === 0 && (
-                                <p className="text-xs text-muted-foreground italic">No team members listed.</p>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
-                )
-              })}
-                {(isFetching || isLoading) && (
-              <div className="flex justify-center items-center mt-6 sm:mt-8">
-                <LoadingBar />
+        {/* Project Details Dialog */}
+        <Dialog open={!!selectedProjectDetails} onOpenChange={(open) => !open && setSelectedProjectDetails(null)}>
+          <DialogContent className="!z-[9999] max-w-4xl max-h-[95vh] lg:max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 rounded-[2rem] lg:rounded-[3rem] p-0 border-none shadow-2xl mx-4">
+            <div className="relative">
+              {/* Header Image/Background */}
+              <div className="h-48 sm:h-64 bg-slate-50 dark:bg-slate-800 flex items-center justify-center relative overflow-hidden">
+                <div className="absolute top-4 right-4 sm:top-8 sm:right-8 z-20">
+                  <button onClick={() => setSelectedProjectDetails(null)} className="w-10 h-10 bg-white/20 dark:bg-slate-900/40 backdrop-blur-md rounded-full flex items-center justify-center text-foreground hover:bg-primary hover:text-white transition-all shadow-lg">
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-slate-900 via-transparent to-transparent z-10" />
+                <img
+                  src={selectedProjectDetails?.image || "/placeholder.svg"}
+                  alt={selectedProjectDetails?.title}
+                  className="h-1/2 sm:h-2/3 object-contain z-0 relative drop-shadow-2xl px-8"
+                />
               </div>
-            )}
 
-            {hasMore && (
-          <div className="flex justify-center items-center mt-8 sm:mt-10">
+              {/* Content */}
+              <div className="p-6 sm:p-10 lg:p-16 relative z-10 -mt-12 sm:-mt-20">
+                <div className="flex flex-wrap gap-2 sm:gap-3 mb-6 sm:mb-8">
+                  <Badge className="bg-primary text-white border-0 px-4 sm:px-6 py-1.5 sm:py-2 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-widest shadow-lg">
+                    {selectedProjectDetails?.stage}
+                  </Badge>
+                  <Badge className="bg-slate-100 dark:bg-slate-800 text-foreground border-border px-4 sm:px-6 py-1.5 sm:py-2 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-widest shadow-sm">
+                    Class of {selectedProjectDetails?.year}
+                  </Badge>
+                </div>
+
+                <h2 className="text-2xl sm:text-4xl lg:text-6xl font-black text-foreground uppercase tracking-tighter mb-6 sm:mb-8 leading-snug break-words">
+                  {selectedProjectDetails?.title}
+                </h2>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 mb-10 sm:mb-12">
+                  <div className="space-y-1">
+                    <div className="text-[9px] sm:text-[10px] font-black text-muted-foreground uppercase tracking-widest">Institution</div>
+                    <div className="text-sm sm:text-base font-bold text-foreground">{selectedProjectDetails?.college}</div>
+                  </div>
+                  <div className="space-y-1 sm:border-l border-border sm:pl-8">
+                    <div className="text-[9px] sm:text-[10px] font-black text-muted-foreground uppercase tracking-widest">Team Lead</div>
+                    <div className="text-sm sm:text-base font-black text-foreground uppercase">{selectedProjectDetails?.projectLeaders?.name}</div>
+                  </div>
+                  <div className="space-y-1 sm:border-l border-border sm:pl-8">
+                    <div className="text-[9px] sm:text-[10px] font-black text-muted-foreground uppercase tracking-widest">Connect</div>
+                    <a href={`mailto:${selectedProjectDetails?.projectLeaders?.email}`} className="text-sm sm:text-base font-bold text-primary hover:text-primary/80 transition-colors break-all">
+                      {selectedProjectDetails?.projectLeaders?.email}
+                    </a>
+                  </div>
+                </div>
+
+                <div className="space-y-8 lg:space-y-12">
+                  <div className="bg-slate-50 dark:bg-slate-800/50 rounded-[1.5rem] sm:rounded-[2.5rem] p-6 sm:p-10 border border-border">
+                    <h3 className="text-lg sm:text-xl font-black text-foreground uppercase tracking-tighter mb-4 flex items-center gap-3">
+                      <Sparkles className="w-5 h-5 text-primary" /> Project Vision
+                    </h3>
+                    <p className="text-muted-foreground text-sm sm:text-lg font-medium leading-relaxed whitespace-pre-wrap">
+                      {selectedProjectDetails?.description}
+                    </p>
+                  </div>
+
+                  {selectedProjectDetails?.teams && selectedProjectDetails.teams.length > 0 && (
+                    <div className="space-y-6">
+                      <h3 className="text-lg sm:text-xl font-black text-foreground uppercase tracking-tighter flex items-center gap-3">
+                        <Users className="w-5 h-5 text-primary" /> Venture Team
+                      </h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {selectedProjectDetails.teams.map((member: Person, i: number) => (
+                          <div key={i} className="p-4 sm:p-6 bg-white dark:bg-slate-900 border border-border rounded-2xl sm:rounded-3xl shadow-sm group/member hover:border-primary/30 transition-colors">
+                            <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1.5 sm:mb-2 flex items-center gap-2">
+                              <UserCircle className="w-3 h-3" /> Team Member
+                            </div>
+                            <div className="text-xs sm:text-sm font-black text-foreground uppercase tracking-tight mb-1 group-hover/member:text-primary transition-colors">
+                              {member.name}
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Mail className="w-3 h-3 text-primary/40 shrink-0" />
+                              <a href={`mailto:${member.email}`} className="text-[10px] sm:text-[11px] font-semibold text-muted-foreground hover:text-primary transition-colors break-all">
+                                {member.email}
+                              </a>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Loading & More */}
+        {(isLoading || isFetching) && (
+          <div className="flex justify-center items-center py-20">
+            <LoadingBar />
+          </div>
+        )}
+
+        {hasMore && !isLoading && (
+          <div className="flex justify-center items-center py-20">
             <LoadMorePagination
               onClick={loadMore}
-              disabled={!hasMore || isFetching || isLoading}
-              text={isFetching || isLoading ? "Loading projects..." : "Load More"}
+              disabled={isFetching}
+              text={isFetching ? "Loading..." : "LOAD MORE VENTURES"}
             />
           </div>
         )}
-            </div>
-
-          
-          </>
-        )}
-
-        
-      </div>
+      </main>
     </div>
   )
 }

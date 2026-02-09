@@ -1,83 +1,108 @@
-import { Link } from "react-router-dom";
-import { Button } from "../../components";
-import { entrepreneurshipData } from "./EntrepreneurshipData";
+"use client"
 
-
+import { Link } from "react-router-dom"
+import { Button } from "../../components"
+import { entrepreneurshipData } from "./EntrepreneurshipData"
+import { motion } from "framer-motion"
 
 const Entrepreneurship = () => {
   return (
-    <>
-      {/* Entrepreneurship Section */}
-      <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 bg-gradient-to-r from-gray-50 to-orange-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
-            {/* Left Image */}
-            <div className="flex-1 w-full max-w-lg lg:max-w-none">
+    <section className="py-24 sm:py-32 bg-secondary/20 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+          {/* Left Image */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="flex-1 w-full relative"
+          >
+            <div className="relative z-10 rounded-[2.5rem] overflow-hidden shadow-2xl border-8 border-white dark:border-slate-800">
               <img
                 src={entrepreneurshipData.image}
                 alt={entrepreneurshipData.imageAlt}
-                className="w-full h-[250px] sm:h-[300px] lg:h-[400px] object-cover rounded-2xl shadow-2xl"
+                className="w-full h-[350px] lg:h-[450px] object-cover"
               />
             </div>
+            {/* Background blur */}
+            <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full opacity-30 -z-10 -translate-x-12 translate-y-12" />
+          </motion.div>
 
-            {/* Right Content */}
-            <div className="flex-1 text-center lg:text-left">
-              <div className="inline-block px-3 sm:px-4 py-2 bg-orange-100 text-orange-600 rounded-full text-xs sm:text-sm font-semibold mb-4 sm:mb-6">
+          {/* Right Content */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="flex-1 space-y-8"
+          >
+            <div>
+              <div className="inline-flex px-4 py-1.5 bg-primary/10 text-primary rounded-full text-xs font-bold uppercase tracking-wider mb-6">
                 {entrepreneurshipData.tag}
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
+              <h2 className="text-4xl lg:text-6xl font-black tracking-tighter leading-tight mb-6 uppercase">
                 {entrepreneurshipData.title}{" "}
-                <span className="text-orange-600">
+                <span className="text-primary italic">
                   {entrepreneurshipData.highlight}
                 </span>
               </h2>
-              <p className="text-gray-600 text-base sm:text-lg lg:text-xl leading-relaxed mb-6 sm:mb-8">
+              <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
                 {entrepreneurshipData.description}
               </p>
-
-              {/* Benefits List */}
-              <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-                {entrepreneurshipData.benefits.map((benefit) => {
-                  const Icon = benefit.icon;
-                  return (
-                    <div
-                      key={benefit.id}
-                      className="flex items-center gap-3 justify-center lg:justify-start"
-                    >
-                      <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-orange-500 flex-shrink-0" />
-                      <span className="text-gray-700 text-base sm:text-lg">
-                        {benefit.text}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Impact Section */}
-              <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg mb-6 sm:mb-8">
-                <h4 className="text-base sm:text-lg font-semibold text-orange-600 mb-2">
-                  {entrepreneurshipData.impact.title}
-                </h4>
-                <p className="text-gray-700 text-sm sm:text-base">
-                  {entrepreneurshipData.impact.description}
-                </p>
-              </div>
-
-              <Link to={"/entrepreneurship"}>
-              {/* CTA Button */}
-              <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 sm:px-8 py-3 text-base sm:text-lg shadow-lg hover:shadow-xl transition-all duration-200 w-full sm:w-auto">
-                {entrepreneurshipData.cta.text}
-                <entrepreneurshipData.cta.icon className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
-              </Button>      
-              </Link>
-
-        
             </div>
-          </div>
-        </div>
-      </section>
-    </>
-  );
-};
 
-export default Entrepreneurship;
+            {/* Benefits List */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {entrepreneurshipData.benefits.map((benefit, idx) => {
+                const Icon = benefit.icon
+                return (
+                  <motion.div
+                    key={benefit.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1 }}
+                    className="flex items-center gap-3 group"
+                  >
+                    <div className="flex-shrink-0 w-10 h-10 bg-white dark:bg-slate-800 rounded-xl flex items-center justify-center shadow-md border border-border group-hover:bg-primary transition-colors">
+                      <Icon className="w-5 h-5 text-primary group-hover:text-white transition-colors" />
+                    </div>
+                    <span className="text-foreground font-semibold text-sm">
+                      {benefit.text}
+                    </span>
+                  </motion.div>
+                )
+              })}
+            </div>
+
+            {/* Impact Section */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="bg-white/50 dark:bg-slate-900/50 backdrop-blur-md rounded-2xl p-6 border border-border shadow-lg"
+            >
+              <h4 className="text-primary font-black uppercase tracking-widest text-xs mb-3">
+                {entrepreneurshipData.impact.title}
+              </h4>
+              <p className="text-slate-600 dark:text-slate-400 text-sm font-medium leading-relaxed">
+                {entrepreneurshipData.impact.description}
+              </p>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.5 }}>
+              <Link to="/sip">
+                <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-2xl shadow-xl shadow-primary/20 flex items-center gap-2 group">
+                  {entrepreneurshipData.cta.text}
+                  <entrepreneurshipData.cta.icon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default Entrepreneurship

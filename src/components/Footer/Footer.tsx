@@ -1,103 +1,115 @@
 import { contacts, policies, quickLinks, socialLinks, stakeholders } from "./FooterDatas"
 import { Link } from "react-router-dom"
+import { motion } from "framer-motion"
 
 const Footer = () => {
   return (
-    <footer className="bg-slate-950 text-white border-t border-slate-800">
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+    <footer className="relative bg-slate-950 dark:bg-black text-white border-t border-slate-800 pt-16 pb-8 overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16">
           {/* Brand Section */}
-          <div>
-            <div className="mb-6">
-              <img src="/images/sums-logo-without-bg.png" alt="SUMS Logo" className="w-32 h-24 object-contain" />
-            </div>
-            <p className="text-gray-400 text-sm leading-relaxed mb-6">
+          <div className="space-y-6">
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+            >
+              <img src="/images/sums-logo-without-bg.png" alt="SUMS Logo" className="w-32 h-auto object-contain brightness-110" />
+            </motion.div>
+            <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
               Empowering education, driving innovation, and discovering the future through strategic connections between
               students, colleges, companies, and cities.
             </p>
-            <div className="flex gap-3">
+            <div className="flex gap-4">
               {socialLinks.map((link) => (
-                <a
+                <motion.a
                   key={link.id}
+                  whileHover={{ scale: 1.1, y: -2 }}
+                  whileTap={{ scale: 0.9 }}
                   target="_blank"
                   rel="noopener noreferrer"
                   href={link.href}
-                  className="w-10 h-10 bg-slate-800 hover:bg-orange-500 rounded-lg flex items-center justify-center transition-colors duration-200 border border-slate-700 hover:border-orange-500"
+                  className="w-10 h-10 bg-slate-900 hover:bg-primary rounded-xl flex items-center justify-center transition-colors border border-slate-800 hover:border-primary shadow-lg"
                   title={link.label}
                 >
-                  <span className="text-xs font-semibold text-gray-300">{link.label}</span>
-                </a>
+                  <span className="text-[10px] font-bold text-slate-300 group-hover:text-white uppercase tracking-tighter">{link.label.substring(0, 2)}</span>
+                </motion.a>
               ))}
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-base font-semibold mb-4 text-white border-l-2 border-orange-500 pl-3">Quick Links</h3>
-            <ul className="space-y-2.5">
-              {quickLinks.map((link, idx) => (
-                <li key={idx}>
-                  <Link to="#" className="text-gray-400 hover:text-orange-500 transition-colors duration-200 text-sm">
-                    {link}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+          {/* Links Sections Container */}
+          <div className="md:col-span-1 lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-8">
+            <div>
+              <h3 className="text-white font-bold mb-6 flex items-center gap-2">
+                <span className="w-1 h-4 bg-primary rounded-full" />
+                Quick Links
+              </h3>
+              <ul className="space-y-4">
+                {quickLinks.map((link, idx) => (
+                  <li key={idx}>
+                    <Link to="#" className="text-slate-400 hover:text-primary transition-colors text-sm font-medium flex items-center group">
+                      <span className="w-0 group-hover:w-2 h-px bg-primary mr-0 group-hover:mr-2 transition-all" />
+                      {link}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-white font-bold mb-6 flex items-center gap-2">
+                <span className="w-1 h-4 bg-primary rounded-full" />
+                Stakeholders
+              </h3>
+              <ul className="space-y-4">
+                {stakeholders.map((stake, idx) => (
+                  <li key={idx}>
+                    <Link to="#" className="text-slate-400 hover:text-primary transition-colors text-sm font-medium flex items-center group">
+                      <span className="w-0 group-hover:w-2 h-px bg-primary mr-0 group-hover:mr-2 transition-all" />
+                      {stake}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
-          {/* For Stakeholders */}
-          <div>
-            <h3 className="text-base font-semibold mb-4 text-white border-l-2 border-orange-500 pl-3">
-              For Stakeholders
+          {/* Contact Section */}
+          <div className="space-y-6">
+            <h3 className="text-white font-bold mb-6 flex items-center gap-2">
+              <span className="w-1 h-4 bg-primary rounded-full" />
+              Contact
             </h3>
-            <ul className="space-y-2.5">
-              {stakeholders.map((stake, idx) => (
-                <li key={idx}>
-                  <Link to="#" className="text-gray-400 hover:text-orange-500 transition-colors duration-200 text-sm">
-                    {stake}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact & Support */}
-          <div>
-            <h3 className="text-base font-semibold mb-4 text-white border-l-2 border-orange-500 pl-3">
-              Contact & Support
-            </h3>
-            <ul className="space-y-3">
+            <div className="bg-slate-900/50 backdrop-blur-sm p-6 rounded-2xl border border-slate-800 space-y-4">
               {contacts.map((contact) => (
-                <li key={contact.id} className="flex items-start gap-2.5 text-gray-400 text-sm">
-                  <span className="text-base">{contact.icon}</span>
-                  <span>{contact.text}</span>
-                </li>
+                <div key={contact.id} className="flex items-start gap-3">
+                  <span className="text-primary mt-1">{contact.icon}</span>
+                  <p className="text-slate-400 text-sm leading-snug">{contact.text}</p>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Bottom Footer */}
-      <div className="border-t border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
-            <div className="text-gray-500 text-sm">
-              © {new Date().getFullYear()} <span className="text-orange-500 font-medium">sumsnepal</span>. All Rights
-              Reserved.
-            </div>
-            <div className="flex flex-wrap justify-center gap-6 text-sm">
-              {policies.map((policy, idx) => (
-                <Link
-                  key={idx}
-                  to={`/${policy.toLowerCase().replace(/\s+/g, "-")}`}
-                  className="text-gray-500 hover:text-orange-500 transition-colors duration-200"
-                >
-                  {policy}
-                </Link>
-              ))}
-            </div>
+        {/* Bottom Bar */}
+        <div className="mt-16 pt-8 border-t border-slate-900 flex flex-col sm:flex-row justify-between items-center gap-6">
+          <p className="text-slate-500 text-sm order-2 sm:order-1">
+            © {new Date().getFullYear()} <span className="text-primary font-bold">SUMS NEPAL</span>. Crafted with passion.
+          </p>
+          <div className="flex flex-wrap justify-center gap-8 order-1 sm:order-2">
+            {policies.map((policy, idx) => (
+              <Link
+                key={idx}
+                to={`/${policy.toLowerCase().replace(/\s+/g, "-")}`}
+                className="text-slate-500 hover:text-primary text-sm transition-colors"
+              >
+                {policy}
+              </Link>
+            ))}
           </div>
         </div>
       </div>

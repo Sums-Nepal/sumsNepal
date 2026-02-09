@@ -1,95 +1,126 @@
-import { Award, Building2, Lightbulb } from "lucide-react";
+"use client"
+
+import { Award, Building2, Lightbulb, CheckCircle2 } from "lucide-react"
+import { motion } from "framer-motion"
 
 const benefitsData = [
   {
-    title: "Strengthen Industry-Academia Linkages",
-    icon: <Building2 className="w-6 h-6 text-white" />,
-    gradient: "from-orange-500 to-orange-600",
-    borderColor: "border-orange-100",
-    hoverColor: "group-hover:text-orange-600",
+    title: "Industry-Academia Linkages",
+    icon: <Building2 className="w-8 h-8 text-primary" />,
+    description: "Strengthen the bond between institutions and the job market.",
     bullets: [
-      "More Aligned Placement-Linked Curricula To Embed Industry Practices In Academic Programs",
-      "Faculty Exchange With Industry For Practical Exposure",
-      "Personalized PPMS",
-      "Real-Time About Placement Needs From The Academic Experience",
+      "Aligned Placement-Linked Curricula",
+      "Faculty Exchange Programs",
+      "Personalized PPMS Implementation",
+      "Real-Time Placement Analytics",
     ],
   },
   {
-    title: "Foster Innovation & Research",
-    icon: <Lightbulb className="w-6 h-6 text-white" />,
-    gradient: "from-orange-500 to-orange-600",
-    borderColor: "border-orange-100",
-    hoverColor: "group-hover:text-orange-600",
+    title: "Innovation & Research",
+    icon: <Lightbulb className="w-8 h-8 text-primary" />,
+    description: "Transform your institution into a leading hub of creativity.",
     bullets: [
-      "Transform Academic Institutions Into Hubs Of Innovation And Research",
-      "Incubation Centers For Student Startups To Pursue Ideas From Conception To Commercialization",
-      "Create Opportunities For Applied Research And Product Development",
+      "Academic Innovation Hubs",
+      "Student Startup Incubation",
+      "Applied Research Opportunities",
+      "Product Development Tracks",
     ],
   },
   {
-    title: "Improve Graduate Employability",
-    icon: <Award className="w-6 h-6 text-white" />,
-    gradient: "from-orange-500 to-orange-600",
-    borderColor: "border-orange-100",
-    hoverColor: "group-hover:text-orange-600",
+    title: "Graduate Employability",
+    icon: <Award className="w-8 h-8 text-primary" />,
+    description: "Bridge the gap between education and high-value employment.",
     bullets: [
-      "Equip Students With In-Demand Practical Skills And Professional Experience",
-      "Build Comprehensive Portfolios That Demonstrate Value To Employers",
-      "Address The National Challenge Of Matching Qualified With Employment Opportunities",
-      "Employment Opportunities",
+      "In-Demand Practical Skillsets",
+      "Comprehensive Value Portfolios",
+      "Matching Qualified Talent to Jobs",
+      "Global Career Readiness",
     ],
   },
-];
+]
 
 const PartnershipBenefits = () => {
   return (
-    <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 bg-gradient-to-br from-gray-50 to-blue-50 relative">
-      <div className="max-w-6xl mx-auto">
-        {/* Heading */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-              Strategic <span className="text-orange-500">Partnership </span>
-              Benefits
-            </span>
-          </h2>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+    <section className="py-24 sm:py-32 bg-background relative overflow-hidden">
+      {/* Decorative Background */}
+      <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-primary/5 -skew-x-12 transform origin-top-right -z-10" />
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="flex flex-col items-center mb-20 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="inline-flex px-4 py-1.5 bg-primary/10 text-primary rounded-full text-[10px] font-black uppercase tracking-widest mb-6"
+          >
+            Strategic Advantages
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="text-4xl lg:text-7xl font-black text-foreground tracking-tighter uppercase mb-6"
+          >
+            PARTNERSHIP <span className="text-primary italic">BENEFITS</span>
+          </motion.h2>
+          <p className="text-muted-foreground text-lg lg:text-xl max-w-3xl leading-relaxed">
             Discover how SUMS transforms academic institutions through strategic
-            partnerships
+            partnerships, global standards, and innovative integration.
           </p>
         </div>
 
-        {/* Benefits Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
           {benefitsData.map((benefit, index) => (
-            <div
+            <motion.div
               key={index}
-              className="group card"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1, duration: 0.6 }}
+              className="group relative h-full"
             >
-              <div
-                className={`w-12 h-12 bg-gradient-to-br ${benefit.gradient} rounded-xl flex items-center justify-center mb-6 group-hover:rotate-12 transition-transform duration-300`}
-              >
-                {benefit.icon}
+              <div className="relative h-full bg-white dark:bg-slate-900 border border-border rounded-[2.5rem] p-10 shadow-sm transition-all duration-500 hover:shadow-2xl hover:border-primary/50 group-hover:-translate-y-2 overflow-hidden">
+                {/* Decorative blob */}
+                <div className="absolute -top-10 -right-10 w-32 h-32 bg-primary/5 rounded-full group-hover:bg-primary/10 transition-colors" />
+
+                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-primary transition-all duration-500 group-hover:rotate-6 shadow-sm">
+                  <div className="group-hover:text-white transition-colors">
+                    {benefit.icon}
+                  </div>
+                </div>
+
+                <h3 className="text-2xl font-black text-foreground mb-4 uppercase tracking-tighter">
+                  {benefit.title}
+                </h3>
+
+                <p className="text-muted-foreground text-sm font-medium mb-8 leading-relaxed">
+                  {benefit.description}
+                </p>
+
+                <ul className="space-y-4">
+                  {benefit.bullets.map((bullet, i) => (
+                    <motion.li
+                      key={i}
+                      className="flex items-start gap-3 group/item"
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.3 + (i * 0.1) }}
+                    >
+                      <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0 group-hover/item:scale-110 transition-transform" />
+                      <span className="text-foreground text-sm font-semibold leading-tight">
+                        {bullet}
+                      </span>
+                    </motion.li>
+                  ))}
+                </ul>
               </div>
-              <h3
-                className={`text-xl font-bold text-gray-900 mb-4 ${benefit.hoverColor} transition-colors duration-300`}
-              >
-                {benefit.title}
-              </h3>
-              <ul className="text-gray-600 text-sm space-y-3">
-                {benefit.bullets.map((bullet, i) => (
-                  <li key={i} className="flex items-start">
-                    <span className={`mr-2 text-orange-500`}>•</span>
-                    {bullet}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default PartnershipBenefits;
+export default PartnershipBenefits

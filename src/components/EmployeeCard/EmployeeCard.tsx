@@ -1,5 +1,8 @@
-import { useState, useRef } from "react"
-import { Phone, Mail, Briefcase, ChevronLeft, ChevronRight } from "lucide-react"
+"use client"
+
+import { useState } from "react"
+import { Mail, Briefcase, ExternalLink, Linkedin, Twitter } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
 
 export interface Employee {
   id: number
@@ -9,172 +12,87 @@ export interface Employee {
   department: string
   email: string
   image?: string
-  images?: string[]   // multiple images
+  images?: string[]
 }
 
 export default function EmployeeCard({ employee }: { employee: Employee }) {
   const [isHovered, setIsHovered] = useState(false)
-  const [currentIndex, setCurrentIndex] = useState(0)
 
-  const hasMultiple = employee.images && employee.images.length > 1
-  const images = employee.images ?? (employee.image ? [employee.image] : [])
-
-  const startX = useRef(0)
-
-  // Swipe handlers
-  const handleTouchStart = (e: React.TouchEvent) => {
-    startX.current = e.touches[0].clientX
-  }
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    const endX = e.changedTouches[0].clientX
-    const diff = startX.current - endX
-
-    if (diff > 50) {
-      nextImage()
-    } else if (diff < -50) {
-      prevImage()
-    }
-  }
-
-  const nextImage = () => {
-    setCurrentIndex((prev) =>
-      prev === images.length - 1 ? 0 : prev + 1
-    )
-  }
-
-  const prevImage = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? images.length - 1 : prev - 1
-    )
-  }
+  const mainImage = employee.images?.[0] || employee.image || "/placeholder.svg"
 
   return (
-    <div
-      className="group relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-500 hover:border-orange-500/30 transform hover:-translate-y-2 bg-gradient-to-r from-gray-50 to-orange-50"
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      className="group relative"
     >
-      {/* Premium gradient bar */}
-      <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600" />
+      <div className="relative h-full bg-white dark:bg-slate-900 border border-border rounded-[2.5rem] overflow-hidden transition-all duration-500 hover:shadow-2xl hover:border-primary/30 flex flex-col">
+        {/* Image Container */}
+        <div className="relative h-80 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+          <motion.img
+            src={mainImage.startsWith("/") ? mainImage : `/images/${mainImage}`}
+            alt={employee.name}
+            animate={{ scale: isHovered ? 1.1 : 1 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="w-full h-full object-cover"
+          />
 
-      {/* Decorative blur */}
-      <div className="absolute -top-40 -right-40 w-80 h-80 bg-orange-500/5 rounded-full blur-3xl transition-all duration-500 group-hover:bg-orange-500/10" />
+          {/* Overlay mask */}
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-      {/* IMAGE SECTION */}
-      <div
-        className="relative h-72 w-full overflow-hidden bg-slate-100"
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-      >
-        {/* Image slider */}
-        <div
-          className="flex h-full w-full transition-transform duration-500"
-          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-        >
-          {images.map((img, i) => (
-            <img
-              key={i}
-              src={`./images/${img}`}
-              alt={employee.name}
-              className="w-full h-full object-cover flex-shrink-0"
-            />
-          ))}
-        </div>
-
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-        {/* Position badge */}
-        <div
-          className={`absolute top-3 right-3 px-3 py-1.5 bg-orange-500 text-white text-xs font-bold rounded-full shadow-lg transition-all duration-300 ${
-            isHovered ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"
-          }`}
-        >
-          {employee.department}
-        </div>
-
-        {/* ARROWS — only if multiple images */}
-        {hasMultiple && (
-          <>
-            <button
-              onClick={prevImage}
-              className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full p-2 transition"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-
-            <button
-              onClick={nextImage}
-              className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full p-2 transition"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </>
-        )}
-
-        {/* Small dots indicator */}
-        {hasMultiple && (
-          <div className="absolute bottom-3 w-full flex justify-center gap-2">
-            {images.map((_, i) => (
-              <div
-                key={i}
-                className={`h-2 w-2 rounded-full transition-all ${
-                  i === currentIndex ? "bg-orange-500" : "bg-white/60"
-                }`}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* CONTENT */}
-      <div className="p-6 relative z-10">
-        <h3 className="text-xl font-bold text-foreground mb-2 line-clamp-2 group-hover:text-orange-600 transition-colors">
-          {employee.name}
-        </h3>
-
-        <div className="flex items-start gap-2 mb-4">
-          <Briefcase className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
-          <p className="text-sm font-semibold text-orange-500 leading-tight">
-            {employee.position}
-          </p>
-        </div>
-
-        <div
-          className={`space-y-3 transition-all duration-300 ${
-            isHovered ? "opacity-100 visible" : "opacity-0 invisible h-0"
-          }`}
-        >
-          <a
-            href={`mailto:${employee.email}`}
-            className="flex items-center gap-3 p-2.5 rounded-lg bg-orange-50 hover:bg-orange-100 transition-all"
-          >
-            <Mail className="w-4 h-4 text-orange-500" />
-            <span className="text-sm text-foreground truncate font-medium">
-              {employee.email}
+          {/* Department badge */}
+          <div className="absolute top-4 right-4 z-20">
+            <span className="px-5 py-1.5 bg-white/10 backdrop-blur-xl border border-white/20 text-white text-[9px] font-black uppercase tracking-widest rounded-full shadow-2xl">
+              {employee.department}
             </span>
-          </a>
+          </div>
+
+          {/* Social connections appearing on hover */}
+          <div className="absolute inset-0 flex items-center justify-center gap-4 translate-y-20 group-hover:translate-y-0 transition-transform duration-500 pointer-events-none group-hover:pointer-events-auto">
+            <button className="w-12 h-12 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center text-white border border-white/20 hover:bg-primary transition-all">
+              <Linkedin className="w-5 h-5" />
+            </button>
+            <button className="w-12 h-12 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center text-white border border-white/20 hover:bg-primary transition-all">
+              <Twitter className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
-        {/* Mobile contact */}
-        <div className="md:hidden mt-4 pt-4 border-t border-border space-y-2">
-          <a
-            href={`tel:${employee.contact}`}
-            className="flex items-center gap-2 text-sm text-orange-500 hover:text-orange-600 font-semibold"
-          >
-            <Phone className="w-4 h-4" />
-            {employee.contact}
-          </a>
-          <a
-            href={`mailto:${employee.email}`}
-            className="flex items-center gap-2 text-sm text-orange-500 hover:text-orange-600 font-semibold truncate"
-          >
-            <Mail className="w-4 h-4" />
-            {employee.email}
-          </a>
+        {/* Content Area */}
+        <div className="p-8 flex-1 flex flex-col">
+          <div className="mb-6">
+            <h3 className="text-2xl font-black text-foreground uppercase tracking-tighter leading-none mb-2 group-hover:text-primary transition-colors">
+              {employee.name}
+            </h3>
+            <div className="flex items-center gap-2">
+              <Briefcase className="w-3.5 h-3.5 text-primary" />
+              <p className="text-[10px] font-black text-primary uppercase tracking-widest leading-none">
+                {employee.position}
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-auto space-y-3">
+            <a
+              href={`mailto:${employee.email}`}
+              className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-transparent group-hover:border-primary/10 transition-all hover:bg-primary/5 group/link"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover/link:bg-primary group-hover/link:text-white transition-colors">
+                  <Mail className="w-4 h-4" />
+                </div>
+                <span className="text-xs font-bold text-muted-foreground truncate max-w-[150px]">
+                  {employee.email}
+                </span>
+              </div>
+              <ExternalLink className="w-3.5 h-3.5 text-slate-300 group-hover/link:text-primary transition-colors" />
+            </a>
+          </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }

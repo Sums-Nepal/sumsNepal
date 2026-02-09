@@ -30,17 +30,20 @@ export default function Register() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50 flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 flex items-center justify-center px-4 py-8 transition-colors duration-500">
       <div className="w-full max-w-md">
         {/* Card Container */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-800 overflow-hidden transition-colors duration-500">
           {/* Header Section */}
-          <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-8 py-10 text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full mb-4">
-              <UserPlus className="w-8 h-8 text-white" />
+          <div className="bg-gradient-to-r from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700 px-8 py-10 text-center relative overflow-hidden">
+            <div className="absolute inset-0 bg-black/10 dark:bg-black/20" />
+            <div className="relative z-10">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full mb-4 shadow-lg">
+                <UserPlus className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-3xl font-black text-white mb-2 tracking-tight">Create Account</h2>
+              <p className="text-orange-50 text-sm font-medium">Join us today and get started</p>
             </div>
-            <h2 className="text-3xl font-bold text-white mb-2">Create Account</h2>
-            <p className="text-orange-100 text-sm">Join us today and get started</p>
           </div>
 
           {/* Form Section */}
@@ -48,12 +51,12 @@ export default function Register() {
             <form onSubmit={submit} className="space-y-5">
               {/* Name Input */}
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="name" className="block text-sm font-bold text-gray-700 dark:text-slate-200 mb-2">
                   Full Name
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <User className="h-5 w-5 text-gray-400" />
+                    <User className="h-5 w-5 text-gray-400 dark:text-slate-500" />
                   </div>
                   <input
                     id="name"
@@ -62,19 +65,19 @@ export default function Register() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
-                    className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors text-gray-900 placeholder-gray-400"
+                    className="block w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-950 border border-gray-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 text-sm font-medium"
                   />
                 </div>
               </div>
 
               {/* Email Input */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="email" className="block text-sm font-bold text-gray-700 dark:text-slate-200 mb-2">
                   Email Address
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5 text-gray-400" />
+                    <Mail className="h-5 w-5 text-gray-400 dark:text-slate-500" />
                   </div>
                   <input
                     id="email"
@@ -83,19 +86,19 @@ export default function Register() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors text-gray-900 placeholder-gray-400"
+                    className="block w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-950 border border-gray-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 text-sm font-medium"
                   />
                 </div>
               </div>
 
               {/* Password Input */}
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="password" className="block text-sm font-bold text-gray-700 dark:text-slate-200 mb-2">
                   Password
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-gray-400" />
+                    <Lock className="h-5 w-5 text-gray-400 dark:text-slate-500" />
                   </div>
                   <input
                     id="password"
@@ -104,12 +107,12 @@ export default function Register() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="block w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors text-gray-900 placeholder-gray-400"
+                    className="block w-full pl-10 pr-12 py-3 bg-white dark:bg-slate-950 border border-gray-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 text-sm font-medium"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300 transition-colors"
                   >
                     {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>
@@ -119,9 +122,9 @@ export default function Register() {
               {/* Message Display */}
               {msg && (
                 <div
-                  className={`p-4 rounded-lg ${msg.includes("✅") ? "bg-green-50 text-green-800 border border-green-200" : "bg-red-50 text-red-800 border border-red-200"}`}
+                  className={`p-4 rounded-xl ${msg.includes("✅") ? "bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-300 border border-green-200 dark:border-green-800" : "bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-800"}`}
                 >
-                  <p className="text-sm font-medium">{msg}</p>
+                  <p className="text-sm font-bold">{msg}</p>
                 </div>
               )}
 
@@ -129,7 +132,7 @@ export default function Register() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-orange-600 hover:to-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg shadow-orange-500/30"
+                className="w-full bg-gradient-to-r from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700 text-white py-3.5 px-4 rounded-xl font-bold uppercase tracking-wide hover:from-orange-600 hover:to-orange-700 dark:hover:from-orange-500 dark:hover:to-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg shadow-orange-500/30 dark:shadow-orange-900/20"
               >
                 {loading ? (
                   <span className="flex items-center justify-center gap-2">
@@ -163,11 +166,11 @@ export default function Register() {
 
             {/* Login Link */}
             <div className="mt-6 text-center">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-slate-400 font-medium">
                 Already have an account?{" "}
                 <button
                   onClick={() => navigate("/login")}
-                  className="font-semibold text-orange-500 hover:text-orange-600 transition-colors"
+                  className="font-bold text-orange-600 dark:text-orange-500 hover:text-orange-700 dark:hover:text-orange-400 transition-colors"
                 >
                   Sign In
                 </button>
@@ -177,7 +180,7 @@ export default function Register() {
         </div>
 
         {/* Footer Text */}
-        <p className="text-center text-sm text-gray-500 mt-6">By signing up, you agree to our Terms of Service</p>
+        <p className="text-center text-xs font-semibold text-gray-400 dark:text-slate-600 mt-8 uppercase tracking-widest">By signing up, you agree to our Terms of Service</p>
       </div>
     </div>
   )
