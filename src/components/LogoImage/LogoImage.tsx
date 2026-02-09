@@ -27,10 +27,11 @@ const LogoImage: React.FC<LogoImageProps> = ({ makeClickable = false }) => {
     <>
       <img
         style={{ cursor: "pointer" }}
-        src="/images/header_logo.png"
+        src="/images/sums-logo-without-bg.png"
         alt="logo"
-        width={60}
-        height={60}
+        width={90}
+        className="brightness-110"
+        height={90}
         onClick={redirectToTheHomePage}
       />
     </>
