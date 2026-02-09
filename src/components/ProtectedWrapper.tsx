@@ -26,7 +26,7 @@ const ProtectedWrapper: React.FC<ProtectedWrapperProps> = ({ children }) => {
       <div className="fixed inset-0 grid place-items-center">
         <LoadingBar
           title="SUMS NEPAL"
-          subtitle="Student Unified Management System"
+          subtitle="Pleased wait..."
           tips="Preparing your workspace…"
         />
       </div>
