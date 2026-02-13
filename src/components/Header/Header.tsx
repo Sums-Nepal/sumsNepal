@@ -6,7 +6,7 @@ import { NavLink, useNavigate } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
 import Button from "../Button/Button"
 import LogoImage from "../LogoImage/LogoImage"
-import ThemeToggle from "../ThemeToggle/ThemeToggle"
+// import ThemeToggle from "../ThemeToggle/ThemeToggle"
 import { navs } from "./navs"
 import { useCurrentUser } from "../../hooks"
 import userService from "../../services/user"
@@ -150,7 +150,7 @@ const Header = () => {
           </nav>
 
           <div className="hidden xl:flex items-center gap-4">
-            <ThemeToggle />
+            {/* <ThemeToggle /> */}
 
             <div className="h-6 w-px bg-border mx-2" />
 
@@ -194,7 +194,7 @@ const Header = () => {
 
           {/* Mobile Actions */}
           <div className="flex xl:hidden items-center gap-4">
-            <ThemeToggle />
+            {/* <ThemeToggle /> */}
             <button
               onClick={toggleMenu}
               className="p-2 rounded-xl text-foreground hover:bg-secondary transition-colors"

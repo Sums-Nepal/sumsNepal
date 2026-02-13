@@ -11,7 +11,7 @@ import LoginComponent from "./auth/LoginComponent";
 import RegisterComponent from "./auth/RegsiterComponent";
 import LoadMorePagination from "./LoadMorePagination/LoadMorePagination";
 import LoadingBar from "./Loaders/LoadingBars";
-import ThemeToggle from "./ThemeToggle/ThemeToggle";
+// import ThemeToggle from "./ThemeToggle/ThemeToggle";
 
 export {
   Header,
@@ -27,5 +27,5 @@ export {
   RegisterComponent,
   LoadMorePagination,
   LoadingBar,
-  ThemeToggle,
+  // ThemeToggle,
 };

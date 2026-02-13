@@ -14,7 +14,7 @@ createRoot(rootElement!).render(
   <StrictMode>
     <Provider store={store}>
       <LoadingBarContainer>
-        <ThemeProvider defaultTheme="system" storageKey="sums-ui-theme">
+        <ThemeProvider>
           <HowItWorksProvider>
             <App />
           </HowItWorksProvider>
