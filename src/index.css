@@ -74,3 +74,6 @@ html {
 .glass-morphism {
   @apply bg-white/70 dark:bg-slate-950/70 backdrop-blur-xl border-b border-white/20 dark:border-slate-800/20;
 }
+
+:root { color-scheme: dark; }  /* since you NEVER use light */
+.dark { color-scheme: dark; }

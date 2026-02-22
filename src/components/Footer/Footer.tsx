@@ -34,9 +34,8 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   href={link.href}
                   className="w-10 h-10 bg-slate-900 hover:bg-primary rounded-xl flex items-center justify-center transition-colors border border-slate-800 hover:border-primary shadow-lg"
-                  title={link.label}
                 >
-                  <span className="text-[10px] font-bold text-slate-300 group-hover:text-white uppercase tracking-tighter">{link.label.substring(0, 2)}</span>
+                  <span className="text-[10px] font-bold text-slate-300 group-hover:text-white uppercase tracking-tighter">{link.label}</span>
                 </motion.a>
               ))}
             </div>
